@@ -1,0 +1,546 @@
+{
+  "info": {
+    "_postman_id": "a5b2b4db-0b1c-4e55-8d64-0f3e2b646b64",
+    "name": "Blueprint Electricity API",
+    "description": "Postman collection for the Blueprint Electricity Laravel API.\n\nImportant: purchase endpoints can hit live electricity providers when the server is configured for production. Do not run purchase requests against production unless you intend to create a real transaction.\n\nThe collection stores useful response values in collection variables, including api_token, elec_token, customer_name, meter_number, and last_transaction.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Customer",
+      "item": [
+        {
+          "name": "Verify Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = {};",
+                  "try {",
+                  "  json = pm.response.json();",
+                  "} catch (error) {",
+                  "  console.warn('Response is not JSON', error);",
+                  "}",
+                  "",
+                  "if (json.api_token) {",
+                  "  pm.collectionVariables.set('api_token', json.api_token);",
+                  "}",
+                  "",
+                  "if (json.elec_token) {",
+                  "  pm.collectionVariables.set('elec_token', json.elec_token);",
+                  "}",
+                  "",
+                  "if (json.details) {",
+                  "  if (json.details.customer_name) {",
+                  "    pm.collectionVariables.set('customer_name', json.details.customer_name);",
+                  "  }",
+                  "  if (json.details.meter_number) {",
+                  "    pm.collectionVariables.set('meter_number', json.details.meter_number);",
+                  "  }",
+                  "}",
+                  "",
+                  "pm.test('Response has transaction result', function () {",
+                  "  pm.expect(json.results || json.result).to.exist;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transID\": \"{{trans_id}}\",\n  \"meterNumber\": \"{{meter_number}}\",\n  \"amount\": {{amount}},\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/verifiyCustomer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "verifiyCustomer"
+              ]
+            },
+            "description": "Validates a customer and returns api_token, elec_token, customer_name, and meter_number when successful.\n\nRoute spelling is intentionally kept as implemented: /verifiyCustomer."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Transaction Logs",
+      "item": [
+        {
+          "name": "List Transaction Logs",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{api_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/transaction-logs?per_page=25&status={{status_filter}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transaction-logs"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "25"
+                },
+                {
+                  "key": "status",
+                  "value": "{{status_filter}}",
+                  "description": "Optional. Example: SUCCESS or FAILED."
+                }
+              ]
+            },
+            "description": "Read-only portal endpoint. Returns clean transaction fields only: transaction_id, amount, meter_number, account_number, status, message, customer_name, receipt_no, and created_at.\n\nOptional filters: status, transaction_id, meter_number, account_number, from, to, per_page."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transaction Log by Transaction ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{api_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/transaction-logs/{{trans_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transaction-logs",
+                "{{trans_id}}"
+              ]
+            },
+            "description": "Read-only lookup for one transaction by transaction_id. This returns portal-safe fields and does not expose raw request/response JSON."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Purchases",
+      "item": [
+        {
+          "name": "Buy Electricity",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "normalizeTransactionResponse();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{api_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transID\": \"{{trans_id}}\",\n  \"meterNumber\": \"{{meter_number}}\",\n  \"amount\": {{amount}},\n  \"elec_token\": \"{{elec_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/buyelectricity",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "buyelectricity"
+              ]
+            },
+            "description": "Authenticated purchase endpoint.\n\nLive-data warning: this route calls the provider purchase flow in the controller. Use only with intentional test/live values.\n\nPortal fields are normalized into the collection variable last_transaction."
+          },
+          "response": []
+        },
+        {
+          "name": "Buy Electricity Prod",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "normalizeTransactionResponse();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{api_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transID\": \"{{trans_id}}\",\n  \"meterNumber\": \"{{meter_number}}\",\n  \"amount\": {{amount}},\n  \"elec_token\": \"{{elec_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/buyelectricityprod",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "buyelectricityprod"
+              ]
+            },
+            "description": "Authenticated purchase endpoint routed to ElectricityBkController@buyelectricityTest.\n\nLive-data warning: this route calls the provider purchase flow in the controller. Use only with intentional test/live values.\n\nPortal fields are normalized into the collection variable last_transaction."
+          },
+          "response": []
+        },
+        {
+          "name": "Mvumba Purchase",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "normalizeTransactionResponse();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transID\": \"{{trans_id}}\",\n  \"meterNumber\": \"{{meter_number}}\",\n  \"amount\": {{amount}},\n  \"elec_token\": \"{{elec_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/mvumba",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mvumba"
+              ]
+            },
+            "description": "Unauthenticated route that points to the same buyelectricity controller method.\n\nLive-data warning: this route calls the provider purchase flow in the controller. Use only with intentional test/live values."
+          },
+          "response": []
+        },
+        {
+          "name": "Purchase Power",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "normalizeTransactionResponse();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{api_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transID\": \"{{trans_id}}\",\n  \"meterNumber\": \"{{meter_number}}\",\n  \"amount\": {{amount}},\n  \"elec_token\": \"{{elec_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/purchase-power",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "purchase-power"
+              ]
+            },
+            "description": "Authenticated endpoint declared for prepaidpower.smartplanblueprint.net.\n\nCurrent code note: routes/api.php points this route to ElectricityController@buyelectricityprod, but that method was not found in ElectricityController.php during static inspection. Expect this endpoint to fail until the controller method exists.\n\nLive-data warning: only use this after confirming the route implementation."
+          },
+          "response": []
+        }
+      ],
+      "description": "Purchase endpoints. These can create real transactions depending on server configuration, so avoid Collection Runner against production."
+    },
+    {
+      "name": "Proxy",
+      "item": [
+        {
+          "name": "Trial Credit Vend API Key Proxy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "normalizeTransactionResponse();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meterNumber\": \"{{meter_number}}\",\n  \"transactionAmount\": {{amount}},\n  \"clientSaleId\": \"{{client_sale_id}}\",\n  \"createdBy\": \"{{created_by}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/trialcreditvendApiKey",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "trialcreditvendApiKey"
+              ]
+            },
+            "description": "Proxy endpoint in ElectricityProxyController.\n\nRequest fields: meterNumber, transactionAmount, clientSaleId, createdBy. The controller also accepts amount as a fallback for transactionAmount.\n\nIf ELECTRICITY_PROXY_FAKE=true, the server returns a fake creditVendReceipt and does not call the provider. Otherwise it forwards to the configured provider URL.\n\nCurrent code note: static inspection showed a stray token near the validator in ElectricityProxyController.php, so confirm PHP syntax before relying on this route."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "function normalizeTransactionResponse() {",
+          "  let json = {};",
+          "  try {",
+          "    json = pm.response.json();",
+          "  } catch (error) {",
+          "    console.warn('Response is not JSON', error);",
+          "  }",
+          "",
+          "  const receipt = json.receiptItems || json.creditVendReceipt || {};",
+          "  const totals = receipt.totals || {};",
+          "  const meterDetails = receipt.meter_details || {};",
+          "  const stdToken = Array.isArray(receipt.std_tokens) && receipt.std_tokens.length > 0 ? receipt.std_tokens[0] : {};",
+          "",
+          "  const normalized = {",
+          "    transaction_id: pm.collectionVariables.get('trans_id') || pm.collectionVariables.get('client_sale_id') || receipt.external_reference_number || receipt.receipt_no || receipt.ReceiptNo || receipt.receiptNo || null,",
+          "    amount: pm.collectionVariables.get('amount') || receipt.AmountTendered || totals.total || totals.tendered || receipt.amtTendered || null,",
+          "    meter_number: pm.collectionVariables.get('meter_number') || meterDetails.number || receipt.meterNumber || null,",
+          "    account_number: receipt.customer_account_no || receipt.account || null,",
+          "    status: json.results || json.result || json.response || null,",
+          "    message: json.message || null,",
+          "    receipt_no: receipt.receipt_no || receipt.ReceiptNo || receipt.receiptNo || receipt.external_reference_number || null,",
+          "    token: stdToken.code || receipt.stsCipher || null",
+          "  };",
+          "",
+          "  pm.collectionVariables.set('last_transaction', JSON.stringify(normalized, null, 2));",
+          "",
+          "  if (normalized.account_number) {",
+          "    pm.collectionVariables.set('account_number', normalized.account_number);",
+          "  }",
+          "",
+          "  if (normalized.status) {",
+          "    pm.test('Response has transaction status', function () {",
+          "      pm.expect(normalized.status).to.exist;",
+          "    });",
+          "  }",
+          "",
+          "  console.log('Normalized portal transaction', normalized);",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "email",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "password",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "api_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "elec_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "trans_id",
+      "value": "TXN-CHANGE-ME",
+      "type": "string"
+    },
+    {
+      "key": "client_sale_id",
+      "value": "SALE-CHANGE-ME",
+      "type": "string"
+    },
+    {
+      "key": "meter_number",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "amount",
+      "value": "10",
+      "type": "string"
+    },
+    {
+      "key": "created_by",
+      "value": "SmartPlan BluePrint",
+      "type": "string"
+    },
+    {
+      "key": "customer_name",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "account_number",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "status_filter",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "last_transaction",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

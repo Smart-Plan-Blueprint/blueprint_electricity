@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ElectricityFakeResponseFactory;
+use App\Services\TransactionAuditService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -279,6 +281,9 @@ class ElectricityBkController extends Controller
 
     public function buyelectricityTest(Request $request)
     {
+        $startedAt = microtime(true);
+        $transactionAudit = app(TransactionAuditService::class);
+        $transactionLog = $transactionAudit->start($request, $request->all());
 
         $validator = Validator::make($request->all(), [
             'transID' => 'required',
@@ -288,21 +293,37 @@ class ElectricityBkController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return Response()->json(["result" => "FAILED",
+            $responsePayload = ["result" => "FAILED",
                 "message" => "Please provide required fields or provide amount as interger.",
-                'type' => null]);
+                'type' => null];
+
+            $transactionAudit->finish($transactionLog, $responsePayload, 200, $this->durationMs($startedAt));
+
+            return Response()->json($responsePayload);
         }
 
         $transactionid = $request->transID;
         $meternumber = $request->meterNumber;
         $amount = $request->amount;
 
-        return $this->prepaidplusconfirmelectricityTest($meternumber, $amount, $transactionid);
+        if (config('electricity_proxy.purchase_fake')) {
+            $responsePayload = app(ElectricityFakeResponseFactory::class)->purchasePayload(
+                $meternumber,
+                $amount,
+                $transactionid
+            );
+
+            $transactionAudit->finish($transactionLog, $responsePayload, 200, $this->durationMs($startedAt));
+
+            return Response()->json($responsePayload);
+        }
+
+        return $this->prepaidplusconfirmelectricityTest($meternumber, $amount, $transactionid, $transactionLog, $startedAt);
 
     }
 
 
-    public function prepaidplusconfirmelectricityTest($meternumber, $amount, $transid)
+    public function prepaidplusconfirmelectricityTest($meternumber, $amount, $transid, $transactionLog = null, $startedAt = null)
     {
 
         try {
@@ -331,7 +352,7 @@ class ElectricityBkController extends Controller
             if ($resultsinfo->response == "Successful") {
                 $receiptitems = $resultsinfo->creditVendReceipt;
 
-                return Response()->json([
+                $responsePayload = [
                     "results" => "SUCCESS",
                     "message" => null,
                     "type" => "DISPLAY",
@@ -411,21 +432,52 @@ class ElectricityBkController extends Controller
                         "customer_name" => $receiptitems->name,
                         "AmountTendered" => $receiptitems->amtTendered
                     ]
-                ]);
+                ];
+
+                app(TransactionAuditService::class)->finish(
+                    $transactionLog,
+                    $responsePayload,
+                    200,
+                    $this->durationMs($startedAt)
+                );
+
+                return Response()->json($responsePayload);
             } else {
-                return response()->json([
+                $responsePayload = [
                     'results' => 'FAILED',
                     'message' => "Blueprintelectricity experinced an error while purchasing electricity. Please try again later.",
                     'details' => $resultsinfo->response
-                ], 200);
+                ];
+
+                app(TransactionAuditService::class)->finish(
+                    $transactionLog,
+                    $responsePayload,
+                    200,
+                    $this->durationMs($startedAt)
+                );
+
+                return response()->json($responsePayload, 200);
             }
         } catch (\GuzzleHttp\Exception\ClientException $e) {
 
-            return response()->json([
+            $responsePayload = [
                 'results' => 'FAILED',
                 'message' => "Blueprintelectricity experinced an error while purchasing electricity. Please try again later.",
                 'details' => "Generic Exception"
-            ], 200);
+            ];
+
+            app(TransactionAuditService::class)->finish(
+                $transactionLog,
+                $responsePayload,
+                200,
+                $this->durationMs($startedAt),
+                [
+                    'exception' => get_class($e),
+                    'message' => $e->getMessage(),
+                ]
+            );
+
+            return response()->json($responsePayload, 200);
             //return $this->prepaidplusconfirmelectricity();
             //return "error";
         }
@@ -753,5 +805,14 @@ class ElectricityBkController extends Controller
 	    	//return $this->prepaidplusconfirmelectricity();
 	    	//return "error";
 	    }
+    }
+
+    private function durationMs($startedAt)
+    {
+        if (!$startedAt) {
+            return null;
+        }
+
+        return (int) round((microtime(true) - $startedAt) * 1000);
     }
 }

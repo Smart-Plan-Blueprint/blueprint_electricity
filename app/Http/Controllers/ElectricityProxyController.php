@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TransactionAuditService;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -14,6 +15,7 @@ class ElectricityProxyController extends Controller
         $startedAt = microtime(true);
         $payload = $this->purchasePayload($request);
         $context = $this->logContext($request, $payload);
+        $transactionLog = app(TransactionAuditService::class)->start($request, $payload);
 
         Log::info('Electricity purchase proxy request started', $context + [
             'fake' => config('electricity_proxy.fake'),
@@ -24,7 +26,7 @@ class ElectricityProxyController extends Controller
             'transactionAmount' => 'required|numeric|min:1',
             'clientSaleId' => 'required',
             'createdBy' => 'required',
-        ]);22
+        ]);
 
         if ($validator->fails()) {
             Log::warning('Electricity purchase proxy validation failed', $context + [
@@ -32,11 +34,20 @@ class ElectricityProxyController extends Controller
                 'durationMs' => $this->durationMs($startedAt),
             ]);
 
-            return response()->json([
+            $responsePayload = [
                 'results' => 'FAILED',
                 'message' => 'Please provide meterNumber, transactionAmount, clientSaleId, and createdBy.',
                 'details' => $validator->errors(),
-            ], 422);
+            ];
+
+            app(TransactionAuditService::class)->finish(
+                $transactionLog,
+                $responsePayload,
+                422,
+                $this->durationMs($startedAt)
+            );
+
+            return response()->json($responsePayload, 422);
         }
 
         if (config('electricity_proxy.fake')) {
@@ -44,7 +55,16 @@ class ElectricityProxyController extends Controller
                 'durationMs' => $this->durationMs($startedAt),
             ]);
 
-            return $this->fakePurchaseResponse($payload);
+            $responsePayload = $this->fakePurchasePayload($payload);
+
+            app(TransactionAuditService::class)->finish(
+                $transactionLog,
+                $responsePayload,
+                200,
+                $this->durationMs($startedAt)
+            );
+
+            return response()->json($responsePayload);
         }
 
         $providerUrl = config('electricity_proxy.provider_url');
@@ -56,11 +76,20 @@ class ElectricityProxyController extends Controller
                 'hasProviderAuthorization' => (bool) $providerAuthorization,
             ]);
 
-            return response()->json([
+            $responsePayload = [
                 'results' => 'FAILED',
                 'message' => 'Electricity purchase service is not configured. Please try again later.',
                 'details' => null,
-            ], 500);
+            ];
+
+            app(TransactionAuditService::class)->finish(
+                $transactionLog,
+                $responsePayload,
+                500,
+                $this->durationMs($startedAt)
+            );
+
+            return response()->json($responsePayload, 500);
         }
 
         $client = new Client([
@@ -85,7 +114,17 @@ class ElectricityProxyController extends Controller
                 'durationMs' => $this->durationMs($startedAt),
             ]);
 
-            return response($response->getBody()->getContents(), $response->getStatusCode())
+            $responseBody = $response->getBody()->getContents();
+            $responsePayload = json_decode($responseBody, true);
+
+            app(TransactionAuditService::class)->finish(
+                $transactionLog,
+                is_array($responsePayload) ? $responsePayload : ['raw_body' => $responseBody],
+                $response->getStatusCode(),
+                $this->durationMs($startedAt)
+            );
+
+            return response($responseBody, $response->getStatusCode())
                 ->header('Content-Type', $response->getHeaderLine('Content-Type') ?: 'application/json');
         } catch (\Throwable $e) {
             Log::error('Electricity provider request failed', $context + [
@@ -94,20 +133,33 @@ class ElectricityProxyController extends Controller
                 'durationMs' => $this->durationMs($startedAt),
             ]);
 
-            return response()->json([
+            $responsePayload = [
                 'results' => 'FAILED',
                 'message' => 'Unable to contact the electricity purchase provider. Please try again later.',
                 'details' => null,
-            ], 502);
+            ];
+
+            app(TransactionAuditService::class)->finish(
+                $transactionLog,
+                $responsePayload,
+                502,
+                $this->durationMs($startedAt),
+                [
+                    'exception' => get_class($e),
+                    'message' => $e->getMessage(),
+                ]
+            );
+
+            return response()->json($responsePayload, 502);
         }
     }
 
-    private function fakePurchaseResponse(array $payload)
+    private function fakePurchasePayload(array $payload)
     {
         $amount = number_format((float) $payload['transactionAmount'], 2, '.', '');
         $receiptNo = 'TEST-' . preg_replace('/[^A-Za-z0-9_-]/', '', (string) $payload['clientSaleId']);
 
-        return response()->json([
+        return [
             'response' => 'Successful',
             'message' => 'Test mode response only. No provider request was sent.',
             'testMode' => true,
@@ -130,7 +182,7 @@ class ElectricityProxyController extends Controller
                 'krn' => '000',
                 'location' => 'TEST LOCATION',
             ],
-        ]);
+        ];
     }
 
     private function purchasePayload(Request $request)
