@@ -1,0 +1,8 @@
+node_modules
+.turbo
+.env
+.env.local
+dist
+apps/*/dist
+packages/*/dist
+npm-debug.log*

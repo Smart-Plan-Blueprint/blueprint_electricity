@@ -1,0 +1,23 @@
+{
+  "name": "blueprint-electricity-ui",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "npm@11.6.2",
+  "description": "JavaScript monorepo for the Blueprint Electricity portal UI.",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --filter=@blueprint/portal",
+    "preview": "turbo run preview --filter=@blueprint/portal",
+    "lint": "turbo run lint"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "turbo": "^2.6.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
