@@ -9,7 +9,7 @@ class TransactionLogController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ElectricityTransaction::query()->latest();
+        $query = ElectricityTransaction::with('log.user')->latest();
 
         if ($request->filled('status')) {
             $query->where('status', strtoupper($request->status));
@@ -55,6 +55,7 @@ class TransactionLogController extends Controller
     public function show($transactionId)
     {
         $transaction = ElectricityTransaction::where('transaction_id', $transactionId)
+            ->with('log.user')
             ->latest()
             ->first();
 
@@ -78,6 +79,7 @@ class TransactionLogController extends Controller
             'transaction_id' => $transaction->transaction_id,
             'amount' => $transaction->amount,
             'meter_number' => $transaction->meter_number,
+            'merchant_name' => $this->merchantName($transaction),
             'account_number' => $transaction->account_number,
             'status' => $transaction->status,
             'message' => $transaction->message,
@@ -85,5 +87,21 @@ class TransactionLogController extends Controller
             'receipt_no' => $transaction->receipt_no,
             'created_at' => optional($transaction->created_at)->toDateTimeString(),
         ];
+    }
+
+    private function merchantName(ElectricityTransaction $transaction)
+    {
+        $log = $transaction->log;
+
+        if (!$log) {
+            return null;
+        }
+
+        return optional($log->user)->name
+            ?: data_get($log->request_payload, 'createdBy')
+            ?: data_get($log->request_payload, 'merchant_name')
+            ?: data_get($log->response_payload, 'receiptItems.Cashier')
+            ?: data_get($log->response_payload, 'receiptItems.external_client_id')
+            ?: data_get($log->response_payload, 'createdBy');
     }
 }
