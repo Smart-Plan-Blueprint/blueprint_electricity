@@ -12,27 +12,7 @@ class TransactionLogController extends Controller
 {
     public function index(Request $request)
     {
-        $perPage = min(max((int) $request->query('per_page', 25), 1), 100);
-        $transactions = $this->filtered($request)->latest()->paginate($perPage);
-
-        return response()->json([
-            'results' => 'SUCCESS',
-            'data' => collect($transactions->items())->map(function ($transaction) {
-                return $this->portalFields($transaction);
-            })->values(),
-            'meta' => [
-                'current_page' => $transactions->currentPage(),
-                'last_page' => $transactions->lastPage(),
-                'per_page' => $transactions->perPage(),
-                'total' => $transactions->total(),
-            ],
-            'summary' => $this->summary($request),
-        ]);
-    }
-
-    private function filtered(Request $request, $fromOverride = null, $toOverride = null)
-    {
-        $query = ElectricityTransaction::query();
+        $query = ElectricityTransaction::with('log.user')->latest();
 
         if ($request->filled('status')) {
             $query->where('status', strtoupper($request->status));
@@ -320,6 +300,7 @@ class TransactionLogController extends Controller
     public function show($transactionId)
     {
         $transaction = ElectricityTransaction::where('transaction_id', $transactionId)
+            ->with('log.user')
             ->latest()
             ->first();
 
@@ -343,6 +324,7 @@ class TransactionLogController extends Controller
             'transaction_id' => $transaction->transaction_id,
             'amount' => $transaction->amount,
             'meter_number' => $transaction->meter_number,
+            'merchant_name' => $this->merchantName($transaction),
             'account_number' => $transaction->account_number,
             'status' => $transaction->status,
             'message' => $transaction->message,
@@ -353,5 +335,21 @@ class TransactionLogController extends Controller
             'request_ip' => $transaction->request_ip,
             'created_at' => optional($transaction->created_at)->toDateTimeString(),
         ];
+    }
+
+    private function merchantName(ElectricityTransaction $transaction)
+    {
+        $log = $transaction->log;
+
+        if (!$log) {
+            return null;
+        }
+
+        return optional($log->user)->name
+            ?: data_get($log->request_payload, 'createdBy')
+            ?: data_get($log->request_payload, 'merchant_name')
+            ?: data_get($log->response_payload, 'receiptItems.Cashier')
+            ?: data_get($log->response_payload, 'receiptItems.external_client_id')
+            ?: data_get($log->response_payload, 'createdBy');
     }
 }

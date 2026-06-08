@@ -88,16 +88,6 @@
         {
           "name": "List Transaction Logs",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{api_token}}",
-                  "type": "string"
-                }
-              ]
-            },
             "method": "GET",
             "header": [
               {
@@ -125,23 +115,13 @@
                 }
               ]
             },
-            "description": "Read-only portal endpoint. Returns clean transaction fields only: transaction_id, amount, meter_number, account_number, status, message, customer_name, receipt_no, and created_at.\n\nOptional filters: status, transaction_id, meter_number, account_number, from, to, per_page."
+            "description": "Public read-only portal endpoint. Returns clean transaction fields only: transaction_id, amount, meter_number, merchant_name, account_number, status, message, customer_name, receipt_no, and created_at.\n\nOptional filters: status, transaction_id, meter_number, account_number, from, to, per_page."
           },
           "response": []
         },
         {
           "name": "Get Transaction Log by Transaction ID",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{api_token}}",
-                  "type": "string"
-                }
-              ]
-            },
             "method": "GET",
             "header": [
               {
@@ -159,7 +139,7 @@
                 "{{trans_id}}"
               ]
             },
-            "description": "Read-only lookup for one transaction by transaction_id. This returns portal-safe fields and does not expose raw request/response JSON."
+            "description": "Public read-only lookup for one transaction by transaction_id. This returns portal-safe fields and does not expose raw request/response JSON."
           },
           "response": []
         }
@@ -446,6 +426,7 @@
           "    transaction_id: pm.collectionVariables.get('trans_id') || pm.collectionVariables.get('client_sale_id') || receipt.external_reference_number || receipt.receipt_no || receipt.ReceiptNo || receipt.receiptNo || null,",
           "    amount: pm.collectionVariables.get('amount') || receipt.AmountTendered || totals.total || totals.tendered || receipt.amtTendered || null,",
           "    meter_number: pm.collectionVariables.get('meter_number') || meterDetails.number || receipt.meterNumber || null,",
+          "    merchant_name: receipt.Cashier || pm.collectionVariables.get('created_by') || null,",
           "    account_number: receipt.customer_account_no || receipt.account || null,",
           "    status: json.results || json.result || json.response || null,",
           "    message: json.message || null,",
@@ -457,6 +438,10 @@
           "",
           "  if (normalized.account_number) {",
           "    pm.collectionVariables.set('account_number', normalized.account_number);",
+          "  }",
+          "",
+          "  if (normalized.merchant_name) {",
+          "    pm.collectionVariables.set('merchant_name', normalized.merchant_name);",
           "  }",
           "",
           "  if (normalized.status) {",
@@ -524,6 +509,11 @@
     },
     {
       "key": "customer_name",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "merchant_name",
       "value": "",
       "type": "string"
     },

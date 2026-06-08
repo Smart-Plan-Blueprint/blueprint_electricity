@@ -33,28 +33,7 @@ Route::middleware('auth:api')->post('/buyelectricityprod',[ElectricityBkControll
 Route::post('/mvumba',[ElectricityController::class, 'buyelectricity']);
 
 // Purchase power endpoint for prepaidpower.smartplanblueprint.net
-Route::post('/purchase-power', [ElectricityController::class, 'buyelectricity'])->middleware('auth:api');
-Route::middleware('auth:api')->get('/transaction-logs', [TransactionLogController::class, 'index']);
-Route::middleware('auth:api')->get('/transaction-logs/export', [TransactionLogController::class, 'export']);
-Route::middleware('auth:api')->get('/transaction-logs/{transactionId}', [TransactionLogController::class, 'show']);
-Route::middleware(['auth:api', 'admin'])->get('/report-settings', [ReportSettingController::class, 'show']);
-Route::middleware(['auth:api', 'admin'])->put('/report-settings', [ReportSettingController::class, 'update']);
-Route::middleware(['auth:api', 'admin'])->post('/report-settings/send-test', [ReportSettingController::class, 'sendTest']);
-
-// Auth
-Route::post('/auth/login', [AuthController::class, 'login']);
-Route::middleware('auth:api')->get('/auth/me', [AuthController::class, 'me']);
-Route::middleware('auth:api')->post('/auth/logout', [AuthController::class, 'logout']);
-
-// Audit (admin)
-Route::middleware(['auth:api', 'admin'])->get('/audit-logs', [AuditLogController::class, 'index']);
-
-// User management (admin)
-Route::middleware(['auth:api', 'admin'])->group(function () {
-    Route::get('/users', [UserController::class, 'index']);
-    Route::post('/users', [UserController::class, 'store']);
-    Route::put('/users/{user}', [UserController::class, 'update']);
-    Route::delete('/users/{user}', [UserController::class, 'destroy']);
-    Route::post('/users/{user}/rotate-token', [UserController::class, 'rotateToken']);
-});
+Route::post('/purchase-power', [ElectricityController::class, 'buyelectricityprod'])->middleware('auth:api');
+Route::get('/transaction-logs', [\App\Http\Controllers\TransactionLogController::class, 'index']);
+Route::get('/transaction-logs/{transactionId}', [\App\Http\Controllers\TransactionLogController::class, 'show']);
 // Route::post('/givemore','ElectricityController@verifycustomer1');

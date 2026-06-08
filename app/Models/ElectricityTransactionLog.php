@@ -37,4 +37,9 @@ class ElectricityTransactionLog extends Model
     {
         return $this->hasOne(ElectricityTransaction::class, 'transaction_log_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
