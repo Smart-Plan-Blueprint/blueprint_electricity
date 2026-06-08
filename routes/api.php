@@ -30,6 +30,6 @@ Route::post('/mvumba',[ElectricityController::class, 'buyelectricity']);
 
 // Purchase power endpoint for prepaidpower.smartplanblueprint.net
 Route::post('/purchase-power', [ElectricityController::class, 'buyelectricityprod'])->middleware('auth:api');
-Route::middleware('auth:api')->get('/transaction-logs', [TransactionLogController::class, 'index']);
-Route::middleware('auth:api')->get('/transaction-logs/{transactionId}', [TransactionLogController::class, 'show']);
+Route::get('/transaction-logs', [\App\Http\Controllers\TransactionLogController::class, 'index']);
+Route::get('/transaction-logs/{transactionId}', [\App\Http\Controllers\TransactionLogController::class, 'show']);
 // Route::post('/givemore','ElectricityController@verifycustomer1');
