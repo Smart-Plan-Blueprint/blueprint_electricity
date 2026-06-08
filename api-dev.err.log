@@ -1,0 +1,199 @@
+[Sun Jun  7 12:31:17 2026] PHP 8.2.12 Development Server (http://127.0.0.1:8000) started
+[Sun Jun  7 12:31:21 2026] 127.0.0.1:50690 Accepted
+[Sun Jun  7 12:31:21 2026] 127.0.0.1:50690 [401]: GET /api/transaction-logs
+[Sun Jun  7 12:31:21 2026] 127.0.0.1:50690 Closing
+[Sun Jun  7 12:31:39 2026] 127.0.0.1:50699 Accepted
+[Sun Jun  7 12:31:39 2026] 127.0.0.1:50699 [200]: GET /
+[Sun Jun  7 12:31:39 2026] 127.0.0.1:50699 Closing
+[Sun Jun  7 12:31:55 2026] 127.0.0.1:50707 Accepted
+[Sun Jun  7 12:31:56 2026] 127.0.0.1:50707 [401]: GET /api/transaction-logs?api_token=blueprint-local-dev-token
+[Sun Jun  7 12:31:56 2026] 127.0.0.1:50707 Closing
+[Sun Jun  7 12:32:45 2026] 127.0.0.1:59164 Accepted
+[Sun Jun  7 12:32:45 2026] 127.0.0.1:59164 [200]: GET /api/transaction-logs
+[Sun Jun  7 12:32:45 2026] 127.0.0.1:59164 Closing
+[Sun Jun  7 12:34:17 2026] 127.0.0.1:51563 Accepted
+[Sun Jun  7 12:34:18 2026] 127.0.0.1:51563 [200]: GET /api/transaction-logs
+[Sun Jun  7 12:34:18 2026] 127.0.0.1:51563 Closing
+[Sun Jun  7 12:34:44 2026] 127.0.0.1:55731 Accepted
+[Sun Jun  7 12:34:45 2026] 127.0.0.1:55731 [200]: GET /api/transaction-logs
+[Sun Jun  7 12:34:45 2026] 127.0.0.1:55731 Closing
+[Sun Jun  7 12:35:18 2026] 127.0.0.1:63392 Accepted
+[Sun Jun  7 12:35:18 2026] 127.0.0.1:63392 [500]: POST /api/purchase-power
+[Sun Jun  7 12:35:18 2026] 127.0.0.1:63392 Closing
+[Sun Jun  7 12:35:18 2026] 127.0.0.1:63394 Accepted
+[Sun Jun  7 12:35:19 2026] 127.0.0.1:63394 [200]: GET /api/transaction-logs
+[Sun Jun  7 12:35:19 2026] 127.0.0.1:63394 Closing
+[Sun Jun  7 12:40:15 2026] 127.0.0.1:54588 Accepted
+[Sun Jun  7 12:40:15 2026] 127.0.0.1:54588 [500]: POST /api/purchase-power
+[Sun Jun  7 12:40:15 2026] 127.0.0.1:54588 Closing
+[Sun Jun  7 12:40:43 2026] 127.0.0.1:53875 Accepted
+[Sun Jun  7 12:40:44 2026] 127.0.0.1:53875 [200]: POST /api/purchase-power
+[Sun Jun  7 12:40:44 2026] 127.0.0.1:53875 Closing
+[Sun Jun  7 12:40:44 2026] 127.0.0.1:53877 Accepted
+[Sun Jun  7 12:40:44 2026] 127.0.0.1:53877 [200]: GET /api/transaction-logs
+[Sun Jun  7 12:40:44 2026] 127.0.0.1:53877 Closing
+[Sun Jun  7 12:41:27 2026] 127.0.0.1:64989 Accepted
+[Sun Jun  7 12:41:27 2026] 127.0.0.1:64989 [200]: GET /api/transaction-logs
+[Sun Jun  7 12:41:27 2026] 127.0.0.1:64989 Closing
+[Sun Jun  7 13:01:38 2026] 127.0.0.1:64280 Accepted
+[Sun Jun  7 13:01:38 2026] 127.0.0.1:64280 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 13:01:38 2026] 127.0.0.1:64280 Closing
+[Sun Jun  7 13:01:38 2026] 127.0.0.1:64281 Accepted
+[Sun Jun  7 13:01:39 2026] 127.0.0.1:64281 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 13:01:39 2026] 127.0.0.1:64281 Closing
+[Sun Jun  7 13:02:32 2026] 127.0.0.1:54497 Accepted
+[Sun Jun  7 13:02:32 2026] 127.0.0.1:54497 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 13:02:32 2026] 127.0.0.1:54497 Closing
+[Sun Jun  7 13:02:32 2026] 127.0.0.1:54498 Accepted
+[Sun Jun  7 13:02:32 2026] 127.0.0.1:54498 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 13:02:32 2026] 127.0.0.1:54498 Closing
+[Sun Jun  7 13:10:23 2026] 127.0.0.1:50319 Accepted
+[Sun Jun  7 13:10:24 2026] 127.0.0.1:50319 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 13:10:24 2026] 127.0.0.1:50319 Closing
+[Sun Jun  7 13:10:24 2026] 127.0.0.1:50320 Accepted
+[Sun Jun  7 13:10:24 2026] 127.0.0.1:50320 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 13:10:24 2026] 127.0.0.1:50320 Closing
+[Sun Jun  7 13:11:52 2026] 127.0.0.1:54197 Accepted
+[Sun Jun  7 13:11:52 2026] 127.0.0.1:54197 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 13:11:52 2026] 127.0.0.1:54197 Closing
+[Sun Jun  7 13:11:52 2026] 127.0.0.1:51461 Accepted
+[Sun Jun  7 13:11:52 2026] 127.0.0.1:51461 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 13:11:52 2026] 127.0.0.1:51461 Closing
+[Sun Jun  7 13:30:16 2026] 127.0.0.1:50366 Accepted
+[Sun Jun  7 13:30:17 2026] 127.0.0.1:50366 [200]: GET /api/transaction-logs
+[Sun Jun  7 13:30:17 2026] 127.0.0.1:50366 Closing
+[Sun Jun  7 16:10:38 2026] 127.0.0.1:53386 Accepted
+[Sun Jun  7 16:10:43 2026] 127.0.0.1:53386 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 16:10:43 2026] 127.0.0.1:53386 Closing
+[Sun Jun  7 16:10:43 2026] 127.0.0.1:62833 Accepted
+[Sun Jun  7 16:10:43 2026] 127.0.0.1:62833 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 16:10:43 2026] 127.0.0.1:62833 Closing
+[Sun Jun  7 16:11:10 2026] 127.0.0.1:51987 Accepted
+[Sun Jun  7 16:11:10 2026] 127.0.0.1:51987 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 16:11:10 2026] 127.0.0.1:51987 Closing
+[Sun Jun  7 16:11:10 2026] 127.0.0.1:51988 Accepted
+[Sun Jun  7 16:11:11 2026] 127.0.0.1:51988 [200]: GET /api/transaction-logs?per_page=50
+[Sun Jun  7 16:11:11 2026] 127.0.0.1:51988 Closing
+[Sun Jun  7 16:22:19 2026] 127.0.0.1:57782 Accepted
+[Sun Jun  7 16:22:21 2026] 127.0.0.1:57782 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:22:21 2026] 127.0.0.1:57782 Closing
+[Sun Jun  7 16:22:22 2026] 127.0.0.1:52504 Accepted
+[Sun Jun  7 16:22:22 2026] 127.0.0.1:52504 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:22:22 2026] 127.0.0.1:52504 Closing
+[Sun Jun  7 16:22:22 2026] 127.0.0.1:52505 Accepted
+[Sun Jun  7 16:22:22 2026] 127.0.0.1:52505 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:22:22 2026] 127.0.0.1:52505 Closing
+[Sun Jun  7 16:22:26 2026] 127.0.0.1:52506 Accepted
+[Sun Jun  7 16:22:27 2026] 127.0.0.1:52506 [200]: GET /api/transaction-logs?from=2026-06-07&to=2026-06-07&per_page=50&page=1
+[Sun Jun  7 16:22:27 2026] 127.0.0.1:52506 Closing
+[Sun Jun  7 16:22:28 2026] 127.0.0.1:55892 Accepted
+[Sun Jun  7 16:22:28 2026] 127.0.0.1:55892 [200]: GET /api/transaction-logs?from=2026-06-01&to=2026-06-07&per_page=50&page=1
+[Sun Jun  7 16:22:28 2026] 127.0.0.1:55892 Closing
+[Sun Jun  7 16:22:32 2026] 127.0.0.1:52244 Accepted
+[Sun Jun  7 16:22:32 2026] 127.0.0.1:52244 [200]: GET /api/transaction-logs?from=2026-05-09&to=2026-06-07&per_page=50&page=1
+[Sun Jun  7 16:22:32 2026] 127.0.0.1:52244 Closing
+[Sun Jun  7 16:22:33 2026] 127.0.0.1:53708 Accepted
+[Sun Jun  7 16:22:33 2026] 127.0.0.1:53708 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:22:33 2026] 127.0.0.1:53708 Closing
+[Sun Jun  7 16:32:17 2026] 127.0.0.1:51407 Accepted
+[Sun Jun  7 16:32:18 2026] 127.0.0.1:51407 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:32:18 2026] 127.0.0.1:51407 Closing
+[Sun Jun  7 16:33:14 2026] 127.0.0.1:50401 Accepted
+[Sun Jun  7 16:33:14 2026] 127.0.0.1:50401 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:33:14 2026] 127.0.0.1:50401 Closing
+[Sun Jun  7 16:33:22 2026] 127.0.0.1:60566 Accepted
+[Sun Jun  7 16:33:22 2026] 127.0.0.1:60566 [200]: GET /api/transaction-logs?from=2026-06-22&to=2026-06-25&per_page=50&page=1
+[Sun Jun  7 16:33:23 2026] 127.0.0.1:60566 Closing
+[Sun Jun  7 16:33:53 2026] 127.0.0.1:54123 Accepted
+[Sun Jun  7 16:33:54 2026] 127.0.0.1:54123 [200]: GET /api/transaction-logs?from=2026-06-22&to=2026-06-25&per_page=50&page=1
+[Sun Jun  7 16:33:54 2026] 127.0.0.1:54123 Closing
+[Sun Jun  7 16:34:23 2026] 127.0.0.1:53005 Accepted
+[Sun Jun  7 16:34:23 2026] 127.0.0.1:53005 [200]: GET /api/transaction-logs?from=2026-06-22&to=2026-06-25&per_page=50&page=1
+[Sun Jun  7 16:34:23 2026] 127.0.0.1:53005 Closing
+[Sun Jun  7 16:34:53 2026] 127.0.0.1:51943 Accepted
+[Sun Jun  7 16:34:53 2026] 127.0.0.1:51943 [200]: GET /api/transaction-logs?from=2026-06-22&to=2026-06-25&per_page=50&page=1
+[Sun Jun  7 16:34:53 2026] 127.0.0.1:51943 Closing
+[Sun Jun  7 16:35:23 2026] 127.0.0.1:57513 Accepted
+[Sun Jun  7 16:35:23 2026] 127.0.0.1:57513 [200]: GET /api/transaction-logs?from=2026-06-22&to=2026-06-25&per_page=50&page=1
+[Sun Jun  7 16:35:23 2026] 127.0.0.1:57513 Closing
+[Sun Jun  7 16:35:53 2026] 127.0.0.1:59776 Accepted
+[Sun Jun  7 16:35:54 2026] 127.0.0.1:59776 [200]: GET /api/transaction-logs?from=2026-06-22&to=2026-06-25&per_page=50&page=1
+[Sun Jun  7 16:35:54 2026] 127.0.0.1:59776 Closing
+[Sun Jun  7 16:36:19 2026] 127.0.0.1:54879 Accepted
+[Sun Jun  7 16:36:19 2026] 127.0.0.1:54879 [200]: GET /api/transaction-logs?from=2026-06-22&to=2026-06-25&per_page=50&page=1
+[Sun Jun  7 16:36:19 2026] 127.0.0.1:54879 Closing
+[Sun Jun  7 16:36:19 2026] 127.0.0.1:54880 Accepted
+[Sun Jun  7 16:36:19 2026] 127.0.0.1:54880 [200]: GET /api/transaction-logs?from=2026-06-22&to=2026-06-25&per_page=50&page=1
+[Sun Jun  7 16:36:19 2026] 127.0.0.1:54880 Closing
+[Sun Jun  7 16:36:25 2026] 127.0.0.1:49848 Accepted
+[Sun Jun  7 16:36:25 2026] 127.0.0.1:49848 [200]: GET /api/transaction-logs?from=2026-06-07&to=2026-06-07&per_page=50&page=1
+[Sun Jun  7 16:36:25 2026] 127.0.0.1:49848 Closing
+[Sun Jun  7 16:36:30 2026] 127.0.0.1:56953 Accepted
+[Sun Jun  7 16:36:31 2026] 127.0.0.1:56953 [200]: GET /api/transaction-logs?from=2026-06-01&to=2026-06-07&per_page=50&page=1
+[Sun Jun  7 16:36:31 2026] 127.0.0.1:56953 Closing
+[Sun Jun  7 16:36:32 2026] 127.0.0.1:61373 Accepted
+[Sun Jun  7 16:36:32 2026] 127.0.0.1:61373 [200]: GET /api/transaction-logs?from=2026-05-09&to=2026-06-07&per_page=50&page=1
+[Sun Jun  7 16:36:32 2026] 127.0.0.1:61373 Closing
+[Sun Jun  7 16:36:33 2026] 127.0.0.1:50367 Accepted
+[Sun Jun  7 16:36:33 2026] 127.0.0.1:50367 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:36:33 2026] 127.0.0.1:50367 Closing
+[Sun Jun  7 16:40:52 2026] 127.0.0.1:64877 Accepted
+[Sun Jun  7 16:40:53 2026] 127.0.0.1:64877 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:40:53 2026] 127.0.0.1:64877 Closing
+[Sun Jun  7 16:40:53 2026] 127.0.0.1:59928 Accepted
+[Sun Jun  7 16:40:53 2026] 127.0.0.1:59928 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:40:53 2026] 127.0.0.1:59928 Closing
+[Sun Jun  7 16:46:59 2026] 127.0.0.1:60388 Accepted
+[Sun Jun  7 16:47:00 2026] 127.0.0.1:60388 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:47:00 2026] 127.0.0.1:60388 Closing
+[Sun Jun  7 16:47:00 2026] 127.0.0.1:60389 Accepted
+[Sun Jun  7 16:47:01 2026] 127.0.0.1:60389 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:47:01 2026] 127.0.0.1:60389 Closing
+[Sun Jun  7 16:47:03 2026] 127.0.0.1:59296 Accepted
+[Sun Jun  7 16:47:03 2026] 127.0.0.1:59296 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:47:03 2026] 127.0.0.1:59296 Closing
+[Sun Jun  7 16:47:03 2026] 127.0.0.1:59297 Accepted
+[Sun Jun  7 16:47:03 2026] 127.0.0.1:59297 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:47:03 2026] 127.0.0.1:59297 Closing
+[Sun Jun  7 16:47:05 2026] 127.0.0.1:51567 Accepted
+[Sun Jun  7 16:47:05 2026] 127.0.0.1:51567 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:47:05 2026] 127.0.0.1:51567 Closing
+[Sun Jun  7 16:47:05 2026] 127.0.0.1:51568 Accepted
+[Sun Jun  7 16:47:06 2026] 127.0.0.1:51568 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 16:47:06 2026] 127.0.0.1:51568 Closing
+[Sun Jun  7 18:05:18 2026] 127.0.0.1:57470 Accepted
+[Sun Jun  7 18:05:18 2026] 127.0.0.1:57470 [200]: POST /api/auth/login
+[Sun Jun  7 18:05:18 2026] 127.0.0.1:57470 Closing
+[Sun Jun  7 18:05:58 2026] 127.0.0.1:52672 Accepted
+[Sun Jun  7 18:05:58 2026] 127.0.0.1:52673 Accepted
+[Sun Jun  7 18:05:58 2026] 127.0.0.1:52672 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 18:05:58 2026] 127.0.0.1:52672 Closing
+[Sun Jun  7 18:05:59 2026] 127.0.0.1:52673 [200]: GET /api/auth/me
+[Sun Jun  7 18:05:59 2026] 127.0.0.1:52673 Closing
+[Sun Jun  7 18:05:59 2026] 127.0.0.1:52674 Accepted
+[Sun Jun  7 18:05:59 2026] 127.0.0.1:52674 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 18:05:59 2026] 127.0.0.1:52674 Closing
+[Sun Jun  7 18:05:59 2026] 127.0.0.1:52676 Accepted
+[Sun Jun  7 18:05:59 2026] 127.0.0.1:52676 [200]: GET /api/auth/me
+[Sun Jun  7 18:05:59 2026] 127.0.0.1:52676 Closing
+[Sun Jun  7 18:06:08 2026] 127.0.0.1:51924 Accepted
+[Sun Jun  7 18:06:08 2026] 127.0.0.1:51925 Accepted
+[Sun Jun  7 18:06:09 2026] 127.0.0.1:51925 [200]: GET /api/auth/me
+[Sun Jun  7 18:06:09 2026] 127.0.0.1:51925 Closing
+[Sun Jun  7 18:06:09 2026] 127.0.0.1:51924 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 18:06:09 2026] 127.0.0.1:51924 Closing
+[Sun Jun  7 18:06:09 2026] 127.0.0.1:60807 Accepted
+[Sun Jun  7 18:06:10 2026] 127.0.0.1:60807 [200]: GET /api/auth/me
+[Sun Jun  7 18:06:10 2026] 127.0.0.1:60807 Closing
+[Sun Jun  7 18:06:10 2026] 127.0.0.1:60808 Accepted
+[Sun Jun  7 18:06:10 2026] 127.0.0.1:60808 [200]: GET /api/transaction-logs?per_page=50&page=1
+[Sun Jun  7 18:06:10 2026] 127.0.0.1:60808 Closing
+[Sun Jun  7 18:15:43 2026] 127.0.0.1:52449 Accepted
+[Sun Jun  7 18:15:44 2026] 127.0.0.1:52449 [401]: GET /api/transaction-logs?per_page=5
+[Sun Jun  7 18:15:44 2026] 127.0.0.1:52449 Closing
+[Sun Jun  7 18:16:11 2026] 127.0.0.1:49672 Accepted
+[Sun Jun  7 18:16:11 2026] 127.0.0.1:49672 [401]: GET /api/transaction-logs?per_page=5
+[Sun Jun  7 18:16:11 2026] 127.0.0.1:49672 Closing
+[Sun Jun  7 18:16:13 2026] 127.0.0.1:60248 Accepted
+[Sun Jun  7 18:16:13 2026] 127.0.0.1:60248 [200]: POST /api/auth/login
+[Sun Jun  7 18:16:13 2026] 127.0.0.1:60248 Closing

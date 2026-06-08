@@ -1,0 +1,5 @@
+
+> @blueprint/ui@0.1.0 build
+> node -e "console.log('ui package ready')"
+
+ui package ready

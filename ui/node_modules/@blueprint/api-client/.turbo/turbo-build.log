@@ -1,0 +1,5 @@
+
+> @blueprint/api-client@0.1.0 build
+> node -e "import('./src/index.js').then(() => console.log('api-client ok'))"
+
+api-client ok

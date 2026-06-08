@@ -1,0 +1,5 @@
+
+> @blueprint/ui@0.1.0 lint
+> node -e "console.log('ui lint placeholder')"
+
+ui lint placeholder
