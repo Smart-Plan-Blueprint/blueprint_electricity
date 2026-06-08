@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Mail;
 class SendDailyTransactionReport extends Command
 {
     protected $signature = 'reports:send-daily-transactions {--date= : Report date in YYYY-MM-DD format} {--force : Send even when the daily email setting is disabled}';
-    protected $description = 'Send the Smart Plan Blueprint daily transaction report email.';
+    protected $description = 'Send the Smart Plan Blueprint Electricity email.';
 
     public function handle(TransactionReportService $reports, XlsxReportBuilder $workbooks)
     {

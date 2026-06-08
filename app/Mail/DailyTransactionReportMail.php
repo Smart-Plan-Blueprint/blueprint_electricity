@@ -27,7 +27,7 @@ class DailyTransactionReportMail extends Mailable
         $summary = $this->report['summary'];
 
         return $this
-            ->subject('Smart Plan Blueprint daily transaction report - ' . $from)
+            ->subject('Smart Plan Blueprint daily electricity report - ' . $from)
             ->view('emails.daily_transaction_report', [
                 'from' => $this->report['from'],
                 'to' => $this->report['to'],

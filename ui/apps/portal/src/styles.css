@@ -639,20 +639,22 @@ h1 {
   transform: translateY(-1px);
 }
 
-.hero-stat-icon {
-  display: grid;
-  place-content: center;
-  width: 40px;
-  height: 40px;
+.dashboard-hero .hero-stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
   flex: 0 0 auto;
   border-radius: 999px;
   color: #ffffff;
-  line-height: 0;
   box-shadow: 0 6px 16px rgba(6, 23, 51, 0.32);
 }
 
-.hero-stat-icon svg {
+.dashboard-hero .hero-stat-icon svg {
   display: block;
+  width: 20px;
+  height: 20px;
 }
 
 .hero-stat-icon.tone-emerald {
@@ -1572,43 +1574,6 @@ tbody tr:focus-visible {
   color: #8197ba;
   cursor: not-allowed;
   opacity: 0.6;
-}
-
-.status-mix li button {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  width: 100%;
-  padding: 6px 0;
-  border: 0;
-  color: inherit;
-  background: transparent;
-  cursor: pointer;
-  font: inherit;
-  text-align: left;
-}
-
-.status-mix .dot {
-  margin-right: 0;
-  flex: 0 0 auto;
-}
-
-.status-mix .status-label {
-  flex: 1;
-  min-width: 0;
-}
-
-.status-mix .status-count {
-  flex: 0 0 auto;
-  font-weight: 800;
-}
-
-.status-mix li button:hover {
-  color: #0a2547;
-}
-
-.status-mix li button:hover .dot {
-  transform: scale(1.15);
 }
 
 .skeleton-table {
