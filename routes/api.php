@@ -6,6 +6,10 @@ use App\Http\Controllers\ElectricityController;
 use App\Http\Controllers\ElectricityBkController;
 use App\Http\Controllers\ElectricityProxyController;
 use App\Http\Controllers\TransactionLogController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\ReportSettingController;
 /*
 |--------------------------------------------------------------------------
 | API Routes

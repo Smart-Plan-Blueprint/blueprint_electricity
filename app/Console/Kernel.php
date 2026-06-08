@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\Models\ReportSetting;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Schema;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,7 +26,43 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        [$sendTime, $timezone] = $this->reportScheduleWindow();
+
+        $schedule->command('reports:send-daily-transactions')
+            ->dailyAt($sendTime)
+            ->timezone($timezone)
+            ->withoutOverlapping();
+    }
+
+    /**
+     * Resolve the configured daily report send time and timezone, falling back
+     * to safe defaults when the database is unavailable.
+     *
+     * @return array{0:string,1:string}
+     */
+    private function reportScheduleWindow()
+    {
+        $default = ['02:00', 'Africa/Gaborone'];
+
+        try {
+            if (!Schema::hasTable('report_settings')) {
+                return $default;
+            }
+
+            $setting = ReportSetting::current();
+
+            $time = preg_match('/^([01]\d|2[0-3]):[0-5]\d$/', (string) $setting->send_time)
+                ? $setting->send_time
+                : $default[0];
+
+            $timezone = in_array($setting->timezone, timezone_identifiers_list(), true)
+                ? $setting->timezone
+                : $default[1];
+
+            return [$time, $timezone];
+        } catch (\Throwable $error) {
+            return $default;
+        }
     }
 
     /**
