@@ -28,8 +28,8 @@ class ReportSettingController extends Controller
             'enabled' => ['required', 'boolean'],
             'recipients' => ['array'],
             'recipients.*' => ['email'],
-            'timezone' => ['sometimes', Rule::in(['Africa/Gaborone'])],
-            'send_time' => ['sometimes', Rule::in(['02:00'])],
+            'timezone' => ['sometimes', Rule::in(timezone_identifiers_list())],
+            'send_time' => ['sometimes', 'regex:/^([01]\d|2[0-3]):[0-5]\d$/'],
         ]);
 
         $setting = ReportSetting::current();
