@@ -1,0 +1,47 @@
+import { ArrowDownToLine, RefreshCw, Search } from "lucide-react";
+import { Button } from "@blueprint/ui";
+import AutoRefreshToggle from "../components/dashboard/AutoRefreshToggle";
+import LastUpdated from "../components/dashboard/LastUpdated";
+import { viewHelp, viewTitle } from "../utils/helpers";
+
+export default function PortalHeader({
+  activeView,
+  updatedAt,
+  loading,
+  search,
+  setSearch,
+  searchInputRef,
+  runSearch,
+  autoRefresh,
+  onToggleAutoRefresh,
+  onRefresh,
+  onExport,
+  rows
+}) {
+  return (
+    <header className="portal-header">
+      <div>
+        <p className="eyebrow">Overview</p>
+        <h1>{viewTitle(activeView)}</h1>
+        <p className="page-help">{viewHelp(activeView)}</p>
+        <LastUpdated updatedAt={updatedAt} loading={loading === "reports"} />
+      </div>
+      {activeView === "merchants" ? null : (
+      <div className="header-actions">
+        <form className="header-search" onSubmit={runSearch}>
+          <Search size={16} />
+          <input
+            ref={searchInputRef}
+            value={search}
+            placeholder="Search transaction, meter, customer, or merchant..."
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        </form>
+        <AutoRefreshToggle enabled={autoRefresh} onToggle={onToggleAutoRefresh} />
+        <Button icon={RefreshCw} loading={loading === "reports"} onClick={onRefresh}>Refresh</Button>
+        <Button icon={ArrowDownToLine} loading={loading === "export"} onClick={onExport} disabled={!rows.length}>Download Excel</Button>
+      </div>
+      )}
+    </header>
+  );
+}
