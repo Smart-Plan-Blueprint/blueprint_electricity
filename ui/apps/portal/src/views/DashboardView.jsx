@@ -62,7 +62,7 @@ export default function DashboardView({ stats, rows, reports, loading, range, on
         <Section title="Money by day" icon={BarChart3}>
           <LineChart rows={stats.dailyTotals} />
         </Section>
-        <Section title="Success vs problems" icon={Gauge}>
+        <Section title="Success vs Problems" icon={Gauge}>
           <StatusMix stats={stats} onStatusFilter={onStatusFilter} />
         </Section>
       </div>

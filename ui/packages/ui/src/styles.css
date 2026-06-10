@@ -10,6 +10,8 @@
 
 .bp-section {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .bp-section:hover,
