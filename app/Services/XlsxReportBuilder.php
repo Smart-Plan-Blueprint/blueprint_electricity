@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 class XlsxReportBuilder
 {
     private $transactionHeaders = ['Transaction ID', 'Amount', 'Meter Number', 'Merchant Name', 'Status', 'Date/Time'];
+    private $airtimeHeaders     = ['Transaction ID', 'Amount', 'Phone Number', 'Product', 'Merchant', 'Status', 'Date/Time'];
 
     public function build(array $report)
     {
@@ -39,6 +40,9 @@ class XlsxReportBuilder
         $zip->add('xl/worksheets/sheet2.xml', $this->transactionSheet('Successful Transactions', $dateRange, $generatedAt, $successful));
         $zip->add('xl/worksheets/sheet3.xml', $this->transactionSheet('Failed Transactions', $dateRange, $generatedAt, $failed));
         $zip->add('xl/worksheets/sheet4.xml', $this->summarySheet($dateRange, $generatedAt, $this->dailySummary($rows)));
+
+        $airtimeRows = collect($report['airtime_rows'] ?? [])->map(fn($r) => $this->normalizeAirtimeRow($r));
+        $zip->add('xl/worksheets/sheet5.xml', $this->airtimeSheet($dateRange, $generatedAt, $airtimeRows));
 
         return $zip->finish();
     }
@@ -91,6 +95,55 @@ class XlsxReportBuilder
         return $this->worksheet(
             [34.83203125, 15.83203125, 18.83203125, 26.83203125, 14.83203125, 24.83203125],
             ['A1:F1', 'A2:F2', 'A3:F3', 'A4:F4'],
+            $rowsXml
+        );
+    }
+
+    private function normalizeAirtimeRow($row): array
+    {
+        return [
+            'transaction_id' => (string) ($row['transaction_id'] ?? ''),
+            'amount'         => (float)  ($row['amount'] ?? 0),
+            'phonenumber'    => (string) ($row['phonenumber'] ?? ''),
+            'product_name'   => (string) ($row['product_name'] ?? ''),
+            'merchant_name'  => (string) ($row['merchant_name'] ?? ''),
+            'status'         => strtoupper((string) ($row['status'] ?? 'UNKNOWN')),
+            'created_at'     => (string) ($row['created_at'] ?? ''),
+        ];
+    }
+
+    private function airtimeSheet($dateRange, Carbon $generatedAt, Collection $rows)
+    {
+        $body = '';
+        $rowIndex = 7;
+        foreach ($rows as $row) {
+            $body .= $this->rowXml($rowIndex, [
+                $this->textCell('A', $rowIndex, $row['transaction_id'], 5),
+                $this->numberCell('B', $rowIndex, $row['amount'], 6),
+                $this->textCell('C', $rowIndex, $row['phonenumber'], 5),
+                $this->textCell('D', $rowIndex, $row['product_name'], 5),
+                $this->textCell('E', $rowIndex, $row['merchant_name'], 5),
+                $this->textCell('F', $rowIndex, $row['status'], $this->statusStyle($row['status'])),
+                $this->textCell('G', $rowIndex, $row['created_at'], 5),
+            ]);
+            $rowIndex++;
+        }
+
+        $header = '';
+        foreach ($this->airtimeHeaders as $index => $label) {
+            $header .= $this->textCell($this->columnLetter($index), 6, $label, 4);
+        }
+
+        $rowsXml = $this->rowXml(1, [$this->textCell('A', 1, 'Smart Plan Blueprint', 1)])
+            . $this->rowXml(2, [$this->textCell('A', 2, 'Airtime Transactions', 2)])
+            . $this->rowXml(3, [$this->textCell('A', 3, 'Daily Report | ' . $dateRange, 3)])
+            . $this->rowXml(4, [$this->textCell('A', 4, 'Generated: ' . $this->formatGeneratedAt($generatedAt), 3)])
+            . $this->rowXml(6, [$header])
+            . $body;
+
+        return $this->worksheet(
+            [34.83, 15.83, 18.83, 24.83, 22.83, 14.83, 24.83],
+            ['A1:G1', 'A2:G2', 'A3:G3', 'A4:G4'],
             $rowsXml
         );
     }
@@ -242,6 +295,7 @@ class XlsxReportBuilder
             . '<sheet name="Successful" sheetId="2" r:id="rId2"/>'
             . '<sheet name="Failed" sheetId="3" r:id="rId3"/>'
             . '<sheet name="Summary" sheetId="4" r:id="rId4"/>'
+            . '<sheet name="Airtime" sheetId="5" r:id="rId5"/>'
             . '</sheets></workbook>';
     }
 
@@ -253,7 +307,8 @@ class XlsxReportBuilder
             . '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/>'
             . '<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet3.xml"/>'
             . '<Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet4.xml"/>'
-            . '<Relationship Id="rId5" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'
+            . '<Relationship Id="rId5" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet5.xml"/>'
+            . '<Relationship Id="rId6" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'
             . '</Relationships>';
     }
 
@@ -268,6 +323,7 @@ class XlsxReportBuilder
             . '<Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
             . '<Override PartName="/xl/worksheets/sheet3.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
             . '<Override PartName="/xl/worksheets/sheet4.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
+            . '<Override PartName="/xl/worksheets/sheet5.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
             . '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'
             . '<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>'
             . '<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>'

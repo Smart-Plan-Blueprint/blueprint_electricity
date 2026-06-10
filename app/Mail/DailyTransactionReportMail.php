@@ -29,9 +29,10 @@ class DailyTransactionReportMail extends Mailable
         return $this
             ->subject('Smart Plan Blueprint daily electricity report - ' . $from)
             ->view('emails.daily_transaction_report', [
-                'from' => $this->report['from'],
-                'to' => $this->report['to'],
-                'summary' => $summary,
+                'from'            => $this->report['from'],
+                'to'              => $this->report['to'],
+                'summary'         => $summary,
+                'airtime_summary' => $this->report['airtime_summary'] ?? null,
             ])
             ->attachData($this->workbook, $this->fileName, [
                 'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
