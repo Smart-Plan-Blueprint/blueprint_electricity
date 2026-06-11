@@ -17,7 +17,6 @@ export default function MerchantTable({ merchants, onSelect }) {
             <th>Commission</th>
             <th>KYC</th>
             <th>Status</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -47,18 +46,6 @@ export default function MerchantTable({ merchants, onSelect }) {
               <td>{Number(merchant.commission_rate || 0).toFixed(2)}%</td>
               <td><StatusBadge status={merchant.kyc_status} /></td>
               <td><StatusBadge status={merchant.status} /></td>
-              <td>
-                <button
-                  type="button"
-                  className="view-row-button"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    onSelect(merchant.id);
-                  }}
-                >
-                  Manage
-                </button>
-              </td>
             </tr>
           ))}
         </tbody>

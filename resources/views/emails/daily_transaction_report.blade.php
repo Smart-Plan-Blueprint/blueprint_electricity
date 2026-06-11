@@ -29,7 +29,7 @@
                   <td align="right" style="padding:10px;border-bottom:1px solid #dce7f7;font-weight:bold;">{{ $summary['failed_count'] }}</td>
                 </tr>
                 <tr>
-                  <td style="padding:10px;border-bottom:1px solid #dce7f7;color:#536985;">Pending / other</td>
+                  <td style="padding:10px;border-bottom:1px solid #dce7f7;color:#536985;">Pending</td>
                   <td align="right" style="padding:10px;border-bottom:1px solid #dce7f7;font-weight:bold;">{{ $summary['pending_count'] }}</td>
                 </tr>
                 <tr>

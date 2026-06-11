@@ -20,9 +20,7 @@ export default function TransactionDrawer({ row, onClose }) {
     ["Meter", row.meter_number],
     ["Merchant", row.merchant_name || row.merchant?.name || "Smart Plan Blueprint"],
     ["Result", row.status],
-    ["Date and time", row.created_at],
-    ["Customer", row.customer_name],
-    ["Message", row.message]
+    ["Date and time", row.created_at]
   ];
 
   return (

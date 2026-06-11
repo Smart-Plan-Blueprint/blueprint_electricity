@@ -12,6 +12,18 @@ class TransactionLogController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->boolean('summary')) {
+            return response()->json($this->summary($request));
+        }
+
+        $perPage = min((int) $request->get('per_page', 50), 200);
+        $results = $this->filtered($request)->latest()->paginate($perPage);
+
+        return response()->json($results);
+    }
+
+    private function filtered(Request $request, $fromOverride = null, $toOverride = null)
+    {
         $query = ElectricityTransaction::with('log.user')->latest();
 
         if ($request->filled('status')) {

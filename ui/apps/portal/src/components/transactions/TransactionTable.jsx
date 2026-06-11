@@ -5,6 +5,14 @@ import SortIcon from "../dashboard/SortIcon";
 import { formatMoney } from "../../utils/formatters";
 import { sortRows } from "../../utils/helpers";
 
+function TypeBadge({ type }) {
+  return (
+    <span className={`type-badge type-${type}`}>
+      {type === "airtime" ? "Airtime" : "Electricity"}
+    </span>
+  );
+}
+
 export default function TransactionTable({ rows, reports, loading, onRefresh, onSelectRow, compact = false }) {
   const [sort, setSort] = useState({ key: "", dir: "asc" });
 
@@ -12,9 +20,7 @@ export default function TransactionTable({ rows, reports, loading, onRefresh, on
 
   function toggleSort(key) {
     setSort((current) => {
-      if (current.key !== key) {
-        return { key, dir: "asc" };
-      }
+      if (current.key !== key) return { key, dir: "asc" };
       return { key, dir: current.dir === "asc" ? "desc" : "asc" };
     });
   }
@@ -37,13 +43,14 @@ export default function TransactionTable({ rows, reports, loading, onRefresh, on
   }
 
   const columns = [
-    { key: "transaction_id", label: "Transaction" },
-    { key: "amount", label: "Amount", numeric: true },
-    { key: "meter_number", label: "Meter" },
+    { key: "transaction_id", label: "Transaction ID" },
+    { key: "_type", label: "Type" },
+    { key: "amount", label: "Amount" },
+    { key: "_reference", label: "Meter / Phone" },
+    { key: "_detail", label: "Product" },
     { key: "merchant_name", label: "Merchant" },
     { key: "status", label: "Result" },
-    { key: "created_at", label: "Date and time" },
-    { key: "view", label: "" }
+    { key: "created_at", label: "Date and time" }
   ];
 
   return (
@@ -51,11 +58,11 @@ export default function TransactionTable({ rows, reports, loading, onRefresh, on
       <table className={compact ? "compact-table" : ""}>
         <thead>
           <tr>
-            {columns.map((column) => (
-              <th key={column.key}>
-                <button type="button" className="sort-head" onClick={() => toggleSort(column.key)}>
-                  {column.label}
-                  <SortIcon active={sort.key === column.key} dir={sort.dir} />
+            {columns.map((col) => (
+              <th key={col.key}>
+                <button type="button" className="sort-head" onClick={() => toggleSort(col.key)}>
+                  {col.label}
+                  <SortIcon active={sort.key === col.key} dir={sort.dir} />
                 </button>
               </th>
             ))}
@@ -64,7 +71,7 @@ export default function TransactionTable({ rows, reports, loading, onRefresh, on
         <tbody>
           {sortedRows.map((item, index) => (
             <tr
-              key={`${item.transaction_id || "row"}-${item.created_at || index}`}
+              key={`${item._type || "row"}-${item.transaction_id || index}-${item.created_at || index}`}
               className="row-clickable"
               onClick={() => onSelectRow?.(item)}
               onKeyDown={(event) => {
@@ -74,26 +81,15 @@ export default function TransactionTable({ rows, reports, loading, onRefresh, on
                 }
               }}
               tabIndex={0}
-              aria-label={`View transaction ${item.transaction_id || index + 1}`}
             >
               <td>{item.transaction_id || "N/A"}</td>
+              <td><TypeBadge type={item._type || "electricity"} /></td>
               <td>{formatMoney(item.amount)}</td>
-              <td>{item.meter_number || "N/A"}</td>
-              <td>{item.merchant_name || item.merchant?.name || "Smart Plan Blueprint"}</td>
+              <td>{item._reference || item.meter_number || "—"}</td>
+              <td>{item._detail || "—"}</td>
+              <td>{item.merchant_name || item.merchant?.name || "—"}</td>
               <td><StatusBadge status={item.status || "UNKNOWN"} /></td>
               <td>{item.created_at || "N/A"}</td>
-              <td>
-                <button
-                  type="button"
-                  className="view-row-button"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    onSelectRow?.(item);
-                  }}
-                >
-                  View
-                </button>
-              </td>
             </tr>
           ))}
         </tbody>

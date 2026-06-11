@@ -40,6 +40,13 @@ class XlsxReportBuilderTest extends TestCase
         $this->assertStringContainsString('Successful', $workbook);
         $this->assertStringContainsString('Failed', $workbook);
         $this->assertStringContainsString('Summary', $workbook);
+        $this->assertStringContainsString('Airtime', $workbook);
+        $this->assertStringContainsString('Sales By Date', $workbook);
+        $this->assertStringContainsString('Sales By Outlet', $workbook);
+        $this->assertStringContainsString('Sales By User', $workbook);
+        $this->assertStringContainsString('Sales By Provider', $workbook);
+        $this->assertStringContainsString('Itemised Sales', $workbook);
+        $this->assertStringContainsString('Merchant Statement', $workbook);
         $this->assertStringContainsString('Meter Number', $workbook);
         $this->assertStringNotContainsString('Account Number', $workbook);
     }

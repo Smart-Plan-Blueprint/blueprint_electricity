@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createElectricityClient } from "@blueprint/api-client";
+import { createElectricityClient, createAirtimeClient } from "@blueprint/api-client";
 import { createDemoReport } from "../demoData";
 import { createTransactionReportWorkbook, reportWorkbookFileName } from "../xlsxReport";
 import {
@@ -13,6 +13,7 @@ import {
 } from "../config/reporting";
 import { rangeBounds, presetFilters } from "../utils/helpers";
 import { normalizeStats } from "../utils/stats";
+import { mergeAndSort } from "../utils/normalize";
 import { authenticateAdmin } from "../data/adminUsers";
 import useStoredSession from "./useStoredSession";
 
@@ -34,6 +35,11 @@ export default function useReportingPortal() {
   const [search, setSearch] = useState(filters.search || "");
   const [reportSettings, setReportSettings] = useState(defaultReportSettings);
   const [recipientDraft, setRecipientDraft] = useState("");
+  const [airtimeReports, setAirtimeReports] = useState(null);
+  const [airtimeLoading, setAirtimeLoading] = useState(false);
+  const [airtimeFilters, setAirtimeFilters] = useState({ per_page: "50", page: "1" });
+
+  const airtimeClient = useMemo(() => createAirtimeClient(), []);
 
   const reportsRef = useRef(reports);
   reportsRef.current = reports;
@@ -44,11 +50,17 @@ export default function useReportingPortal() {
   const rows = reports?.data || [];
   const stats = useMemo(() => normalizeStats(reports, rows), [reports, rows]);
   const meta = reports?.meta || null;
+  const combinedRows = useMemo(() => {
+    const merged = mergeAndSort(reports?.data, airtimeReports?.data);
+    if (filters._type) return merged.filter((r) => r._type === filters._type);
+    return merged;
+  }, [reports, airtimeReports, filters._type]);
 
   useEffect(() => {
     if (isAuthenticated) {
       loadReports();
       loadReportSettings();
+      loadAirtime();
     }
   }, [isAuthenticated]);
 
@@ -204,6 +216,24 @@ export default function useReportingPortal() {
     }
   }
 
+  async function loadAirtime(nextFilters = airtimeFilters) {
+    setAirtimeLoading(true);
+    try {
+      const result = await airtimeClient.transactionLogs(nextFilters);
+      setAirtimeReports(result);
+    } catch (error) {
+      pushToast("error", `Could not load airtime data: ${error.message}`);
+    } finally {
+      setAirtimeLoading(false);
+    }
+  }
+
+  function goToAirtimePage(page) {
+    const next = { ...airtimeFilters, page: String(page) };
+    setAirtimeFilters(next);
+    loadAirtime(next);
+  }
+
   async function loadReportSettings() {
     try {
       const result = demoMode ? { results: "SUCCESS", data: defaultReportSettings } : await client.reportSettings();
@@ -324,7 +354,10 @@ export default function useReportingPortal() {
     setLoading("export");
 
     try {
-      const blob = createTransactionReportWorkbook(rows, filters);
+      const blob = createTransactionReportWorkbook({
+        electricityRows: rows,
+        airtimeRows: airtimeReports?.data || []
+      }, filters);
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -390,7 +423,14 @@ export default function useReportingPortal() {
     selectRange,
     filterByStatus,
     runSearch,
-    exportReport
+    exportReport,
+    airtimeReports,
+    airtimeLoading,
+    airtimeFilters,
+    setAirtimeFilters,
+    loadAirtime,
+    goToAirtimePage,
+    combinedRows
   };
 }
 

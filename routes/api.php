@@ -36,4 +36,9 @@ Route::post('/mvumba',[ElectricityController::class, 'buyelectricity']);
 Route::post('/purchase-power', [ElectricityController::class, 'buyelectricityprod'])->middleware('auth:api');
 Route::get('/transaction-logs', [\App\Http\Controllers\TransactionLogController::class, 'index']);
 Route::get('/transaction-logs/{transactionId}', [\App\Http\Controllers\TransactionLogController::class, 'show']);
+Route::middleware(['auth:api', 'admin'])->group(function () {
+    Route::get('/report-settings', [ReportSettingController::class, 'show']);
+    Route::put('/report-settings', [ReportSettingController::class, 'update']);
+    Route::post('/report-settings/send-test', [ReportSettingController::class, 'sendTest']);
+});
 // Route::post('/givemore','ElectricityController@verifycustomer1');

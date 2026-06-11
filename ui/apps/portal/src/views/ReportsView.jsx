@@ -1,4 +1,5 @@
-import { ArrowDownToLine, BarChart3, CalendarDays, CheckCircle2, FileSearch, Gauge, ReceiptText, TrendingUp } from "lucide-react";
+import { useState } from "react";
+import { ArrowDownToLine, BarChart3, CalendarDays, CheckCircle2, FileSearch, Gauge, GitCompare, Phone, PlugZap, ReceiptText, TrendingUp, Zap } from "lucide-react";
 import { Button, MetricCard, Section } from "@blueprint/ui";
 import ReportFilters from "../components/transactions/ReportFilters";
 import TransactionTable from "../components/transactions/TransactionTable";
@@ -8,39 +9,118 @@ import StatusMix from "../components/dashboard/StatusMix";
 import BarChart from "../components/dashboard/BarChart";
 import SummaryList from "../components/dashboard/SummaryList";
 import PlainInsights from "../components/dashboard/PlainInsights";
+import ServiceCompareChart from "../components/dashboard/ServiceCompareChart";
+import ServiceRaceCard from "../components/dashboard/ServiceRaceCard";
 import { formatMoney } from "../utils/formatters";
 
-export default function ReportsView({ filters, setFilters, updateForm, loading, onSubmit, onClear, onPreset, stats, rows, reports, meta, onExport, onSelectRow, onPage }) {
+const SERVICE_TABS = [
+  { key: "all",         label: "All services",  icon: Zap },
+  { key: "electricity", label: "Electricity",    icon: PlugZap },
+  { key: "airtime",     label: "Airtime",        icon: Phone },
+];
+
+function buildAirtimeStats(airtimeReports) {
+  const summary = airtimeReports?.summary || {};
+  const total     = summary.total     ?? 0;
+  const success   = summary.successful ?? 0;
+  const failed    = total - success;
+  return {
+    totalCount:   total,
+    successCount: success,
+    failedCount:  failed,
+    totalAmount:  0,
+    successRate:  total ? Math.round((success / total) * 100) : 0,
+    receiptCount: 0,
+    dailyTotals:  [],
+    topMeters:    [],
+    insights:     [],
+  };
+}
+
+function buildCombinedStats(elecStats, airtimeReports) {
+  const airStats   = buildAirtimeStats(airtimeReports);
+  const total      = elecStats.totalCount + airStats.totalCount;
+  const success    = elecStats.successCount + airStats.successCount;
+  return {
+    ...elecStats,
+    totalCount:   total,
+    successCount: success,
+    failedCount:  elecStats.failedCount + airStats.failedCount,
+    successRate:  total ? Math.round((success / total) * 100) : 0,
+    receiptCount: elecStats.receiptCount,
+  };
+}
+
+export default function ReportsView({ filters, setFilters, updateForm, loading, onSubmit, onClear, onPreset, stats, rows, reports, meta, onExport, onSelectRow, onPage, airtimeReports }) {
+  const [service, setService] = useState("all");
+
+  const viewStats =
+    service === "electricity" ? stats
+    : service === "airtime"   ? buildAirtimeStats(airtimeReports)
+    : buildCombinedStats(stats, airtimeReports);
+
+  const isAirtimeOnly = service === "airtime";
+
   return (
     <div className="view-stack">
+
+      {/* Global service selector */}
+      <div className="service-tabs">
+        {SERVICE_TABS.map(({ key, label, icon: Icon }) => (
+          <button
+            key={key}
+            className={`service-tab${service === key ? " service-tab--active" : ""}`}
+            onClick={() => setService(key)}
+          >
+            <Icon size={14} />
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <ServiceRaceCard stats={stats} airtimeReports={airtimeReports} isLoading={loading === "reports"} />
+
       <ReportFilters filters={filters} setFilters={setFilters} updateForm={updateForm} loading={loading} onSubmit={onSubmit} onClear={onClear} onPreset={onPreset} />
 
       <section className="metrics-grid">
-        <MetricCard icon={CalendarDays} label="Transactions found" value={String(stats.totalCount)} />
-        <MetricCard icon={Gauge} label="Successful amount" value={formatMoney(stats.totalAmount)} />
-        <MetricCard icon={CheckCircle2} label="Success rate" value={`${stats.successRate}%`} />
-        <MetricCard icon={ReceiptText} label="Receipts issued" value={String(stats.receiptCount)} />
+        <MetricCard icon={CalendarDays} label="Transactions" value={String(viewStats.totalCount)} />
+        <MetricCard icon={CheckCircle2} label="Successful" value={String(viewStats.successCount)} tone="green" />
+        <MetricCard icon={Gauge} label="Success rate" value={`${viewStats.successRate}%`} />
+        {isAirtimeOnly
+          ? <MetricCard icon={Phone} label="Failed" value={String(viewStats.failedCount)} tone="red" />
+          : <MetricCard icon={ReceiptText} label="Revenue" value={formatMoney(viewStats.totalAmount)} />
+        }
       </section>
 
-      <div className="report-chart-grid">
-        <Section title="Money over time" icon={TrendingUp}>
-          <LineChart rows={stats.dailyTotals} />
-        </Section>
-        <Section title="Transaction results" icon={Gauge}>
-          <StatusMix stats={stats} />
-        </Section>
-      </div>
+      {!isAirtimeOnly && (
+        <div className="report-chart-grid">
+          <Section title="Money over time" icon={TrendingUp}>
+            <LineChart rows={stats.dailyTotals} />
+          </Section>
+          <Section title="Transaction results" icon={Gauge}>
+            <StatusMix stats={viewStats} />
+          </Section>
+        </div>
+      )}
 
-      <div className="dashboard-grid">
-        <Section title="Daily comparison" icon={BarChart3}>
-          <BarChart rows={stats.dailyTotals} />
-        </Section>
-        <Section title="Quick summary" icon={FileSearch}>
-          <SummaryList stats={stats} />
-        </Section>
-      </div>
+      {!isAirtimeOnly && (
+        <div className="dashboard-grid">
+          <Section title="Daily comparison" icon={BarChart3}>
+            <BarChart rows={stats.dailyTotals} />
+          </Section>
+          <Section title="Quick summary" icon={FileSearch}>
+            <SummaryList stats={viewStats} />
+          </Section>
+        </div>
+      )}
 
-      <PlainInsights stats={stats} />
+      {service === "all" && (
+        <Section title="Electricity vs airtime — transactions by day" icon={GitCompare}>
+          <ServiceCompareChart electricityDays={stats.dailyTotals} airtimeRows={airtimeReports?.data || []} />
+        </Section>
+      )}
+
+      {!isAirtimeOnly && <PlainInsights stats={viewStats} />}
 
       <Section title="Transactions in this report" icon={FileSearch}>
         <div className="section-actions">

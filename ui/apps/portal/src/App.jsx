@@ -8,6 +8,7 @@ import TransactionsView from "./views/TransactionsView";
 import MerchantsView from "./views/MerchantsView";
 import MerchantPortal from "./views/merchant/MerchantPortal";
 import EmailReportsView from "./views/EmailReportsView";
+import AirtimeView from "./views/AirtimeView";
 import Sidebar from "./layout/Sidebar";
 import PortalHeader from "./layout/PortalHeader";
 import TransactionDrawer from "./components/transactions/TransactionDrawer";
@@ -115,7 +116,7 @@ function App() {
         {portal.activeView === "dashboard" && (
           <DashboardView
             stats={portal.stats}
-            rows={portal.rows}
+            rows={portal.combinedRows}
             reports={portal.reports}
             meta={portal.meta}
             loading={portal.loading}
@@ -125,6 +126,8 @@ function App() {
             onStatusFilter={portal.filterByStatus}
             onSelectRow={portal.setSelected}
             onPage={portal.goToPage}
+            airtimeReports={portal.airtimeReports}
+            onViewAirtime={() => portal.setActiveView("airtime")}
           />
         )}
 
@@ -144,6 +147,7 @@ function App() {
             onExport={portal.exportReport}
             onSelectRow={portal.setSelected}
             onPage={portal.goToPage}
+            airtimeReports={portal.airtimeReports}
           />
         )}
 
@@ -156,11 +160,19 @@ function App() {
             onSubmit={portal.handleFilterSubmit}
             onClear={portal.clearFilters}
             onPreset={portal.applyPreset}
-            rows={portal.rows}
+            rows={portal.combinedRows}
             reports={portal.reports}
             meta={portal.meta}
             onSelectRow={portal.setSelected}
             onPage={portal.goToPage}
+          />
+        )}
+
+        {portal.activeView === "airtime" && (
+          <AirtimeView
+            reports={portal.airtimeReports}
+            loading={portal.airtimeLoading}
+            onPage={portal.goToAirtimePage}
           />
         )}
 

@@ -38,7 +38,7 @@ export default function PortalHeader({
           />
         </form>
         <AutoRefreshToggle enabled={autoRefresh} onToggle={onToggleAutoRefresh} />
-        <Button icon={RefreshCw} loading={loading === "reports"} onClick={onRefresh}>Refresh</Button>
+        <Button icon={RefreshCw} variant="ghost" loading={loading === "reports"} onClick={onRefresh}>Refresh</Button>
         <Button icon={ArrowDownToLine} loading={loading === "export"} onClick={onExport} disabled={!rows.length}>Download Excel</Button>
       </div>
       )}

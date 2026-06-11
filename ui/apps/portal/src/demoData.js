@@ -94,12 +94,15 @@ function summarize(rows) {
   const failedAmount = sum(failedRows);
   const dailyTotals = Array.from(successRows.reduce((map, row) => {
     const date = row.created_at.slice(0, 10);
-    map.set(date, (map.get(date) || 0) + Number(row.amount));
+    const entry = map.get(date) || { amount: 0, count: 0 };
+    entry.amount += Number(row.amount);
+    entry.count += 1;
+    map.set(date, entry);
     return map;
   }, new Map()).entries())
     .sort(([left], [right]) => left.localeCompare(right))
     .slice(-7)
-    .map(([date, amount]) => ({ date, amount }));
+    .map(([date, { amount, count }]) => ({ date, amount, count }));
   const topMeters = Array.from(successRows.reduce((map, row) => {
     const current = map.get(row.meter_number) || { meter_number: row.meter_number, customer_name: row.customer_name, count: 0, amount: 0 };
     current.count += 1;

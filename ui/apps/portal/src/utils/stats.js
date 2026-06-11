@@ -76,13 +76,16 @@ function calculateStats(rows) {
 
   successRows.forEach((row) => {
     const date = String(row.created_at || "Undated").slice(0, 10);
-    dailyMap.set(date, (dailyMap.get(date) || 0) + toNumber(row.amount));
+    const entry = dailyMap.get(date) || { amount: 0, count: 0 };
+    entry.amount += toNumber(row.amount);
+    entry.count += 1;
+    dailyMap.set(date, entry);
   });
 
   const dailyTotals = Array.from(dailyMap.entries())
     .sort(([left], [right]) => left.localeCompare(right))
     .slice(-7)
-    .map(([date, amount]) => ({ date, amount }));
+    .map(([date, { amount, count }]) => ({ date, amount, count }));
 
   return {
     totalCount: rows.length,

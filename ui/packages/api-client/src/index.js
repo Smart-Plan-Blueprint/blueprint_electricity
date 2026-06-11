@@ -1,3 +1,13 @@
+const AIRTIME_BASE = "http://66.29.134.153/pinless/api";
+
+export function createAirtimeClient() {
+  return {
+    transactionLogs(filters = {}) {
+      return request(`${AIRTIME_BASE}/airtimetrans-logs${toQuery(filters)}`, { method: "GET" });
+    }
+  };
+}
+
 export function createElectricityClient({ baseUrl = "", apiToken = "" } = {}) {
   const normalizedBase = normalizeBaseUrl(baseUrl);
 

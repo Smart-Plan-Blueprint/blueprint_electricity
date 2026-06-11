@@ -1,26 +1,50 @@
 const transactionHeaders = ["Transaction ID", "Amount", "Meter Number", "Merchant Name", "Status", "Date/Time"];
+const airtimeHeaders = ["Transaction ID", "Amount", "Phone Number", "Product", "Merchant", "Status", "Date/Time"];
+const outletId = "3928-01";
+const outletName = "SCBBB";
+const electricityUser = "Smart Plan Blueprint-01";
+const electricityProvider = "Botswana Power Corporation";
 
-export function createTransactionReportWorkbook(rows, filters = {}) {
+export function createTransactionReportWorkbook(reportInput, filters = {}) {
+  const electricityRows = Array.isArray(reportInput) ? reportInput : reportInput?.electricityRows || [];
+  const airtimeRows = Array.isArray(reportInput) ? [] : reportInput?.airtimeRows || [];
+  const sourceRows = [...electricityRows, ...airtimeRows];
   const generatedAt = new Date();
-  const dateRange = reportDateRange(rows, filters);
-  const transactionRows = rows.map(reportRow);
+  const dateRange = reportDateRange(sourceRows, filters);
+  const transactionRows = electricityRows.map(reportRow);
+  const airtimeTransactionRows = airtimeRows.map(reportAirtimeRow);
   const successfulRows = transactionRows.filter((row) => row.status === "SUCCESS");
   const failedRows = transactionRows.filter((row) => row.status === "FAILED");
-  const summaryRows = buildSummary(rows);
+  const summaryRows = buildSummary(electricityRows);
+  const salesRows = buildSalesRows(transactionRows, airtimeTransactionRows);
+
+  const sheets = [
+    { name: "Transactions", xml: transactionSheetXml("Transaction Report", dateRange, generatedAt, transactionRows) },
+    { name: "Successful", xml: transactionSheetXml("Successful Transactions", dateRange, generatedAt, successfulRows) },
+    { name: "Failed", xml: transactionSheetXml("Failed Transactions", dateRange, generatedAt, failedRows) },
+    { name: "Summary", xml: summarySheetXml(dateRange, generatedAt, summaryRows) },
+    { name: "Airtime", xml: airtimeSheetXml(dateRange, generatedAt, airtimeTransactionRows) },
+    { name: "Sales By Date", xml: salesByDateSheetXml(dateRange, generatedAt, salesRows) },
+    { name: "Sales By Outlet", xml: salesByOutletSheetXml(dateRange, generatedAt, salesRows) },
+    { name: "Sales By User", xml: salesByUserSheetXml(dateRange, generatedAt, salesRows) },
+    { name: "Sales By Provider", xml: salesByProviderSheetXml(dateRange, generatedAt, salesRows) },
+    { name: "Itemised Sales", xml: itemisedSalesSheetXml(dateRange, generatedAt, salesRows) },
+    { name: "Merchant Statement", xml: merchantStatementSheetXml(dateRange, generatedAt, salesRows) }
+  ];
 
   const files = {
-    "[Content_Types].xml": contentTypesXml(),
+    "[Content_Types].xml": contentTypesXml(sheets),
     "_rels/.rels": rootRelsXml(),
     "docProps/app.xml": appXml(),
     "docProps/core.xml": coreXml(generatedAt),
-    "xl/workbook.xml": workbookXml(),
-    "xl/_rels/workbook.xml.rels": workbookRelsXml(),
-    "xl/styles.xml": stylesXml(),
-    "xl/worksheets/sheet1.xml": transactionSheetXml("Transaction Report", dateRange, generatedAt, transactionRows),
-    "xl/worksheets/sheet2.xml": transactionSheetXml("Successful Transactions", dateRange, generatedAt, successfulRows),
-    "xl/worksheets/sheet3.xml": transactionSheetXml("Failed Transactions", dateRange, generatedAt, failedRows),
-    "xl/worksheets/sheet4.xml": summarySheetXml(dateRange, generatedAt, summaryRows)
+    "xl/workbook.xml": workbookXml(sheets),
+    "xl/_rels/workbook.xml.rels": workbookRelsXml(sheets),
+    "xl/styles.xml": stylesXml()
   };
+
+  sheets.forEach((sheet, index) => {
+    files[`xl/worksheets/sheet${index + 1}.xml`] = sheet.xml;
+  });
 
   return zipFiles(files);
 }
@@ -82,6 +106,170 @@ function summarySheetXml(dateRange, generatedAt, rows) {
   });
 }
 
+function airtimeSheetXml(dateRange, generatedAt, rows) {
+  const bodyRows = rows.map((row, index) => rowXml(index + 7, [
+    textCell("A", index + 7, row.transactionId, 5),
+    numberCell("B", index + 7, row.amount, 6),
+    textCell("C", index + 7, row.phoneNumber, 5),
+    textCell("D", index + 7, row.productName, 5),
+    textCell("E", index + 7, row.merchantName, 5),
+    textCell("F", index + 7, row.status, statusStyle(row.status)),
+    textCell("G", index + 7, row.dateTime, 5)
+  ])).join("");
+
+  return worksheetXml({
+    cols: [34.83, 15.83, 18.83, 24.83, 22.83, 14.83, 24.83],
+    merges: ["A1:G1", "A2:G2", "A3:G3", "A4:G4"],
+    rows: [
+      rowXml(1, [textCell("A", 1, "Smart Plan Blueprint", 1)]),
+      rowXml(2, [textCell("A", 2, "Airtime Transactions", 2)]),
+      rowXml(3, [textCell("A", 3, `Daily Report | ${dateRange}`, 3)]),
+      rowXml(4, [textCell("A", 4, `Generated: ${formatGeneratedAt(generatedAt)}`, 3)]),
+      rowXml(6, airtimeHeaders.map((header, index) => textCell(columnLetter(index), 6, header, 4))),
+      bodyRows
+    ].join("")
+  });
+}
+
+function salesByDateSheetXml(dateRange, generatedAt, salesRows) {
+  const rows = groupSales(salesRows, ["date"]).map((row) => [row.date, row.amount]);
+  rows.push(["Sales Totals", sumSales(salesRows)]);
+
+  return tableSheetXml("Sales By Date", dateRange, generatedAt, ["Date", "Amount"], rows, [24.83, 15.83], [1]);
+}
+
+function salesByOutletSheetXml(dateRange, generatedAt, salesRows) {
+  const rows = groupSales(salesRows, ["outletId", "outletName"]).map((row) => [row.outletId, row.outletName, row.amount]);
+  rows.push(["Sales Totals", "", sumSales(salesRows)]);
+
+  return tableSheetXml("Sales By Outlet", dateRange, generatedAt, ["Outlet Id", "Outlet Name", "Amount"], rows, [18.83, 28.83, 15.83], [2]);
+}
+
+function salesByUserSheetXml(dateRange, generatedAt, salesRows) {
+  const rows = groupSales(salesRows, ["userId", "userName"]).map((row) => [row.userId, row.userName, row.amount]);
+  rows.push(["Sales Totals", "", sumSales(salesRows)]);
+
+  return tableSheetXml("Sales By User", dateRange, generatedAt, ["User Id", "Name", "Amount"], rows, [30.83, 22.83, 15.83], [2]);
+}
+
+function salesByProviderSheetXml(dateRange, generatedAt, salesRows) {
+  const rows = groupSales(salesRows, ["saleType", "provider"]).map((row) => [row.saleType, row.provider, row.amount]);
+  rows.push(["Sales Totals", "", sumSales(salesRows)]);
+
+  return tableSheetXml("Sales By Provider", dateRange, generatedAt, ["Sale Type", "Provider", "Amount"], rows, [18.83, 34.83, 15.83], [2]);
+}
+
+function itemisedSalesSheetXml(dateRange, generatedAt, salesRows) {
+  const rows = [...salesRows]
+    .sort((left, right) => String(left.dateTime).localeCompare(String(right.dateTime)))
+    .map((row) => [
+      row.dateTime,
+      `${row.userId} - ${row.userName}`.replace(/ - $/, ""),
+      row.saleType,
+      row.provider,
+      row.reference,
+      row.amount
+    ]);
+  rows.push(["Sales Totals", "", "", "", "", sumSales(salesRows)]);
+
+  return tableSheetXml(
+    "Itemised Sales",
+    dateRange,
+    generatedAt,
+    ["Date Time", "User", "Sale Type", "Provider", "Meter Number", "Amount"],
+    rows,
+    [24.83, 34.83, 18.83, 32.83, 20.83, 15.83],
+    [5]
+  );
+}
+
+function merchantStatementSheetXml(dateRange, generatedAt, salesRows) {
+  const totalSales = sumSales(salesRows);
+  const providerRows = groupSales(salesRows, ["saleType", "provider"]);
+  let commissionTotal = 0;
+
+  const rows = [
+    rowXml(1, [textCell("A", 1, "Smart Plan Blueprint", 1)]),
+    rowXml(2, [textCell("A", 2, "Merchant Statement", 2)]),
+    rowXml(3, [textCell("A", 3, `Date Range: ${dateRange}`, 3)]),
+    rowXml(4, [textCell("A", 4, `Generated: ${formatGeneratedAt(generatedAt)}`, 3)]),
+    rowXml(6, [textCell("A", 6, "Merchant Summary Statement", 2)]),
+    rowXml(7, [textCell("A", 7, "Item", 4), textCell("B", 7, "Amount", 4)]),
+    rowXml(8, [textCell("A", 8, "Total Sales", 5), numberCell("B", 8, totalSales, 6)]),
+    rowXml(9, [textCell("A", 9, "Deposits", 5), textCell("B", 9, "Not tracked in portal", 5)]),
+    rowXml(10, [textCell("A", 10, "Closing Balance", 5), textCell("B", 10, "Not tracked in portal", 5)]),
+    rowXml(12, [textCell("A", 12, "Outlet Sales", 2)]),
+    rowXml(13, [
+      textCell("A", 13, "Outlet Id", 4),
+      textCell("B", 13, "Outlet Name", 4),
+      textCell("C", 13, "Sales", 4)
+    ]),
+    rowXml(14, [
+      textCell("A", 14, outletId, 5),
+      textCell("B", 14, outletName, 5),
+      numberCell("C", 14, totalSales, 6)
+    ]),
+    rowXml(16, [textCell("A", 16, "Merchant Commission Earned", 2)]),
+    rowXml(17, [
+      textCell("A", 17, "Product Type", 4),
+      textCell("B", 17, "Sales", 4),
+      textCell("C", 17, "Commission Rate", 4),
+      textCell("D", 17, "Commission Amount", 4)
+    ])
+  ];
+
+  providerRows.forEach((row, index) => {
+    const sheetRow = index + 18;
+    const rate = commissionRate(row.saleType);
+    const commission = row.amount * rate;
+    commissionTotal += commission;
+    rows.push(rowXml(sheetRow, [
+      textCell("A", sheetRow, `${row.saleType} - ${row.provider}`, 5),
+      numberCell("B", sheetRow, row.amount, 6),
+      textCell("C", sheetRow, rate ? `${rate * 100}%` : "", 5),
+      numberCell("D", sheetRow, commission, 6)
+    ]));
+  });
+
+  const totalRow = providerRows.length + 18;
+  rows.push(rowXml(totalRow, [
+    textCell("A", totalRow, "Total Commission", 4),
+    numberCell("B", totalRow, totalSales, 6),
+    textCell("C", totalRow, "", 4),
+    numberCell("D", totalRow, commissionTotal, 6)
+  ]));
+
+  return worksheetXml({
+    cols: [34.83, 18.83, 18.83, 20.83],
+    merges: ["A1:D1", "A2:D2", "A3:D3", "A4:D4", "A6:D6", "A12:D12", "A16:D16"],
+    rows: rows.join("")
+  });
+}
+
+function tableSheetXml(title, dateRange, generatedAt, headers, rows, cols, amountColumns = []) {
+  const lastColumn = columnLetter(headers.length - 1);
+  const bodyRows = rows.map((row, rowIndex) => rowXml(rowIndex + 7, row.map((value, columnIndex) => {
+    const column = columnLetter(columnIndex);
+    if (typeof value === "number") {
+      return numberCell(column, rowIndex + 7, value, amountColumns.includes(columnIndex) ? 6 : 5);
+    }
+    return textCell(column, rowIndex + 7, value, 5);
+  }))).join("");
+
+  return worksheetXml({
+    cols,
+    merges: [`A1:${lastColumn}1`, `A2:${lastColumn}2`, `A3:${lastColumn}3`, `A4:${lastColumn}4`],
+    rows: [
+      rowXml(1, [textCell("A", 1, "Smart Plan Blueprint", 1)]),
+      rowXml(2, [textCell("A", 2, title, 2)]),
+      rowXml(3, [textCell("A", 3, `Date Range: ${dateRange}`, 3)]),
+      rowXml(4, [textCell("A", 4, `Generated: ${formatGeneratedAt(generatedAt)}`, 3)]),
+      rowXml(6, headers.map((header, index) => textCell(columnLetter(index), 6, header, 4))),
+      bodyRows
+    ].join("")
+  });
+}
+
 function worksheetXml({ cols, merges, rows }) {
   const colXml = cols.map((width, index) => `<col min="${index + 1}" max="${index + 1}" width="${width}" customWidth="1"/>`).join("");
   const mergeXml = merges.map((ref) => `<mergeCell ref="${ref}"/>`).join("");
@@ -102,6 +290,87 @@ function reportRow(row) {
     status: String(row.status || "UNKNOWN").toUpperCase(),
     dateTime: row.created_at || ""
   };
+}
+
+function reportAirtimeRow(row) {
+  return {
+    transactionId: row.transaction_id || row.id || "",
+    amount: Number(row.amount) || 0,
+    phoneNumber: row.phonenumber || row.phone_number || row.cellphone || "",
+    productName: row.product_name || row.product || row.network || "",
+    merchantName: row.merchant_name || row.user || electricityUser,
+    status: String(row.status || "UNKNOWN").toUpperCase(),
+    dateTime: row.created_at || ""
+  };
+}
+
+function buildSalesRows(electricityRows, airtimeRows) {
+  const electricitySales = electricityRows.map((row) => ({
+    dateTime: row.dateTime,
+    date: datePart(row.dateTime),
+    outletId,
+    outletName,
+    userId: electricityUser,
+    userName: "Not Set",
+    saleType: "Electricity",
+    provider: electricityProvider,
+    reference: row.meterNumber,
+    amount: row.amount,
+    status: row.status
+  }));
+
+  const airtimeSales = airtimeRows.map((row) => ({
+    dateTime: row.dateTime,
+    date: datePart(row.dateTime),
+    outletId,
+    outletName,
+    userId: row.merchantName || electricityUser,
+    userName: "Not Set",
+    saleType: "Airtime",
+    provider: row.productName || "Airtime",
+    reference: row.phoneNumber,
+    amount: row.amount,
+    status: row.status
+  }));
+
+  return [...electricitySales, ...airtimeSales].filter((row) => isSuccessful(row.status));
+}
+
+function groupSales(rows, keys) {
+  const groups = rows.reduce((current, row) => {
+    const key = keys.map((name) => row[name] || "").join("|");
+    const existing = current.get(key) || keys.reduce((item, name) => ({ ...item, [name]: row[name] || "" }), { amount: 0 });
+    existing.amount += Number(row.amount) || 0;
+    current.set(key, existing);
+    return current;
+  }, new Map());
+
+  return Array.from(groups.values()).sort((left, right) => {
+    const leftKey = keys.map((key) => left[key]).join("|");
+    const rightKey = keys.map((key) => right[key]).join("|");
+    return leftKey.localeCompare(rightKey);
+  });
+}
+
+function sumSales(rows) {
+  return rows.reduce((total, row) => total + (Number(row.amount) || 0), 0);
+}
+
+function datePart(value) {
+  const date = String(value || "").slice(0, 10);
+  return date || "Undated";
+}
+
+function isSuccessful(status) {
+  const value = String(status || "").toUpperCase();
+  return value === "SUCCESS" || value === "SUCCESSFUL";
+}
+
+function commissionRate(saleType) {
+  const value = String(saleType || "").toLowerCase();
+  if (value === "airtime") return 0.09;
+  if (value === "electricity") return 0.035;
+  return 0;
 }
 
 function buildSummary(rows) {
@@ -181,26 +450,31 @@ function escapeXml(value) {
     .replaceAll("\"", "&quot;");
 }
 
-function workbookXml() {
+function workbookXml(sheets) {
+  const sheetXml = sheets.map((sheet, index) => {
+    const sheetId = index + 1;
+    return `    <sheet name="${escapeXml(sheet.name)}" sheetId="${sheetId}" r:id="rId${sheetId}"/>`;
+  }).join("\n");
+
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
   <sheets>
-    <sheet name="Transactions" sheetId="1" r:id="rId1"/>
-    <sheet name="Successful" sheetId="2" r:id="rId2"/>
-    <sheet name="Failed" sheetId="3" r:id="rId3"/>
-    <sheet name="Summary" sheetId="4" r:id="rId4"/>
+${sheetXml}
   </sheets>
 </workbook>`;
 }
 
-function workbookRelsXml() {
+function workbookRelsXml(sheets) {
+  const worksheetRels = sheets.map((sheet, index) => {
+    const sheetId = index + 1;
+    return `  <Relationship Id="rId${sheetId}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${sheetId}.xml"/>`;
+  }).join("\n");
+  const styleId = sheets.length + 1;
+
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
-  <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/>
-  <Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet3.xml"/>
-  <Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet4.xml"/>
-  <Relationship Id="rId5" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+${worksheetRels}
+  <Relationship Id="rId${styleId}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
 </Relationships>`;
 }
 
@@ -213,16 +487,18 @@ function rootRelsXml() {
 </Relationships>`;
 }
 
-function contentTypesXml() {
+function contentTypesXml(sheets) {
+  const worksheetOverrides = sheets.map((sheet, index) => {
+    const sheetId = index + 1;
+    return `  <Override PartName="/xl/worksheets/sheet${sheetId}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`;
+  }).join("\n");
+
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
   <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
   <Default Extension="xml" ContentType="application/xml"/>
   <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
-  <Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
-  <Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
-  <Override PartName="/xl/worksheets/sheet3.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
-  <Override PartName="/xl/worksheets/sheet4.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+${worksheetOverrides}
   <Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>
   <Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
   <Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>

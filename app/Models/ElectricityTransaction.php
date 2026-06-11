@@ -22,6 +22,8 @@ class ElectricityTransaction extends Model
         'units',
         'endpoint',
         'request_ip',
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [

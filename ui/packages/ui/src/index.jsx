@@ -1,9 +1,9 @@
 import React from "react";
 import { Loader2 } from "lucide-react";
 
-export function Button({ children, icon: Icon, loading = false, ...props }) {
+export function Button({ children, icon: Icon, loading = false, variant = "primary", ...props }) {
   return (
-    <button className="bp-button" disabled={loading || props.disabled} {...props}>
+    <button className={`bp-button ${variant}`} disabled={loading || props.disabled} {...props}>
       {loading ? <Loader2 className="spin" size={17} /> : Icon ? <Icon size={17} /> : null}
       <span>{loading ? "Working..." : children}</span>
     </button>

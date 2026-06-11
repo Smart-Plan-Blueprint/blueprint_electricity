@@ -2,7 +2,7 @@ import { formatMoney } from "../../utils/formatters";
 
 export default function TopMeters({ meters }) {
   if (!meters?.length) {
-    return <div className="empty-state">No successful transactions to rank yet.</div>;
+    return <div className="empty-state compact">No successful meter activity yet. Successful transactions will appear here once available.</div>;
   }
 
   const max = Math.max(...meters.map((meter) => meter.amount), 1);

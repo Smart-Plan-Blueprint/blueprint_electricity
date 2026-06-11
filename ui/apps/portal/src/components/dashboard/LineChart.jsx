@@ -1,14 +1,28 @@
-import { formatCompactMoney, shortDate } from "../../utils/formatters";
+import { formatCompactMoney, formatMoney, shortDate } from "../../utils/formatters";
 import { peakDay, smoothPath } from "../../utils/helpers";
 
 export default function LineChart({ rows }) {
   if (!rows.length) {
-    return <div className="empty-state">No dated transactions to show yet.</div>;
+    return <div className="empty-state">No dated transactions to show yet. The trend appears once sales come in.</div>;
+  }
+
+  if (rows.length < 3) {
+    return (
+      <div className="sparse-days">
+        {rows.map((row) => (
+          <div className="sparse-day" key={row.date}>
+            <span>{shortDate(row.date)}</span>
+            <strong>{formatMoney(row.amount)}</strong>
+          </div>
+        ))}
+        <p className="sparse-note">A trend line appears once there are a few days of activity.</p>
+      </div>
+    );
   }
 
   const width = 720;
-  const height = 300;
-  const padding = { top: 28, right: 28, bottom: 54, left: 58 };
+  const height = 220;
+  const padding = { top: 20, right: 28, bottom: 44, left: 58 };
   const values = rows.map((row) => Number(row.amount) || 0);
   const max = Math.max(...values, 1);
   const innerWidth = width - padding.left - padding.right;
@@ -42,13 +56,12 @@ export default function LineChart({ rows }) {
           </g>
         ))}
         <path className="line-chart-area" d={area} />
-        <path className="line-chart-glow" d={line} />
         <path className="line-chart-path" d={line} />
         {points.map((point) => (
           <g key={point.date}>
             <circle className="line-chart-dot-halo" cx={point.x} cy={point.y} r="9" />
             <circle className="line-chart-dot" cx={point.x} cy={point.y} r="4.8" />
-            <text className="line-chart-date" x={point.x} y={height - 16} textAnchor="middle">{shortDate(point.date)}</text>
+            <text className="line-chart-date" x={point.x} y={height - 10} textAnchor="middle">{shortDate(point.date)}</text>
           </g>
         ))}
       </svg>

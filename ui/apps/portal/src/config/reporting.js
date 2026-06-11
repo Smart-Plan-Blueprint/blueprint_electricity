@@ -1,4 +1,4 @@
-export const defaultBaseUrl = "";
+export const defaultBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
 export const demoMode = import.meta.env.VITE_DEMO_MODE === "true";
 export const defaultApiToken = demoMode ? "smart-plan-blueprint-demo" : import.meta.env.VITE_API_TOKEN || "";
 export const sessionKey = "blueprint-electricity-session";
