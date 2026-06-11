@@ -20,11 +20,13 @@ class TransactionReportService
 
     public function forRange(Carbon $from, Carbon $to)
     {
+        $tz = $from->timezone->getName();
+
         $rows = ElectricityTransaction::query()
             ->whereBetween('created_at', [$from->copy()->timezone(config('app.timezone')), $to->copy()->timezone(config('app.timezone'))])
             ->orderByDesc('created_at')
             ->get()
-            ->map(function (ElectricityTransaction $transaction) {
+            ->map(function (ElectricityTransaction $transaction) use ($tz) {
                 return [
                     'transaction_id' => $transaction->transaction_id,
                     'amount' => (float) $transaction->amount,
@@ -37,7 +39,7 @@ class TransactionReportService
                     'units' => $transaction->units,
                     'endpoint' => $transaction->endpoint,
                     'request_ip' => $transaction->request_ip,
-                    'created_at' => optional($transaction->created_at)->toDateTimeString(),
+                    'created_at' => optional($transaction->created_at)->setTimezone($tz)->toDateTimeString(),
                 ];
             });
 
