@@ -752,6 +752,95 @@ h1 {
   border-radius: 10px;
 }
 
+.report-tabs-preview {
+  display: grid;
+  gap: 14px;
+}
+
+.report-tab-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.report-tab-list button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #d8e5f5;
+  border-radius: 8px;
+  color: #334864;
+  background: #f7fbff;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.report-tab-list button.active {
+  border-color: #1d5fd1;
+  color: #ffffff;
+  background: #1d5fd1;
+}
+
+.report-tab-panel {
+  min-width: 0;
+}
+
+.report-mini-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #e1eaf6;
+  border-radius: 8px;
+}
+
+.report-mini-table {
+  min-width: 640px;
+}
+
+.report-mini-table th,
+.report-mini-table td {
+  padding: 11px 12px;
+}
+
+.report-mini-table tbody tr:last-child td {
+  color: #071a33;
+  background: #f7fbff;
+  font-weight: 900;
+}
+
+.merchant-statement-preview {
+  display: grid;
+  gap: 14px;
+}
+
+.statement-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.statement-summary div {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #e1eaf6;
+  border-radius: 8px;
+  background: #f7fbff;
+}
+
+.statement-summary dt {
+  color: #64789a;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.statement-summary dd {
+  margin: 6px 0 0;
+  overflow: hidden;
+  color: #071a33;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 table {
   width: 100%;
   min-width: 900px;
@@ -1785,6 +1874,7 @@ tbody tr:focus-visible {
   .dashboard-grid,
   .dashboard-summary,
   .summary-stat-grid,
+  .statement-summary,
   .plain-insights,
   .insight-cards,
   .email-settings-grid,
@@ -2087,4 +2177,602 @@ tbody tr:focus-visible {
   color: #1d5fd1;
   cursor: pointer;
   font-size: 0.82rem;
+}
+
+/* Flat UI pass */
+body {
+  background: #f6f8fb;
+}
+
+.auth-layout {
+  width: min(980px, calc(100% - 32px));
+  gap: 16px;
+  padding: 32px 0;
+}
+
+.auth-panel,
+.auth-card,
+.dashboard-summary,
+.email-hero,
+.service-race-card,
+.plain-insight,
+.insight-card,
+.airtime-strip,
+.user-form,
+.modal-card {
+  border: 1px solid #dfe6ef;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.auth-panel {
+  min-height: auto;
+  padding: 24px;
+}
+
+.auth-card {
+  padding: 22px;
+}
+
+.auth-panel h1 {
+  max-width: 520px;
+  margin: 30px 0 10px;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1.06;
+  letter-spacing: 0;
+}
+
+.auth-panel p {
+  max-width: 520px;
+  color: #536275;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  background: #174f9c;
+}
+
+.portal-shell {
+  grid-template-columns: 248px minmax(0, 1fr);
+}
+
+.sidebar {
+  padding: 22px 16px;
+  color: #071a33;
+  background: #ffffff;
+  border-right: 1px solid #dfe6ef;
+}
+
+.sidebar .brand-mark {
+  background: #174f9c;
+}
+
+.sidebar .brand-lockup span,
+.session-card > span,
+.session-email {
+  color: #607089;
+}
+
+.nav-list {
+  gap: 4px;
+  margin-top: 28px;
+}
+
+.nav-list button,
+.session-card button {
+  min-height: 40px;
+  border-radius: 6px;
+  color: #334155;
+  font-weight: 650;
+}
+
+.nav-list button.active,
+.nav-list button:hover,
+.session-card button:hover {
+  color: #071a33;
+  background: #f1f5f9;
+}
+
+.nav-list button.active {
+  background: #edf4ff;
+  box-shadow: inset 3px 0 0 #174f9c;
+}
+
+.session-card {
+  right: 14px;
+  bottom: 16px;
+  left: 14px;
+  padding: 14px 0 0;
+  border-top: 1px solid #e5ebf3;
+}
+
+.portal-main {
+  padding: 22px;
+}
+
+.portal-header {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  padding: 16px;
+  border: 1px solid #dfe6ef;
+  border-radius: 6px;
+}
+
+.eyebrow {
+  margin-bottom: 5px;
+  color: #174f9c;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+h1 {
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  letter-spacing: 0;
+}
+
+.page-help,
+.last-updated,
+.summary-help,
+.summary-meta,
+.email-actions-panel span,
+.switch-row em {
+  color: #607089;
+}
+
+.view-stack {
+  gap: 14px;
+}
+
+.metrics-grid {
+  gap: 10px;
+}
+
+.dashboard-grid,
+.insight-grid,
+.report-chart-grid,
+.email-settings-grid {
+  gap: 14px;
+}
+
+.dashboard-summary {
+  align-items: start;
+  gap: 18px;
+  padding: 18px;
+}
+
+.summary-primary h2 {
+  margin: 4px 0 8px;
+  font-size: clamp(1.95rem, 3.2vw, 2.45rem);
+  letter-spacing: 0;
+}
+
+.summary-stat-grid {
+  gap: 10px;
+}
+
+.summary-stat-grid .metric-card {
+  padding: 14px;
+  background: #ffffff;
+}
+
+.summary-stat-grid .metric-card span {
+  letter-spacing: 0;
+}
+
+.summary-stat-grid .metric-card strong {
+  font-size: 1.55rem;
+  letter-spacing: 0;
+}
+
+.hero-trend {
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.range-picker,
+.auth-mode-toggle,
+.service-tabs {
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid #dfe6ef;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.range-picker button,
+.auth-mode-toggle button,
+.service-tab {
+  border-radius: 4px;
+}
+
+.range-picker button.active,
+.auth-mode-toggle button.active,
+.service-tab--active {
+  color: #ffffff;
+  background: #174f9c;
+  border-color: #174f9c;
+}
+
+.header-search,
+.merchant-search,
+.merchant-toolbar select,
+.preset-row button,
+.ghost-button,
+.pagination-controls button,
+.row-actions button,
+.drawer-close,
+.api-key-actions button,
+.drawer-tabs button,
+.report-tab-list button {
+  border-radius: 6px;
+}
+
+.header-search {
+  flex: 1 1 260px;
+  max-width: 360px;
+  min-height: 40px;
+  background: #f8fafc;
+}
+
+.header-search input {
+  width: 100%;
+  min-width: 0;
+}
+
+.header-actions {
+  flex: 1 1 520px;
+}
+
+.auto-refresh {
+  min-height: 40px;
+  border: 1px solid #d8e0ec;
+  border-radius: 6px;
+  background: #f8fafc;
+}
+
+.auto-refresh.on {
+  color: #174f9c;
+  border-color: #9ebae2;
+  background: #edf4ff;
+}
+
+.auto-refresh.on .auto-dot {
+  background: #174f9c;
+  box-shadow: none;
+}
+
+.filter-grid,
+.report-filters {
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.preset-row {
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.preset-row button,
+.ghost-button {
+  color: #334155;
+  background: #ffffff;
+}
+
+.preset-row button:hover,
+.ghost-button:hover {
+  border-color: #9ebae2;
+  background: #f8fafc;
+}
+
+.filter-actions {
+  gap: 8px;
+}
+
+.table-wrap,
+.report-mini-table-wrap {
+  margin-top: 12px;
+  border: 1px solid #dfe6ef;
+  border-radius: 6px;
+}
+
+table {
+  background: #ffffff;
+}
+
+th,
+td {
+  padding: 11px 12px;
+}
+
+th {
+  color: #607089;
+  background: #f8fafc;
+  letter-spacing: 0;
+}
+
+tbody tr:hover,
+tbody tr:focus-visible,
+.row-clickable:hover td {
+  background: #f8fafc;
+}
+
+.type-badge,
+.recipient-chip,
+.top-rank {
+  border-radius: 4px;
+}
+
+.type-badge.type-electricity {
+  border: 1px solid #b9d2f5;
+  color: #174f9c;
+  background: #edf4ff;
+}
+
+.type-badge.type-airtime {
+  border: 1px solid #d6ccf6;
+  color: #5b3aa6;
+  background: #f4f1ff;
+}
+
+.report-tabs-preview {
+  gap: 12px;
+}
+
+.report-tab-list {
+  gap: 6px;
+}
+
+.report-tab-list button {
+  background: #ffffff;
+  font-weight: 700;
+}
+
+.report-tab-list button.active {
+  border-color: #174f9c;
+  background: #174f9c;
+}
+
+.statement-summary div,
+.switch-row,
+.email-status-card,
+.line-chart-summary,
+.sparse-day,
+.wallet-balance,
+.api-key-box,
+.doc-list li {
+  border: 1px solid #dfe6ef;
+  border-radius: 6px;
+  background: #f8fafc;
+}
+
+.email-hero {
+  align-items: flex-start;
+  padding: 18px;
+  color: #071a33;
+}
+
+.email-hero .eyebrow {
+  color: #174f9c;
+}
+
+.email-hero h2 {
+  font-size: clamp(1.4rem, 3vw, 1.85rem);
+}
+
+.email-hero p,
+.email-status-card span {
+  color: #607089;
+}
+
+.email-status-card {
+  min-width: 220px;
+  padding: 14px;
+}
+
+.switch-row {
+  padding: 12px;
+}
+
+.recipient-chip {
+  border-color: #d1dbe8;
+  color: #334155;
+  background: #f8fafc;
+}
+
+.recipient-chip button {
+  border-radius: 4px;
+}
+
+.email-actions-panel {
+  gap: 14px;
+}
+
+.service-tabs {
+  align-self: stretch;
+  width: fit-content;
+}
+
+.service-tab {
+  min-height: 34px;
+  font-weight: 650;
+}
+
+.service-tab:hover {
+  background: #f1f5f9;
+}
+
+.service-race-card {
+  padding: 16px;
+}
+
+.race-header {
+  margin-bottom: 14px;
+}
+
+.race-title {
+  color: #607089;
+  letter-spacing: 0;
+}
+
+.race-service {
+  opacity: 1;
+}
+
+.race-service-icon,
+.race-winner-badge {
+  border-radius: 4px;
+}
+
+.race-bar-track,
+.status-rate-bar,
+.top-bar,
+.bar-row div {
+  border-radius: 4px;
+}
+
+.line-chart {
+  border-radius: 0;
+}
+
+.line-chart-grid {
+  stroke: rgba(96, 112, 137, 0.22);
+}
+
+.line-chart-path,
+.bar-row i,
+.top-bar i {
+  stroke: #174f9c;
+  background: #174f9c;
+}
+
+.line-chart-dot {
+  stroke: #174f9c;
+}
+
+.status-rate-head strong {
+  font-size: 1.65rem;
+}
+
+.status-mix {
+  gap: 16px;
+}
+
+.status-mix button {
+  min-height: 44px;
+}
+
+.top-meters,
+.bar-list,
+.summary-list {
+  gap: 10px;
+}
+
+.top-rank {
+  color: #174f9c;
+  background: #edf4ff;
+}
+
+.insight-cards,
+.plain-insights {
+  gap: 10px;
+}
+
+.insight-card,
+.plain-insight {
+  min-height: auto;
+  padding: 14px;
+}
+
+.plain-insight.good,
+.plain-insight.watch,
+.plain-insight.bad {
+  background: #ffffff;
+}
+
+.plain-insight.good {
+  border-left: 3px solid #1f8f6b;
+}
+
+.plain-insight.watch {
+  border-left: 3px solid #c58a20;
+}
+
+.plain-insight.bad {
+  border-left: 3px solid #c84f4f;
+}
+
+.merchant-toolbar {
+  align-items: end;
+}
+
+.merchant-search {
+  min-height: 42px;
+}
+
+.drawer-overlay {
+  background: rgba(15, 23, 42, 0.38);
+}
+
+.drawer {
+  border-left: 1px solid #dfe6ef;
+  animation: none;
+}
+
+.drawer-header h2 {
+  letter-spacing: 0;
+}
+
+.modal-card {
+  padding: 22px;
+}
+
+.toast {
+  border-radius: 6px;
+  background: #071a33;
+}
+
+@media (max-width: 1080px) {
+  .sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #dfe6ef;
+  }
+
+  .nav-list {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .portal-main {
+    padding: 14px;
+  }
+
+  .portal-header {
+    gap: 14px;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-search,
+  .header-search input,
+  .auto-refresh,
+  .header-actions .bp-button {
+    width: 100%;
+  }
+
+  .service-tabs {
+    width: 100%;
+  }
+
+  .service-tab {
+    flex: 1;
+    justify-content: center;
+  }
 }

@@ -1,4 +1,4 @@
-import { Activity, BarChart3, CheckCircle2, Gauge, Phone, PlugZap, ReceiptText, TrendingUp, XCircle } from "lucide-react";
+import { Activity, BarChart3, CheckCircle2, FileSpreadsheet, Gauge, ReceiptText, TrendingUp, XCircle } from "lucide-react";
 import { MetricCard, Section } from "@blueprint/ui";
 import HeroTrend from "../components/dashboard/HeroTrend";
 import RangePicker from "../components/dashboard/RangePicker";
@@ -6,15 +6,14 @@ import LineChart from "../components/dashboard/LineChart";
 import StatusMix from "../components/dashboard/StatusMix";
 import TopMeters from "../components/dashboard/TopMeters";
 import InsightsSection from "../components/dashboard/InsightsSection";
+import ReportTabsPreview from "../components/dashboard/ReportTabsPreview";
 import TransactionTable from "../components/transactions/TransactionTable";
 import { formatMoney } from "../utils/formatters";
 import { rangeLabel } from "../utils/helpers";
 import { deltaProps } from "../utils/stats";
 
-export default function DashboardView({ stats, rows, reports, loading, range, onSelectRange, onRefresh, onStatusFilter, onSelectRow, airtimeReports }) {
+export default function DashboardView({ stats, rows, reports, loading, range, onSelectRange, onRefresh, onStatusFilter, onSelectRow }) {
   const isLoading = loading === "reports" && !rows.length;
-  const electricityCount = stats.totalCount ?? 0;
-  const airtimeCount = airtimeReports?.summary?.total ?? 0;
 
   return (
     <div className="view-stack">
@@ -63,6 +62,10 @@ export default function DashboardView({ stats, rows, reports, loading, range, on
           <StatusMix stats={stats} onStatusFilter={onStatusFilter} />
         </Section>
       </div>
+
+      <Section title="Report preview" icon={FileSpreadsheet}>
+        <ReportTabsPreview rows={rows} />
+      </Section>
 
       <div className="dashboard-grid">
         <Section title="Latest transactions" icon={Activity}>

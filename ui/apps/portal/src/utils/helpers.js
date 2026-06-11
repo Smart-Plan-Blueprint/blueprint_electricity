@@ -84,7 +84,7 @@ export function rangeLabel(range) {
 
 export function peakDay(rows) {
   const peak = rows.reduce((winner, row) => (toNumber(row.amount) > toNumber(winner?.amount) ? row : winner), null);
-  return peak ? `${shortDate(peak.date)} · ${formatMoney(peak.amount)}` : "No transactions";
+  return peak ? `${shortDate(peak.date)} - ${formatMoney(peak.amount)}` : "No transactions";
 }
 
 export function smoothPath(points) {
@@ -116,6 +116,7 @@ export function viewTitle(view) {
     dashboard: "Dashboard",
     reports: "Reports",
     transactions: "Transactions",
+    airtime: "Airtime",
     merchants: "Merchants",
     email: "Email Reports"
   }[view];
@@ -126,6 +127,7 @@ export function viewHelp(view) {
     dashboard: "A quick view of what is happening right now.",
     reports: "Filter, compare, and download transaction reports.",
     transactions: "Review individual transaction records.",
+    airtime: "Review airtime sales and their delivery status.",
     merchants: "Onboard resellers and manage wallets, commission, and API access.",
     email: "Choose who receives the automatic 2 AM daily report."
   }[view];

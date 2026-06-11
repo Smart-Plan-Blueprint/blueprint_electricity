@@ -1,12 +1,12 @@
 .bp-section,
 .metric-card {
-  border: 0;
-  border-radius: 12px;
+  border: 1px solid #dfe6ef;
+  border-radius: 6px;
   background: #ffffff;
 }
 
 .bp-section {
-  padding: 20px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
 }
@@ -14,7 +14,9 @@
 .bp-section > header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #edf1f6;
 }
 
 .section-title {
@@ -24,7 +26,7 @@
 }
 
 .section-title svg {
-  color: #1d5fd1;
+  color: #285a9f;
 }
 
 .section-title h2 {
@@ -36,25 +38,36 @@
 .metric-card {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 18px;
+  gap: 10px;
+  padding: 14px;
   min-width: 0;
 }
 
 .metric-icon {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   flex: 0 0 auto;
-  border-radius: 8px;
-  color: #1d5fd1;
-  background: #eef4ff;
+  border: 1px solid #d8e5f5;
+  border-radius: 6px;
+  color: #285a9f;
+  background: #f7fbff;
 }
 
 .metric-card.tone-green .metric-icon {
   color: #1f8f6b;
   background: #ecf8f3;
+}
+
+.metric-card.tone-good .metric-icon {
+  color: #1f8f6b;
+  background: #ecf8f3;
+}
+
+.metric-card.tone-warn .metric-icon {
+  color: #986800;
+  background: #fff6d8;
 }
 
 .metric-card.tone-red .metric-icon {
@@ -68,17 +81,17 @@
   font-size: 0.76rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 }
 
 .metric-card strong {
   display: block;
-  margin-top: 6px;
+  margin-top: 5px;
   overflow: hidden;
   color: #071a33;
-  font-size: 1.7rem;
+  font-size: 1.45rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   line-height: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -121,7 +134,7 @@
   min-height: 42px;
   padding: 10px 11px;
   border: 1px solid #d8e0ec;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #071a33;
   background: #ffffff;
   outline: none;
@@ -142,16 +155,16 @@
   min-height: 42px;
   padding: 0 16px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #ffffff;
-  background: #1d5fd1;
+  background: #174f9c;
   cursor: pointer;
   font-weight: 700;
   transition: background 160ms ease;
 }
 
 .bp-button:hover:not(:disabled) {
-  background: #1a54bb;
+  background: #123f7c;
 }
 
 .bp-button:disabled {
@@ -161,7 +174,7 @@
 
 .bp-button.ghost {
   color: #0a2547;
-  background: #ffffff;
+  background: #f8fafc;
   border: 1px solid #d8e0ec;
   font-weight: 600;
 }
@@ -182,7 +195,8 @@
   align-items: center;
   min-height: 26px;
   padding: 0 9px;
-  border-radius: 999px;
+  border: 1px solid transparent;
+  border-radius: 4px;
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -190,16 +204,19 @@
 .status-badge.good {
   color: #14613f;
   background: #e3f5ec;
+  border-color: #bee7d1;
 }
 
 .status-badge.pending {
   color: #725100;
   background: #fff0c7;
+  border-color: #efd58c;
 }
 
 .status-badge.bad {
   color: #8a2525;
   background: #fbe0df;
+  border-color: #efb8b7;
 }
 
 .spin {

@@ -18,6 +18,8 @@ export default function PortalHeader({
   onExport,
   rows
 }) {
+  const showReportActions = ["dashboard", "reports", "transactions"].includes(activeView);
+
   return (
     <header className="portal-header">
       <div>
@@ -26,7 +28,7 @@ export default function PortalHeader({
         <p className="page-help">{viewHelp(activeView)}</p>
         <LastUpdated updatedAt={updatedAt} loading={loading === "reports"} />
       </div>
-      {activeView === "merchants" ? null : (
+      {showReportActions ? (
       <div className="header-actions">
         <form className="header-search" onSubmit={runSearch}>
           <Search size={16} />
@@ -41,7 +43,7 @@ export default function PortalHeader({
         <Button icon={RefreshCw} variant="ghost" loading={loading === "reports"} onClick={onRefresh}>Refresh</Button>
         <Button icon={ArrowDownToLine} loading={loading === "export"} onClick={onExport} disabled={!rows.length}>Download Excel</Button>
       </div>
-      )}
+      ) : null}
     </header>
   );
 }

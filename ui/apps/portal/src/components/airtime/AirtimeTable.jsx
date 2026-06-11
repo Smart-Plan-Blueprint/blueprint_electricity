@@ -3,7 +3,7 @@ import { formatMoney } from "../../utils/formatters";
 
 export default function AirtimeTable({ rows, loading }) {
   if (loading && !rows.length) {
-    return <div className="empty-state">Loading airtime transactions…</div>;
+    return <div className="empty-state">Loading airtime transactions...</div>;
   }
 
   if (!rows.length) {

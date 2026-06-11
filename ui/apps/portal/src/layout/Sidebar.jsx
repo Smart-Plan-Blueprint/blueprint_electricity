@@ -1,4 +1,4 @@
-import { BarChart3, Building2, FileSearch, LayoutDashboard, LogOut, Mail, PlugZap } from "lucide-react";
+import { BarChart3, Building2, FileSearch, LayoutDashboard, LogOut, Mail, Phone, PlugZap } from "lucide-react";
 import { StatusBadge } from "@blueprint/ui";
 import { demoMode } from "../config/reporting";
 import NavButton from "../components/dashboard/NavButton";
@@ -18,6 +18,7 @@ export default function Sidebar({ activeView, onViewChange, session, onLogout })
         <NavButton active={activeView === "dashboard"} icon={LayoutDashboard} onClick={() => onViewChange("dashboard")}>Dashboard</NavButton>
         <NavButton active={activeView === "reports"} icon={BarChart3} onClick={() => onViewChange("reports")}>Reports</NavButton>
         <NavButton active={activeView === "transactions"} icon={FileSearch} onClick={() => onViewChange("transactions")}>Transactions</NavButton>
+        <NavButton active={activeView === "airtime"} icon={Phone} onClick={() => onViewChange("airtime")}>Airtime</NavButton>
         <NavButton active={activeView === "merchants"} icon={Building2} onClick={() => onViewChange("merchants")}>Merchants</NavButton>
         <NavButton active={activeView === "email"} icon={Mail} onClick={() => onViewChange("email")}>Email Reports</NavButton>
       </nav>
