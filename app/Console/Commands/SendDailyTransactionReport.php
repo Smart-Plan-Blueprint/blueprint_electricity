@@ -40,8 +40,25 @@ class SendDailyTransactionReport extends Command
         $workbook = $workbooks->build($report);
         $fileName = $workbooks->fileName($report['from'], $report['to']);
 
-        Mail::to($recipients)->send(new DailyTransactionReportMail($report, $workbook, $fileName));
+        $airtimeSummary = $report['airtime_summary'] ?? null;
 
+        $combinedSummary = [
+            'total_count' => ($report['summary']['total_count'] ?? 0) + ($airtimeSummary['total_count'] ?? 0),
+            'success_count' => ($report['summary']['success_count'] ?? 0) + ($airtimeSummary['success_count'] ?? 0),
+            'failed_count' => ($report['summary']['failed_count'] ?? 0) + ($airtimeSummary['failed_count'] ?? 0),
+            'pending_count' => ($report['summary']['pending_count'] ?? 0) + ($airtimeSummary['pending_count'] ?? 0),
+            'success_rate' => 0,
+            'total_amount' => ($report['summary']['total_amount'] ?? 0) + ($airtimeSummary['total_amount'] ?? 0),
+            'failed_amount' => $report['summary']['failed_amount'] ?? 0,
+        ];
+
+        $combinedTotal = $combinedSummary['total_count'];
+        $combinedSuccess = $combinedSummary['success_count'];
+        $combinedSummary['success_rate'] = $combinedTotal ? (int) round(($combinedSuccess / $combinedTotal) * 100) : 0;
+
+        Mail::to($recipients)->send(new DailyTransactionReportMail($report, $workbook, $fileName, $combinedSummary));
+
+        Log::info('Airtime rows count', ['count' => count($report['airtime_rows'] ?? [])]);
         Log::info('Daily transaction report email sent.', [
             'recipients' => $recipients,
             'date' => $report['from']->toDateString(),
