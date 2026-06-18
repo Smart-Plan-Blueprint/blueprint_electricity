@@ -21,5 +21,6 @@
 @import "./styles/pages/reports-analytics.css";
 @import "./styles/overrides/redesign-pass.css";
 @import "./styles/overrides/editorial-pass.css";
+@import "./styles/layout/sidebar.css";
 @import "./styles/overrides/breathing-room.css";
 @import "./styles/pages/auth.css";

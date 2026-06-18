@@ -3,20 +3,6 @@
     grid-template-columns: 1fr;
   }
 
-  .sidebar {
-    position: static;
-    height: auto;
-  }
-
-  .session-card {
-    position: static;
-    margin-top: 18px;
-  }
-
-  .nav-list {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .metrics-grid,
   .dashboard-grid,
   .plain-insights,
@@ -62,8 +48,7 @@
   .filter-grid,
   .compact-grid,
   .report-filters,
-  .auth-metrics,
-  .nav-list {
+  .auth-metrics {
     grid-template-columns: 1fr;
   }
 

@@ -34,32 +34,67 @@
     auto;
 }
 
+/* Main shell */
 .sp-auth__shell {
-  width: min(860px, 100%);
+  width: min(880px, 100%);
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   overflow: hidden;
   border: 1px solid rgba(7, 26, 51, 0.08);
-  border-radius: 22px;
+  border-radius: 24px;
   background: #ffffff;
   box-shadow:
     0 24px 70px rgba(7, 26, 51, 0.13),
     0 1px 2px rgba(7, 26, 51, 0.05);
 }
 
-/* Left summary */
+/* =========================================================
+   Left summary panel
+========================================================= */
+
 .sp-auth__summary {
+  position: relative;
+  isolation: isolate;
   display: grid;
   align-content: space-between;
   gap: 42px;
   min-height: 560px;
   padding: 34px;
+  overflow: hidden;
   color: #ffffff;
   background:
     linear-gradient(160deg, rgba(37, 99, 235, 0.22), transparent 46%),
     var(--sp-navy);
 }
 
+.sp-auth__summary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.sp-auth__summary::after {
+  content: "";
+  position: absolute;
+  right: -110px;
+  bottom: -120px;
+  z-index: -1;
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 44px rgba(255, 255, 255, 0.035),
+    0 0 0 88px rgba(255, 255, 255, 0.022);
+}
+
+/* Brand */
 .sp-auth__brand {
   display: flex;
   align-items: center;
@@ -75,6 +110,7 @@
   border-radius: 12px;
   color: #ffffff;
   background: var(--sp-accent);
+  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.28);
 }
 
 .sp-auth__brand strong,
@@ -95,8 +131,9 @@
   font-size: 0.8rem;
 }
 
+/* Summary copy */
 .sp-auth__summary-copy {
-  max-width: 330px;
+  max-width: 340px;
 }
 
 .sp-auth__summary-copy p {
@@ -124,7 +161,7 @@
   line-height: 1.65;
 }
 
-/* Mini report */
+/* Mini report rows */
 .sp-auth__mini-report {
   display: grid;
   gap: 4px;
@@ -163,16 +200,41 @@
   font-weight: 750;
 }
 
-/* Right panel */
+/* =========================================================
+   Right login panel
+========================================================= */
+
 .sp-auth__panel {
+  position: relative;
+  isolation: isolate;
   display: grid;
   align-content: center;
   gap: 24px;
   padding: 40px;
-  background: #ffffff;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.82), #ffffff 36%),
+    #ffffff;
 }
 
-/* Toggle */
+.sp-auth__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.75;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(37, 99, 235, 0.08), transparent 26%),
+    linear-gradient(rgba(7, 26, 51, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(7, 26, 51, 0.035) 1px, transparent 1px);
+  background-size:
+    auto,
+    28px 28px,
+    28px 28px;
+  mask-image: linear-gradient(to bottom, black, transparent 74%);
+}
+
+/* Login toggle */
 .sp-auth__mode-toggle {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -236,6 +298,47 @@
   color: var(--sp-muted);
   font-size: 0.92rem;
   line-height: 1.6;
+}
+
+/* Right-side snapshot card */
+.sp-auth__snapshot {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--sp-line);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  box-shadow: 0 10px 26px rgba(7, 26, 51, 0.05);
+}
+
+.sp-auth__snapshot div {
+  min-width: 0;
+  padding: 13px 14px;
+}
+
+.sp-auth__snapshot div + div {
+  border-left: 1px solid var(--sp-line);
+}
+
+.sp-auth__snapshot span,
+.sp-auth__snapshot strong {
+  display: block;
+}
+
+.sp-auth__snapshot span {
+  color: var(--sp-faint);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sp-auth__snapshot strong {
+  margin-top: 5px;
+  color: var(--sp-ink);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.3;
 }
 
 /* Form */
@@ -361,7 +464,10 @@
   color: var(--sp-green);
 }
 
-/* Responsive */
+/* =========================================================
+   Responsive
+========================================================= */
+
 @media (max-width: 860px) {
   .sp-auth {
     place-items: start center;
@@ -394,6 +500,15 @@
   .sp-auth__mode-toggle button {
     padding: 0 8px;
     font-size: 0.78rem;
+  }
+
+  .sp-auth__snapshot {
+    grid-template-columns: 1fr;
+  }
+
+  .sp-auth__snapshot div + div {
+    border-left: 0;
+    border-top: 1px solid var(--sp-line);
   }
 
   .sp-auth__submit,

@@ -48,66 +48,11 @@ body {
   line-height: 1.6;
 }
 
-.brand-mark {
-  width: 38px;
-  height: 38px;
-  border-radius: 6px;
-  background: #174f9c;
-}
-
 .portal-shell {
   grid-template-columns: 248px minmax(0, 1fr);
 }
 
-.sidebar {
-  padding: 22px 16px;
-  color: #071a33;
-  background: #ffffff;
-  border-right: 1px solid #dfe6ef;
-}
-
-.sidebar .brand-mark {
-  background: #174f9c;
-}
-
-.sidebar .brand-lockup span,
-.session-card > span,
-.session-email {
-  color: #607089;
-}
-
-.nav-list {
-  gap: 4px;
-  margin-top: 28px;
-}
-
-.nav-list button,
-.session-card button {
-  min-height: 40px;
-  border-radius: 6px;
-  color: #334155;
-  font-weight: 650;
-}
-
-.nav-list button.active,
-.nav-list button:hover,
-.session-card button:hover {
-  color: #071a33;
-  background: #f1f5f9;
-}
-
-.nav-list button.active {
-  background: #edf4ff;
-  box-shadow: inset 3px 0 0 #174f9c;
-}
-
-.session-card {
-  right: 14px;
-  bottom: 16px;
-  left: 14px;
-  padding: 14px 0 0;
-  border-top: 1px solid #e5ebf3;
-}
+/* Sidebar styles live in layout/sidebar.css */
 
 .portal-main {
   padding: 22px;
@@ -553,17 +498,6 @@ tbody tr:focus-visible,
 .toast {
   border-radius: 6px;
   background: #071a33;
-}
-
-@media (max-width: 1080px) {
-  .sidebar {
-    border-right: 0;
-    border-bottom: 1px solid #dfe6ef;
-  }
-
-  .nav-list {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 720px) {

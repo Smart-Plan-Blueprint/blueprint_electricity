@@ -330,10 +330,6 @@ body {
 .status-badge.pending { color: #a36f00; background: transparent; border: 0; }
 .status-badge.bad { color: #b3403f; background: transparent; border: 0; }
 
-.sidebar .status-badge.good { color: #7fe0b2; }
-.sidebar .status-badge.pending { color: #ffd27f; }
-.sidebar .status-badge.bad { color: #ff9d9d; }
-
 .type-badge,
 .type-badge.type-electricity,
 .type-badge.type-airtime {
@@ -475,51 +471,7 @@ tbody tr:focus-visible,
   text-decoration: underline;
 }
 
-/* Sidebar: flat dark rail, accent bar for active */
-.sidebar {
-  padding: 24px 0;
-}
-
-.sidebar .brand-lockup {
-  padding: 0 20px;
-}
-
-.nav-list {
-  gap: 2px;
-  margin-top: 30px;
-}
-
-.nav-list button {
-  min-height: 42px;
-  padding: 0 20px;
-  border-radius: 0;
-}
-
-.nav-list button:hover {
-  background: transparent;
-  color: #ffffff;
-}
-
-.nav-list button.active {
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: inset 3px 0 0 var(--accent);
-  color: #ffffff;
-}
-
-.session-card {
-  right: 20px;
-  left: 20px;
-}
-
-.session-card button {
-  padding: 0;
-  border-radius: 0;
-}
-
-.session-card button:hover {
-  background: transparent;
-  color: #ffffff;
-}
+/* Sidebar styles live in layout/sidebar.css */
 
 /* Email view: flat bands */
 .email-hero {

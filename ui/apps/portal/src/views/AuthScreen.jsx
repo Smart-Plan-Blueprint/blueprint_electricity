@@ -30,37 +30,37 @@ export default function AuthScreen({
 
   const activeLogin = isMerchant
     ? {
-        email: merchantEmail,
-        password: merchantPassword,
-        setEmail: setMerchantEmail,
-        setPassword: setMerchantPassword,
-        error: merchantError,
-        onSubmit: onMerchantLogin,
-        loadingKey: "merchant-login",
-        title: "Merchant login",
-        description:
-          "Access your airtime and electricity sales, wallet balance, and transaction history.",
-        label: "Merchant portal",
-        placeholder: "you@business.bw",
-        icon: Building2,
-        submitLabel: "Sign in",
-      }
+      email: merchantEmail,
+      password: merchantPassword,
+      setEmail: setMerchantEmail,
+      setPassword: setMerchantPassword,
+      error: merchantError,
+      onSubmit: onMerchantLogin,
+      loadingKey: "merchant-login",
+      title: "Merchant login",
+      description:
+        "Access your airtime and electricity sales, wallet balance, and transaction history.",
+      label: "Merchant portal",
+      placeholder: "you@business.bw",
+      icon: Building2,
+      submitLabel: "Sign in",
+    }
     : {
-        email: adminEmail,
-        password: adminPassword,
-        setEmail: setAdminEmail,
-        setPassword: setAdminPassword,
-        error: loginError,
-        onSubmit: onAdminLogin,
-        loadingKey: "login",
-        title: "Reporting access",
-        description:
-          "Monitor airtime and electricity sales, revenue movement, transaction status, and meter activity.",
-        label: "Reporting platform",
-        placeholder: "you@smartplanblueprint.net",
-        icon: LockKeyhole,
-        submitLabel: "Open dashboard",
-      };
+      email: adminEmail,
+      password: adminPassword,
+      setEmail: setAdminEmail,
+      setPassword: setAdminPassword,
+      error: loginError,
+      onSubmit: onAdminLogin,
+      loadingKey: "login",
+      title: "Reporting access",
+      description:
+        "Monitor airtime and electricity sales, revenue movement, transaction status, and meter activity.",
+      label: "Reporting platform",
+      placeholder: "you@smartplanblueprint.net",
+      icon: LockKeyhole,
+      submitLabel: "Open dashboard",
+    };
 
   const isLoading = loading === activeLogin.loadingKey;
 
@@ -140,6 +140,23 @@ export default function AuthScreen({
             <p>{activeLogin.label}</p>
             <h1 id="auth-title">{activeLogin.title}</h1>
             <span>{activeLogin.description}</span>
+          </div>
+
+          <div className="sp-auth__snapshot" aria-label="Sales reporting snapshot">
+            <div>
+              <span>Airtime sales</span>
+              <strong>Daily totals</strong>
+            </div>
+
+            <div>
+              <span>Electricity</span>
+              <strong>Meter activity</strong>
+            </div>
+
+            <div>
+              <span>Transactions</span>
+              <strong>Live status</strong>
+            </div>
           </div>
 
           <form
