@@ -1,0 +1,307 @@
+/* ════ Redesign pass: dark anchor sidebar + soft cards ═══════════ */
+
+/* Surfaces: hairline border + barely-there shadow */
+.auth-panel,
+.auth-card,
+.dashboard-summary,
+.email-hero,
+.service-race-card,
+.airtime-strip,
+.user-form,
+.modal-card,
+.bp-section,
+.metric-card,
+.portal-header {
+  border-color: #e8edf4;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(7, 26, 51, 0.06);
+}
+
+.table-wrap,
+.report-mini-table-wrap {
+  border-color: #e8edf4;
+  border-radius: 10px;
+}
+
+/* Dark navy sidebar */
+.sidebar {
+  color: #e6eefc;
+  background: #0b1f3a;
+  border-right: 1px solid #0b1f3a;
+}
+
+.sidebar .brand-mark {
+  color: #ffffff;
+  background: #1d5fd1;
+}
+
+.sidebar .brand-lockup span {
+  color: #8fa6c9;
+}
+
+.nav-list button,
+.session-card button {
+  color: #b8c9ea;
+}
+
+.nav-list button:hover,
+.session-card button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-list button.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 3px 0 0 #4d8af0;
+}
+
+.session-card {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+.session-card > span {
+  color: #c5d6f4;
+}
+
+.session-email {
+  color: #8fa6c9;
+}
+
+/* Slim sticky header */
+.portal-header {
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 10px 16px;
+}
+
+.portal-header h1 {
+  font-size: 1.25rem;
+}
+
+.header-title {
+  min-width: 0;
+}
+
+.portal-header .last-updated {
+  margin: 2px 0 0;
+  font-size: 0.76rem;
+  color: #7287a3;
+}
+
+.header-actions {
+  flex: 1 1 auto;
+  align-items: center;
+}
+
+.header-search {
+  flex: 1 1 220px;
+  max-width: 320px;
+}
+
+/* Hero band: amount left, stacked KPIs right */
+.dashboard-summary {
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  align-items: center;
+  gap: 24px;
+  padding: 22px 24px;
+}
+
+.summary-primary h2 {
+  font-size: clamp(2.1rem, 3.6vw, 2.6rem);
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-stat-grid {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.summary-stat-grid .metric-card {
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 14px;
+  box-shadow: none;
+  background: #fafcfe;
+}
+
+.summary-stat-grid .metric-card span {
+  font-size: 0.72rem;
+}
+
+.summary-stat-grid .metric-card strong {
+  margin-top: 3px;
+  font-size: 1.35rem;
+}
+
+.summary-stat-grid .metric-delta {
+  margin-top: 3px;
+  margin-left: 8px;
+}
+
+/* Insight strip */
+.insight-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.insight-pill {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  padding: 12px 14px;
+  border: 1px solid #e8edf4;
+  border-left-width: 3px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(7, 26, 51, 0.06);
+}
+
+.insight-pill span {
+  color: #607089;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.insight-pill strong {
+  color: #071a33;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.insight-pill.tone-info { border-left-color: #1d5fd1; }
+.insight-pill.tone-warn { border-left-color: #c58a20; }
+.insight-pill.tone-good { border-left-color: #1f8f6b; }
+
+/* Main chart row: chart wide, health narrow */
+.dashboard-grid--main {
+  grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+}
+
+/* Numbers everywhere */
+.status-rate-head strong,
+.status-count,
+.activity-main strong,
+.top-line span,
+.summary-list dd,
+.bar-row strong,
+.race-service-count,
+td {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Report cards on the same surface language */
+.plain-insight {
+  border-color: #e8edf4;
+  border-left-width: 3px;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(7, 26, 51, 0.06);
+}
+
+.summary-list dd {
+  font-weight: 700;
+}
+
+/* Chart cleanup */
+.line-chart-dot-halo {
+  display: none;
+}
+
+.line-chart-grid {
+  stroke: rgba(96, 112, 137, 0.16);
+}
+
+/* Activity list: dot + plain status text instead of chips */
+.activity-status {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: #607089;
+}
+
+.activity-status.success { color: #1f8f6b; }
+.activity-status.failed { color: #c84f4f; }
+.activity-status.pending { color: #c58a20; }
+
+/* Report preview footer link */
+.report-open-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  color: #1d5fd1;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 650;
+  font-size: 0.88rem;
+}
+
+.report-open-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1080px) {
+  .sidebar {
+    border-bottom: 1px solid #0b1f3a;
+  }
+
+  .dashboard-grid--main,
+  .insight-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .summary-stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Mobile card rows for transaction tables ───────────────────── */
+@media (max-width: 760px) {
+  .table-wrap table,
+  .table-wrap tbody,
+  .table-wrap tr,
+  .table-wrap td {
+    display: block;
+    width: 100%;
+  }
+
+  .table-wrap thead {
+    display: none;
+  }
+
+  .table-wrap tbody tr {
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f8fafc;
+  }
+
+  .table-wrap td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 5px 0;
+    border: 0;
+    text-align: right;
+  }
+
+  .table-wrap td::before {
+    content: attr(data-label);
+    color: #607089;
+    font-size: 0.76rem;
+    font-weight: 650;
+    text-align: left;
+    flex-shrink: 0;
+  }
+}
+

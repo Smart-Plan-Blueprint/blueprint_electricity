@@ -1,0 +1,148 @@
+.status-mix {
+  display: grid;
+  gap: 22px;
+  align-content: start;
+  width: 100%;
+  flex: 1;
+}
+
+.status-rate {
+  display: grid;
+  gap: 10px;
+}
+
+.status-rate-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.status-rate-head span {
+  color: #536985;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.status-rate-head strong {
+  color: #071a33;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.status-rate-bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #eef2f8;
+}
+
+.status-rate-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #1f8f6b;
+  transition: width 240ms ease;
+}
+
+.status-mix ul,
+.summary-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.status-mix li {
+  margin: 0;
+  color: #334864;
+}
+
+.status-mix li + li {
+  border-top: 1px solid #eef2f8;
+}
+
+.status-mix button {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  color: #5c708c;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.94rem;
+  text-align: left;
+  transition: color 160ms ease;
+}
+
+.status-mix button:hover {
+  color: #1d5fd1;
+}
+
+.status-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.status-count {
+  color: #071a33;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.dot.success {
+  background: #1f8f6b;
+}
+
+.dot.failed {
+  background: #c84f4f;
+}
+
+.dot.pending {
+  background: #f0b04f;
+}
+
+.summary-list {
+  display: grid;
+  gap: 12px;
+}
+
+.summary-list div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #dce6f5;
+}
+
+.summary-list div:last-child {
+  border-bottom: 0;
+}
+
+.summary-list dt {
+  color: #536985;
+}
+
+.summary-list dd {
+  margin: 0;
+  font-weight: 900;
+}
+

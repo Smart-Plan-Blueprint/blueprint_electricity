@@ -1,0 +1,156 @@
+.empty-state {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px dashed #d6dfeb;
+  border-radius: 8px;
+  color: #536985;
+  background: #fafbfd;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.empty-state.compact {
+  margin-top: 0;
+  padding: 12px 14px;
+  font-size: 0.86rem;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.type-badge.type-electricity {
+  color: #0b3a78;
+  background: #dceaff;
+}
+
+.type-badge.type-airtime {
+  color: #3d1f7a;
+  background: #ede8ff;
+}
+
+.airtime-strip {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 22px;
+  border-radius: 12px;
+  background: #ffffff;
+  cursor: pointer;
+  outline: none;
+  transition: background 140ms ease;
+}
+
+.airtime-strip:hover {
+  background: #f4f8ff;
+}
+
+.airtime-strip-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1d5fd1;
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.airtime-strip-stats {
+  display: flex;
+  gap: 28px;
+  flex: 1;
+}
+
+.airtime-strip-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.airtime-strip-stats strong {
+  color: #071a33;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.airtime-strip-stats span {
+  color: #64789a;
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.airtime-strip-cta {
+  color: #1d5fd1;
+  font-size: 0.86rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sparse-days {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.sparse-day {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #fafbfd;
+}
+
+.sparse-day span {
+  color: #536985;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.sparse-day strong {
+  color: #071a33;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.sparse-note {
+  margin: 2px 0 0;
+  color: #7287a3;
+  font-size: 0.82rem;
+}
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid #efb1b1;
+  border-radius: 8px;
+  color: #8a2525;
+  background: #fff1f1;
+}
+
+.error-banner button {
+  border: 0;
+  color: #8a2525;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 900;
+}
+

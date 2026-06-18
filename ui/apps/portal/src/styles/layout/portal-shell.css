@@ -1,0 +1,140 @@
+.portal-shell {
+  display: grid;
+  grid-template-columns: 276px minmax(0, 1fr);
+  min-height: 100vh;
+  position: relative;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 24px 18px;
+  color: #eef5ff;
+  background: #0b1f3a;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.sidebar .brand-mark {
+  background: #1d5fd1;
+}
+
+.sidebar .brand-lockup span {
+  color: #b8c9ea;
+}
+
+.nav-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 34px;
+}
+
+.nav-list button,
+.session-card button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
+  color: #b8c9ea;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: left;
+  transition: color 140ms ease, background 140ms ease;
+}
+
+.nav-list button.active,
+.nav-list button:hover,
+.session-card button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-list button.active {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 3px 0 0 #4d8af0;
+  font-weight: 700;
+}
+
+.session-card {
+  position: absolute;
+  right: 16px;
+  bottom: 18px;
+  left: 16px;
+  display: grid;
+  gap: 8px;
+  padding: 12px 4px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.session-card > span {
+  color: #c5d6f4;
+  font-size: 0.82rem;
+}
+
+.session-email {
+  display: block;
+  color: #7287a3;
+  font-size: 0.78rem;
+  word-break: break-all;
+}
+
+.portal-main {
+  min-width: 0;
+  padding: 26px;
+  position: relative;
+  z-index: 1;
+}
+
+.portal-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.header-actions,
+.section-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: #1d5fd1;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  color: #071a33;
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.page-help {
+  max-width: 520px;
+  margin: 8px 0 0;
+  color: #536985;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+

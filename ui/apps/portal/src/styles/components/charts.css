@@ -1,0 +1,126 @@
+.bar-chart {
+  display: grid;
+  gap: 12px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 110px;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar-row span,
+.bar-row strong {
+  font-size: 0.82rem;
+}
+
+.bar-row span {
+  color: #536985;
+}
+
+.bar-row div {
+  height: 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #edf4ff;
+}
+
+.bar-row i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #1d5fd1;
+}
+
+.line-chart-wrap {
+  position: relative;
+}
+
+.line-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  border-radius: 8px;
+  background: transparent;
+}
+
+.line-chart-grid {
+  stroke: rgba(83, 105, 133, 0.24);
+  stroke-dasharray: 4 6;
+}
+
+.line-chart-label,
+.line-chart-date {
+  fill: #536985;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.line-chart-area {
+  fill: url(#reportLineFill);
+}
+
+.line-chart-path {
+  fill: none;
+  stroke: #1d5fd1;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.line-chart-dot {
+  fill: #ffffff;
+  stroke: #1d5fd1;
+  stroke-width: 2.5;
+}
+
+.line-chart-dot-halo {
+  fill: rgba(98, 168, 255, 0.14);
+  stroke: none;
+}
+
+.line-chart-summary {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f7f9fc;
+}
+
+.line-chart-summary span {
+  color: #536985;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.line-chart-summary strong {
+  color: #071a33;
+  font-size: 0.92rem;
+}
+
+.service-compare-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.service-chart-legend {
+  display: flex;
+  gap: 20px;
+  font-size: 0.8rem;
+  color: #5a6a7a;
+  margin-bottom: 8px;
+}
+.service-chart-legend span { display: flex; align-items: center; gap: 6px; }
+.service-chart-legend i { display: inline-block; width: 20px; height: 3px; border-radius: 2px; }
+.legend-electricity i { background: #2b6ce0; }
+.legend-airtime i { background: #8b5cf6; }
+
+.service-breakdown { margin-top: 0; }
+

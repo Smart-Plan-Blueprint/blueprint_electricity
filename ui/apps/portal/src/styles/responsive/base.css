@@ -1,0 +1,104 @@
+@media (max-width: 1080px) {
+  .portal-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+  }
+
+  .session-card {
+    position: static;
+    margin-top: 18px;
+  }
+
+  .nav-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .metrics-grid,
+  .dashboard-grid,
+  .plain-insights,
+  .insight-cards,
+  .email-settings-grid,
+  .report-chart-grid,
+  .report-filters,
+  .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .portal-main {
+    padding: 16px;
+  }
+
+  .portal-header,
+  .auth-layout {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .auth-layout,
+  .metrics-grid,
+  .dashboard-grid,
+  .dashboard-summary,
+  .summary-stat-grid,
+  .statement-summary,
+  .plain-insights,
+  .insight-cards,
+  .email-settings-grid,
+  .email-actions-panel,
+  .report-chart-grid,
+  .filter-grid,
+  .compact-grid,
+  .report-filters,
+  .auth-metrics,
+  .nav-list {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-layout {
+    width: min(100% - 24px, 1120px);
+    padding: 24px 0;
+  }
+
+  .auth-panel {
+    min-height: auto;
+  }
+
+  .header-actions,
+  .section-actions {
+    justify-content: flex-start;
+  }
+
+  .email-hero {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .recipient-form {
+    grid-template-columns: 1fr;
+  }
+
+  .merchant-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .topup-row,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+

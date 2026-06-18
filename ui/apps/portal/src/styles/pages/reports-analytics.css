@@ -1,0 +1,29 @@
+/* ── Collapsible analytics (reports) ───────────────────────────── */
+.analytics-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+  min-height: 38px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 8px;
+  color: #174f9c;
+  background: #ffffff;
+  cursor: pointer;
+  font-weight: 650;
+  font-size: 0.86rem;
+}
+
+.analytics-toggle:hover {
+  background: #edf4ff;
+}
+
+.analytics-chevron {
+  transition: transform 160ms ease;
+}
+
+.analytics-toggle--open .analytics-chevron {
+  transform: rotate(180deg);
+}
+

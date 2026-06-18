@@ -1,0 +1,185 @@
+/* ── Breathing room: same flat look, more air ──────────────────── */
+
+/* Paint the sidebar column for the full page height — the sticky
+   sidebar itself is only ever 100vh tall */
+.portal-shell {
+  background: linear-gradient(to right, #0b1f3a 248px, #ffffff 248px);
+}
+
+.portal-main {
+  padding: 26px 40px 56px;
+}
+
+.portal-header {
+  margin: -26px -40px 40px;
+  padding: 16px 40px;
+}
+
+.view-stack {
+  gap: 48px;
+}
+
+.bp-section > header {
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+}
+
+.dashboard-grid,
+.dashboard-grid--main,
+.report-chart-grid,
+.insight-grid,
+.email-settings-grid {
+  gap: 48px 72px;
+}
+
+.dashboard-summary {
+  gap: 72px;
+}
+
+.summary-meta {
+  margin-top: 10px;
+}
+
+.range-picker {
+  margin-top: 24px;
+}
+
+.summary-stat-grid .metric-card {
+  padding: 17px 0;
+}
+
+.metrics-grid {
+  row-gap: 24px;
+}
+
+.metrics-grid .metric-card {
+  padding: 6px 40px;
+}
+
+.metrics-grid .metric-card:first-child {
+  padding-left: 0;
+}
+
+.insight-strip {
+  gap: 56px;
+}
+
+.insight-pill {
+  gap: 7px;
+}
+
+/* Taller, airier tables — flush with the content edge */
+th,
+td {
+  padding: 14px;
+}
+
+th:first-child,
+td:first-child {
+  padding-left: 0;
+}
+
+th:last-child,
+td:last-child {
+  padding-right: 0;
+}
+
+.report-tabs-preview {
+  gap: 20px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+/* Filters: looser grid */
+.preset-row {
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.filter-grid,
+.report-filters {
+  gap: 22px 32px;
+  margin-top: 4px;
+}
+
+/* Lists */
+.status-mix {
+  gap: 24px;
+}
+
+.status-mix button {
+  min-height: 52px;
+}
+
+.activity-list {
+  gap: 0;
+}
+
+.activity-list button {
+  padding: 12px 0;
+}
+
+.activity-list li + li button {
+  border-top: 1px solid #f0f3f8;
+}
+
+.activity-list button:hover {
+  background: transparent;
+}
+
+.activity-list button:hover .activity-main strong {
+  color: var(--accent);
+}
+
+.top-meters {
+  gap: 22px;
+}
+
+.race-rows {
+  gap: 20px;
+}
+
+.race-header {
+  margin-bottom: 18px;
+}
+
+@media (max-width: 1080px) {
+  .portal-shell {
+    background: #ffffff;
+  }
+
+  .view-stack {
+    gap: 36px;
+  }
+
+  .dashboard-grid,
+  .dashboard-grid--main,
+  .report-chart-grid,
+  .insight-grid,
+  .email-settings-grid {
+    gap: 36px;
+  }
+
+  .insight-strip {
+    gap: 24px;
+  }
+
+  .dashboard-summary {
+    gap: 36px;
+  }
+}
+
+@media (max-width: 720px) {
+  .portal-main {
+    padding: 14px 18px 40px;
+  }
+
+  .portal-header {
+    margin: -14px -18px 24px;
+    padding: 12px 18px;
+  }
+}
+
+

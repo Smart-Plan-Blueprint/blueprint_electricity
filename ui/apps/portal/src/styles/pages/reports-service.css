@@ -1,0 +1,102 @@
+/* ── Service Tabs ──────────────────────────────────────────────── */
+.service-tabs {
+  display: flex;
+  gap: 6px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px;
+  align-self: flex-start;
+}
+.service-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #6b7a8d;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.service-tab:hover { background: #f0f4f8; color: #071a33; }
+.service-tab--active { background: #071a33; color: #fff; }
+
+/* ── Service Race Card ─────────────────────────────────────────── */
+.service-race-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+.race-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.race-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8a97a8;
+}
+.race-winner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.race-winner-electricity { background: #e8f0fd; color: #1a4fc4; }
+.race-winner-airtime { background: #f0ebfe; color: #6d28d9; }
+.race-winner-tie { background: #f0f4f8; color: #5a6a7a; }
+
+.race-rows { display: flex; flex-direction: column; gap: 14px; }
+
+.race-service { opacity: 0.6; transition: opacity 0.2s; }
+.race-service--leader { opacity: 1; }
+
+.race-service-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 0.84rem;
+}
+.race-service-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.race-icon-elec { background: #e8f0fd; color: #2b6ce0; }
+.race-icon-air { background: #f0ebfe; color: #8b5cf6; }
+
+.race-service-name { font-weight: 600; color: #071a33; min-width: 80px; }
+.race-service-count { color: #071a33; font-weight: 700; font-size: 0.95rem; min-width: 70px; }
+.race-service-rate { color: #5a6a7a; font-size: 0.8rem; min-width: 90px; }
+.race-service-revenue { color: #14613f; font-size: 0.8rem; font-weight: 600; margin-left: auto; }
+
+.race-bar-track {
+  height: 8px;
+  background: #f0f4f8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.race-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 4px;
+}
+.race-bar-elec { background: #2b6ce0; }
+.race-bar-air { background: #8b5cf6; }
+

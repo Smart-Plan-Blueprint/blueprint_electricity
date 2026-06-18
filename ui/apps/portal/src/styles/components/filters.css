@@ -1,0 +1,46 @@
+.form-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.report-filters,
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: end;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.preset-row button,
+.ghost-button {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid #dce3ee;
+  border-radius: 8px;
+  color: #0a2547;
+  background: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+  transition: border-color 160ms ease;
+}
+
+.preset-row button:hover,
+.ghost-button:hover {
+  border-color: #1d5fd1;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+

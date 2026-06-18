@@ -1,0 +1,162 @@
+.email-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid #0b1f3a;
+  border-radius: 10px;
+  color: #ffffff;
+  background: #0b1f3a;
+}
+
+.email-hero .eyebrow {
+  color: #bcd7ff;
+}
+
+.email-hero h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+.email-hero p {
+  max-width: 620px;
+  margin: 10px 0 0;
+  color: #dbe8ff;
+  line-height: 1.6;
+}
+
+.email-status-card {
+  display: grid;
+  gap: 7px;
+  min-width: 230px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.email-status-card strong {
+  font-size: 1.1rem;
+}
+
+.email-status-card span {
+  color: #c5d6f4;
+}
+
+.schedule-card,
+.email-actions-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid #d5e2f4;
+  border-radius: 8px;
+  background: #f7fbff;
+  cursor: pointer;
+}
+
+.switch-row input {
+  width: 22px;
+  height: 22px;
+  accent-color: #1d5fd1;
+}
+
+.switch-row strong,
+.switch-row em {
+  display: block;
+}
+
+.switch-row em {
+  margin-top: 3px;
+  color: #5c708c;
+  font-style: normal;
+  font-size: 0.9rem;
+}
+
+.schedule-list,
+.summary-list {
+  display: grid;
+  gap: 10px;
+}
+
+.schedule-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e3ecf8;
+}
+
+.schedule-list dt {
+  color: #5c708c;
+  font-weight: 800;
+}
+
+.schedule-list dd {
+  margin: 0;
+  color: #071a33;
+  font-weight: 900;
+  text-align: right;
+}
+
+.recipient-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 10px;
+}
+
+.recipient-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.recipient-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 8px 0 12px;
+  border: 1px solid #bfd4f4;
+  border-radius: 999px;
+  color: #0b3a78;
+  background: #edf4ff;
+  font-weight: 800;
+}
+
+.recipient-chip button {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 999px;
+  color: #0b3a78;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.email-actions-panel {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.email-actions-panel strong,
+.email-actions-panel span {
+  display: block;
+}
+
+.email-actions-panel span {
+  margin-top: 5px;
+  color: #5c708c;
+  line-height: 1.5;
+}
+

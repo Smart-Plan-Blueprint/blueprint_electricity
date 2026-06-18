@@ -1,0 +1,31 @@
+.last-updated {
+  margin: 8px 0 0;
+  color: #536985;
+  font-size: 0.8rem;
+}
+
+.header-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid #d8e0ec;
+  border-radius: 8px;
+  color: #536985;
+  background: #ffffff;
+}
+
+.header-search:focus-within {
+  border-color: #1d5fd1;
+}
+
+.header-search input {
+  width: 240px;
+  max-width: 42vw;
+  border: 0;
+  background: transparent;
+  color: #0a2547;
+  outline: none;
+}
+
