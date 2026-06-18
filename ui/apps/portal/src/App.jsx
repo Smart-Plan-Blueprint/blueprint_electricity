@@ -128,6 +128,7 @@ function App() {
             onPage={portal.goToPage}
             airtimeReports={portal.airtimeReports}
             onViewAirtime={() => portal.setActiveView("airtime")}
+            onOpenReports={() => portal.setActiveView("reports")}
           />
         )}
 
@@ -144,7 +145,6 @@ function App() {
             rows={portal.rows}
             reports={portal.reports}
             meta={portal.meta}
-            onExport={portal.exportReport}
             onSelectRow={portal.setSelected}
             onPage={portal.goToPage}
             airtimeReports={portal.airtimeReports}

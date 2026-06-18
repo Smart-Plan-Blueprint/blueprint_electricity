@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { ArrowDownToLine, BarChart3, CalendarDays, CheckCircle2, FileSearch, Gauge, GitCompare, Phone, PlugZap, ReceiptText, TrendingUp, Zap } from "lucide-react";
-import { Button, MetricCard, Section } from "@blueprint/ui";
+import { BarChart3, CalendarDays, CheckCircle2, ChevronDown, FileSearch, Gauge, GitCompare, Phone, PlugZap, ReceiptText, TrendingUp, Zap } from "lucide-react";
+import { MetricCard, Section } from "@blueprint/ui";
 import ReportFilters from "../components/transactions/ReportFilters";
 import TransactionTable from "../components/transactions/TransactionTable";
 import Pagination from "../components/transactions/Pagination";
-import LineChart from "../components/dashboard/LineChart";
-import StatusMix from "../components/dashboard/StatusMix";
-import BarChart from "../components/dashboard/BarChart";
-import SummaryList from "../components/dashboard/SummaryList";
-import PlainInsights from "../components/dashboard/PlainInsights";
-import ServiceCompareChart from "../components/dashboard/ServiceCompareChart";
-import ServiceRaceCard from "../components/dashboard/ServiceRaceCard";
+import LineChart from "../components/common/LineChart";
+import StatusMix from "../components/common/StatusMix";
+import BarChart from "../components/reports/BarChart";
+import SummaryList from "../components/reports/SummaryList";
+import PlainInsights from "../components/reports/PlainInsights";
+import ServiceCompareChart from "../components/reports/ServiceCompareChart";
+import ServiceRaceCard from "../components/reports/ServiceRaceCard";
 import { formatMoney } from "../utils/formatters";
 
 const SERVICE_TABS = [
@@ -51,8 +51,9 @@ function buildCombinedStats(elecStats, airtimeReports) {
   };
 }
 
-export default function ReportsView({ filters, setFilters, updateForm, loading, onSubmit, onClear, onPreset, stats, rows, reports, meta, onExport, onSelectRow, onPage, airtimeReports }) {
+export default function ReportsView({ filters, setFilters, updateForm, loading, onSubmit, onClear, onPreset, stats, rows, reports, meta, onSelectRow, onPage, airtimeReports }) {
   const [service, setService] = useState("all");
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   const viewStats =
     service === "electricity" ? stats
@@ -80,8 +81,6 @@ export default function ReportsView({ filters, setFilters, updateForm, loading, 
 
       <ServiceRaceCard stats={stats} airtimeReports={airtimeReports} isLoading={loading === "reports"} />
 
-      <ReportFilters filters={filters} setFilters={setFilters} updateForm={updateForm} loading={loading} onSubmit={onSubmit} onClear={onClear} onPreset={onPreset} />
-
       <section className="metrics-grid">
         <MetricCard icon={CalendarDays} label="Transactions" value={String(viewStats.totalCount)} />
         <MetricCard icon={CheckCircle2} label="Successful" value={String(viewStats.successCount)} tone="green" />
@@ -93,39 +92,50 @@ export default function ReportsView({ filters, setFilters, updateForm, loading, 
       </section>
 
       {!isAirtimeOnly && (
-        <div className="report-chart-grid">
-          <Section title="Money over time" icon={TrendingUp}>
-            <LineChart rows={stats.dailyTotals} />
-          </Section>
-          <Section title="Transaction results" icon={Gauge}>
-            <StatusMix stats={viewStats} />
-          </Section>
-        </div>
+        <button
+          type="button"
+          className={`analytics-toggle${showAnalytics ? " analytics-toggle--open" : ""}`}
+          onClick={() => setShowAnalytics((value) => !value)}
+        >
+          <BarChart3 size={15} />
+          {showAnalytics ? "Hide analytics" : "Show analytics"}
+          <ChevronDown size={15} className="analytics-chevron" />
+        </button>
       )}
 
-      {!isAirtimeOnly && (
-        <div className="dashboard-grid">
-          <Section title="Daily comparison" icon={BarChart3}>
-            <BarChart rows={stats.dailyTotals} />
-          </Section>
-          <Section title="Quick summary" icon={FileSearch}>
-            <SummaryList stats={viewStats} />
-          </Section>
-        </div>
+      {showAnalytics && !isAirtimeOnly && (
+        <>
+          <div className="report-chart-grid">
+            <Section title="Money over time" icon={TrendingUp}>
+              <LineChart rows={stats.dailyTotals} />
+            </Section>
+            <Section title="Transaction results" icon={Gauge}>
+              <StatusMix stats={viewStats} />
+            </Section>
+          </div>
+
+          <div className="dashboard-grid">
+            <Section title="Daily comparison" icon={BarChart3}>
+              <BarChart rows={stats.dailyTotals} />
+            </Section>
+            <Section title="Quick summary" icon={FileSearch}>
+              <SummaryList stats={viewStats} />
+            </Section>
+          </div>
+
+          {service === "all" && (
+            <Section title="Electricity vs airtime — transactions by day" icon={GitCompare}>
+              <ServiceCompareChart electricityDays={stats.dailyTotals} airtimeRows={airtimeReports?.data || []} />
+            </Section>
+          )}
+
+          <PlainInsights stats={viewStats} />
+        </>
       )}
 
-      {service === "all" && (
-        <Section title="Electricity vs airtime — transactions by day" icon={GitCompare}>
-          <ServiceCompareChart electricityDays={stats.dailyTotals} airtimeRows={airtimeReports?.data || []} />
-        </Section>
-      )}
-
-      {!isAirtimeOnly && <PlainInsights stats={viewStats} />}
+      <ReportFilters filters={filters} setFilters={setFilters} updateForm={updateForm} loading={loading} onSubmit={onSubmit} onClear={onClear} onPreset={onPreset} />
 
       <Section title="Transactions in this report" icon={FileSearch}>
-        <div className="section-actions">
-          <Button icon={ArrowDownToLine} onClick={onExport} disabled={!rows.length}>Download Excel</Button>
-        </div>
         <TransactionTable rows={rows} reports={reports} loading={loading} onSelectRow={onSelectRow} />
         <Pagination meta={meta} loading={loading} onPage={onPage} />
       </Section>

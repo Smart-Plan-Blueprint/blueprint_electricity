@@ -13,13 +13,12 @@ const names = [
 
 const messages = {
   SUCCESS: "Transaction completed successfully",
-  FAILED: "Provider rejected the vending request",
-  PENDING: "Awaiting provider confirmation"
+  FAILED: "Provider rejected the vending request"
 };
 
 const demoTransactions = Array.from({ length: 100 }, (_, index) => {
   const number = index + 1;
-  const status = number % 17 === 0 ? "FAILED" : number % 13 === 0 ? "PENDING" : "SUCCESS";
+  const status = number % 17 === 0 || number % 13 === 0 ? "FAILED" : "SUCCESS";
   const amount = [20, 40, 50, 75, 100, 150, 200, 250, 300, 500][index % 10];
   const date = new Date(Date.UTC(2026, 5, 8, 8, 45, 0));
   date.setHours(date.getHours() - index * 5);
@@ -89,7 +88,6 @@ function filterTransactions(rows, filters) {
 function summarize(rows) {
   const successRows = rows.filter((row) => row.status === "SUCCESS");
   const failedRows = rows.filter((row) => row.status === "FAILED");
-  const pendingRows = rows.filter((row) => row.status === "PENDING");
   const totalAmount = sum(successRows);
   const failedAmount = sum(failedRows);
   const dailyTotals = Array.from(successRows.reduce((map, row) => {
@@ -117,7 +115,6 @@ function summarize(rows) {
     total_count: rows.length,
     success_count: successRows.length,
     failed_count: failedRows.length,
-    pending_count: pendingRows.length,
     total_amount: totalAmount,
     failed_amount: failedAmount,
     average_amount: successRows.length ? totalAmount / successRows.length : 0,

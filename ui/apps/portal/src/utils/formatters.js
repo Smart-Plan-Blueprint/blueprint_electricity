@@ -24,6 +24,19 @@ export function formatCompactMoney(value) {
   }).format(toNumber(value));
 }
 
+export function formatDateTime(value) {
+  if (!value) return "—";
+  const date = new Date(String(value).replace(" ", "T"));
+
+  if (Number.isNaN(date.getTime())) {
+    return String(value);
+  }
+
+  const day = date.toLocaleDateString("en-BW", { day: "2-digit", month: "short", year: "numeric" });
+  const time = date.toLocaleTimeString("en-BW", { hour: "2-digit", minute: "2-digit", hour12: false });
+  return `${day}, ${time}`;
+}
+
 export function shortDate(value) {
   const date = new Date(value);
 

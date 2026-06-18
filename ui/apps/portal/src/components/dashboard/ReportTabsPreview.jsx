@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { formatMoney, toNumber } from "../../utils/formatters";
 
 const OUTLET_ID = "3928-01";
@@ -15,12 +16,12 @@ const REPORT_TABS = [
   { key: "statement", label: "Merchant statement" }
 ];
 
-export default function ReportTabsPreview({ rows = [] }) {
+export default function ReportTabsPreview({ rows = [], compact = false, onOpenReports }) {
   const [active, setActive] = useState("date");
   const salesRows = useMemo(() => rows.map(toSaleRow).filter((row) => isSuccessful(row.status)), [rows]);
   const totalSales = salesRows.reduce((total, row) => total + row.amount, 0);
 
-  const content = useMemo(() => buildTabContent(active, salesRows, totalSales), [active, salesRows, totalSales]);
+  const content = useMemo(() => buildTabContent(active, salesRows, totalSales, compact), [active, salesRows, totalSales, compact]);
 
   return (
     <div className="report-tabs-preview">
@@ -42,17 +43,26 @@ export default function ReportTabsPreview({ rows = [] }) {
       <div className="report-tab-panel" role="tabpanel">
         {content}
       </div>
+
+      {onOpenReports ? (
+        <button type="button" className="report-open-link" onClick={onOpenReports}>
+          Open full report
+          <ArrowRight size={15} />
+        </button>
+      ) : null}
     </div>
   );
 }
 
-function buildTabContent(active, salesRows, totalSales) {
+function buildTabContent(active, salesRows, totalSales, compact) {
+  const cap = (grouped) => compact ? grouped.slice(-5) : grouped;
+
   if (active === "date") {
     return (
       <ReportTable
         columns={["Date", "Amount"]}
         rows={[
-          ...groupRows(salesRows, ["date"]).map((row) => [row.date, formatMoney(row.amount)]),
+          ...cap(groupRows(salesRows, ["date"])).map((row) => [row.date, formatMoney(row.amount)]),
           ["Sales total", formatMoney(totalSales)]
         ]}
       />
@@ -64,7 +74,7 @@ function buildTabContent(active, salesRows, totalSales) {
       <ReportTable
         columns={["Outlet Id", "Outlet Name", "Amount"]}
         rows={[
-          ...groupRows(salesRows, ["outletId", "outletName"]).map((row) => [row.outletId, row.outletName, formatMoney(row.amount)]),
+          ...cap(groupRows(salesRows, ["outletId", "outletName"])).map((row) => [row.outletId, row.outletName, formatMoney(row.amount)]),
           ["Sales total", "", formatMoney(totalSales)]
         ]}
       />
@@ -76,7 +86,7 @@ function buildTabContent(active, salesRows, totalSales) {
       <ReportTable
         columns={["User Id", "Name", "Amount"]}
         rows={[
-          ...groupRows(salesRows, ["userId", "userName"]).map((row) => [row.userId, row.userName, formatMoney(row.amount)]),
+          ...cap(groupRows(salesRows, ["userId", "userName"])).map((row) => [row.userId, row.userName, formatMoney(row.amount)]),
           ["Sales total", "", formatMoney(totalSales)]
         ]}
       />
@@ -88,7 +98,7 @@ function buildTabContent(active, salesRows, totalSales) {
       <ReportTable
         columns={["Sale Type", "Provider", "Amount"]}
         rows={[
-          ...groupRows(salesRows, ["saleType", "provider"]).map((row) => [row.saleType, row.provider, formatMoney(row.amount)]),
+          ...cap(groupRows(salesRows, ["saleType", "provider"])).map((row) => [row.saleType, row.provider, formatMoney(row.amount)]),
           ["Sales total", "", formatMoney(totalSales)]
         ]}
       />
@@ -98,7 +108,7 @@ function buildTabContent(active, salesRows, totalSales) {
   if (active === "itemised") {
     const rows = [...salesRows]
       .sort((left, right) => String(right.dateTime).localeCompare(String(left.dateTime)))
-      .slice(0, 10)
+      .slice(0, compact ? 5 : 10)
       .map((row) => [row.dateTime || "N/A", row.saleType, row.provider, row.reference || "N/A", formatMoney(row.amount)]);
 
     return <ReportTable columns={["Date Time", "Sale Type", "Provider", "Reference", "Amount"]} rows={rows} />;

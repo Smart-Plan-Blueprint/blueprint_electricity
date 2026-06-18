@@ -6,6 +6,7 @@ export default function TopMeters({ meters }) {
   }
 
   const max = Math.max(...meters.map((meter) => meter.amount), 1);
+  const allTied = meters.every((meter) => meter.amount === meters[0].amount);
 
   return (
     <ol className="top-meters">
@@ -17,9 +18,11 @@ export default function TopMeters({ meters }) {
               <strong>{meter.meter_number}</strong>
               <span>{formatMoney(meter.amount)}</span>
             </div>
-            <div className="top-bar">
-              <i style={{ width: `${Math.max((meter.amount / max) * 100, 3)}%` }} />
-            </div>
+            {allTied ? null : (
+              <div className="top-bar">
+                <i style={{ width: `${Math.max((meter.amount / max) * 100, 3)}%` }} />
+              </div>
+            )}
             <span className="top-meta">{meter.count} sale{meter.count === 1 ? "" : "s"}</span>
           </div>
         </li>

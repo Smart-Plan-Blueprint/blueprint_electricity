@@ -80,20 +80,19 @@ function transactionSheetXml(title, dateRange, generatedAt, rows) {
 }
 
 function summarySheetXml(dateRange, generatedAt, rows) {
-  const headers = ["Period", "Transactions", "Successful", "Failed", "Pending", "Other", "Successful Amount"];
+  const headers = ["Period", "Transactions", "Successful", "Failed", "Other", "Successful Amount"];
   const bodyRows = rows.map((row, index) => rowXml(index + 8, [
     textCell("A", index + 8, row.period, 5),
     numberCell("B", index + 8, row.transactions, 5),
     numberCell("C", index + 8, row.successful, 5),
     numberCell("D", index + 8, row.failed, 5),
-    numberCell("E", index + 8, row.pending, 5),
-    numberCell("F", index + 8, row.other, 5),
-    numberCell("G", index + 8, row.successfulAmount, 6)
+    numberCell("E", index + 8, row.other, 5),
+    numberCell("F", index + 8, row.successfulAmount, 6)
   ])).join("");
 
   return worksheetXml({
-    cols: [26.83203125, 15.83203125, 14.83203125, 12.83203125, 12.83203125, 12.83203125, 18.83203125],
-    merges: ["A1:G1", "A2:G2", "A3:G3", "A4:G4", "A6:G6"],
+    cols: [26.83203125, 15.83203125, 14.83203125, 12.83203125, 12.83203125, 18.83203125],
+    merges: ["A1:F1", "A2:F2", "A3:F3", "A4:F4", "A6:F6"],
     rows: [
       rowXml(1, [textCell("A", 1, "Smart Plan Blueprint", 1)]),
       rowXml(2, [textCell("A", 2, "Daily Transaction Report", 2)]),
@@ -377,15 +376,13 @@ function buildSummary(rows) {
   const map = rows.reduce((current, row) => {
     const period = String(row.created_at || "Undated").slice(0, 10);
     const status = String(row.status || "OTHER").toUpperCase();
-    const item = current.get(period) || { period, transactions: 0, successful: 0, failed: 0, pending: 0, other: 0, successfulAmount: 0 };
+    const item = current.get(period) || { period, transactions: 0, successful: 0, failed: 0, other: 0, successfulAmount: 0 };
     item.transactions += 1;
     if (status === "SUCCESS" || status === "SUCCESSFUL") {
       item.successful += 1;
       item.successfulAmount += Number(row.amount) || 0;
     } else if (status === "FAILED") {
       item.failed += 1;
-    } else if (status === "PENDING") {
-      item.pending += 1;
     } else {
       item.other += 1;
     }

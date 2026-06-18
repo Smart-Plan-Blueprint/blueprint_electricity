@@ -120,8 +120,7 @@ const customers = [
 
 const transactionMessages = {
   SUCCESS: "Transaction completed successfully",
-  FAILED: "Provider rejected the vending request",
-  PENDING: "Awaiting provider confirmation"
+  FAILED: "Provider rejected the vending request"
 };
 
 export function createMerchantTransactions(merchant) {
@@ -134,7 +133,7 @@ export function createMerchantTransactions(merchant) {
 
   return Array.from({ length: count }, (_, index) => {
     const number = index + 1;
-    const status = number % 19 === 0 ? "FAILED" : number % 11 === 0 ? "PENDING" : "SUCCESS";
+    const status = number % 19 === 0 || number % 11 === 0 ? "FAILED" : "SUCCESS";
     const amount = [20, 40, 50, 75, 100, 150, 200, 250, 300, 500][(seedNumber + index) % 10];
     const date = new Date(Date.UTC(2026, 5, 9, 8, 30, 0));
     date.setHours(date.getHours() - index * 6);

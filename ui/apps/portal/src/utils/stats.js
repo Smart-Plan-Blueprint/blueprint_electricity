@@ -13,7 +13,6 @@ export function normalizeStats(reports, rows) {
       totalCount: summary.total_count,
       successCount: summary.success_count,
       failedCount: summary.failed_count,
-      pendingCount: summary.pending_count,
       totalAmount: summary.total_amount,
       failedAmount: summary.failed_amount,
       averageAmount: summary.average_amount,
@@ -69,7 +68,6 @@ export function plainInsights(stats) {
 function calculateStats(rows) {
   const successRows = rows.filter((row) => isSuccess(row.status));
   const failedRows = rows.filter((row) => String(row.status || "").toUpperCase() === "FAILED");
-  const pendingRows = rows.filter((row) => !isSuccess(row.status) && String(row.status || "").toUpperCase() !== "FAILED");
   const totalAmount = successRows.reduce((sum, row) => sum + toNumber(row.amount), 0);
   const failedAmount = failedRows.reduce((sum, row) => sum + toNumber(row.amount), 0);
   const dailyMap = new Map();
@@ -91,7 +89,6 @@ function calculateStats(rows) {
     totalCount: rows.length,
     successCount: successRows.length,
     failedCount: failedRows.length,
-    pendingCount: pendingRows.length,
     totalAmount,
     failedAmount,
     averageAmount: successRows.length ? totalAmount / successRows.length : 0,

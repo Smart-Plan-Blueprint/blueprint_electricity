@@ -2,17 +2,17 @@ import { Activity, BarChart3, CheckCircle2, FileSpreadsheet, Gauge, ReceiptText,
 import { MetricCard, Section } from "@blueprint/ui";
 import HeroTrend from "../components/dashboard/HeroTrend";
 import RangePicker from "../components/dashboard/RangePicker";
-import LineChart from "../components/dashboard/LineChart";
-import StatusMix from "../components/dashboard/StatusMix";
+import LineChart from "../components/common/LineChart";
+import StatusMix from "../components/common/StatusMix";
 import TopMeters from "../components/dashboard/TopMeters";
 import InsightsSection from "../components/dashboard/InsightsSection";
 import ReportTabsPreview from "../components/dashboard/ReportTabsPreview";
-import TransactionTable from "../components/transactions/TransactionTable";
+import RecentActivity from "../components/dashboard/RecentActivity";
 import { formatMoney } from "../utils/formatters";
 import { rangeLabel } from "../utils/helpers";
 import { deltaProps } from "../utils/stats";
 
-export default function DashboardView({ stats, rows, reports, loading, range, onSelectRange, onRefresh, onStatusFilter, onSelectRow }) {
+export default function DashboardView({ stats, rows, reports, loading, range, onSelectRange, onRefresh, onStatusFilter, onSelectRow, onOpenReports }) {
   const isLoading = loading === "reports" && !rows.length;
 
   return (
@@ -26,7 +26,7 @@ export default function DashboardView({ stats, rows, reports, loading, range, on
           </div>
           <span className="summary-help">Money from successful electricity purchases in this period.</span>
           <p className="summary-meta">
-            Avg. sale {formatMoney(stats.averageAmount)} · {stats.uniqueMeters} unique meter{stats.uniqueMeters === 1 ? "" : "s"}
+            Avg. sale {formatMoney(stats.averageAmount)} · {stats.uniqueMeters} unique meter{stats.uniqueMeters === 1 ? "" : "s"} · {stats.successRate}% success
           </p>
           <RangePicker range={range} onSelectRange={onSelectRange} />
         </div>
@@ -45,16 +45,12 @@ export default function DashboardView({ stats, rows, reports, loading, range, on
             tone="red"
             {...deltaProps(stats.trends?.failed_count, "pct", true)}
           />
-          <MetricCard
-            icon={Gauge}
-            label="Success rate"
-            value={isLoading ? "—" : `${stats.successRate}%`}
-            {...deltaProps(stats.trends?.success_rate, "points")}
-          />
         </div>
       </section>
 
-      <div className="dashboard-grid">
+      <InsightsSection insights={stats.insights} />
+
+      <div className="dashboard-grid dashboard-grid--main">
         <Section title="Money by day" icon={BarChart3}>
           <LineChart rows={stats.dailyTotals} />
         </Section>
@@ -63,20 +59,18 @@ export default function DashboardView({ stats, rows, reports, loading, range, on
         </Section>
       </div>
 
-      <Section title="Report preview" icon={FileSpreadsheet}>
-        <ReportTabsPreview rows={rows} />
-      </Section>
-
       <div className="dashboard-grid">
         <Section title="Latest transactions" icon={Activity}>
-          <TransactionTable rows={rows.slice(0, 6)} reports={reports} loading={loading} onRefresh={onRefresh} onSelectRow={onSelectRow} compact />
+          <RecentActivity rows={rows.slice(0, 6)} onSelectRow={onSelectRow} />
         </Section>
         <Section title="Most active meters" icon={TrendingUp}>
           <TopMeters meters={stats.topMeters} />
         </Section>
       </div>
 
-      <InsightsSection insights={stats.insights} />
+      <Section title="Report preview" icon={FileSpreadsheet}>
+        <ReportTabsPreview rows={rows} compact onOpenReports={onOpenReports} />
+      </Section>
     </div>
   );
 }

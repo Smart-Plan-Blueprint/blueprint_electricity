@@ -1,7 +1,7 @@
 import { BarChart3, Building2, FileSearch, LayoutDashboard, LogOut, Mail, Phone, PlugZap } from "lucide-react";
 import { StatusBadge } from "@blueprint/ui";
 import { demoMode } from "../config/reporting";
-import NavButton from "../components/dashboard/NavButton";
+import NavButton from "../components/common/NavButton";
 
 export default function Sidebar({ activeView, onViewChange, session, onLogout }) {
   return (

@@ -1,5 +1,5 @@
-import { BarChart3, Building2, LockKeyhole, PlugZap, ShieldCheck } from "lucide-react";
-import { Button, Field, MetricCard } from "@blueprint/ui";
+import { Building2, LockKeyhole, PlugZap, ShieldCheck } from "lucide-react";
+import { Button, Field } from "@blueprint/ui";
 
 export default function AuthScreen({
   loginError,
@@ -21,8 +21,8 @@ export default function AuthScreen({
   const isMerchant = mode === "merchant";
 
   return (
-    <main className="auth-layout">
-      <section className="auth-panel">
+    <main className="auth-layout-single">
+      <section className="auth-card auth-card-single">
         <div className="brand-lockup auth-brand">
           <div className="brand-mark"><PlugZap size={24} /></div>
           <div>
@@ -30,20 +30,7 @@ export default function AuthScreen({
             <span>{isMerchant ? "Merchant portal" : "Reporting platform"}</span>
           </div>
         </div>
-        <h1>{isMerchant ? "Your merchant account" : "Open your reports"}</h1>
-        <p>
-          {isMerchant
-            ? "Sign in to see your sales, transactions, and wallet balance."
-            : "See electricity transactions, successful payments, problem payments, and meter activity in one place."}
-        </p>
 
-        <div className="auth-metrics">
-          <MetricCard icon={ShieldCheck} label="Access" value="Email + password" />
-          <MetricCard icon={BarChart3} label={isMerchant ? "Account" : "Reports"} value={isMerchant ? "Your data only" : "Transaction data"} />
-        </div>
-      </section>
-
-      <section className="auth-card">
         <div className="auth-mode-toggle">
           <button type="button" className={!isMerchant ? "active" : ""} onClick={() => setMode("admin")}>
             Reporting access
@@ -53,16 +40,23 @@ export default function AuthScreen({
           </button>
         </div>
 
+        <div>
+          <h2>{isMerchant ? "Sign in to your account" : "Sign in to reporting"}</h2>
+          <p className="auth-sub">
+            {isMerchant
+              ? "See your sales, transactions, and wallet balance."
+              : "Electricity and airtime transactions, payments, and meter activity in one place."}
+          </p>
+        </div>
+
         {isMerchant ? (
           <>
-            <div>
-              <p className="eyebrow">Merchant sign in</p>
-              <h2>Enter your details</h2>
-            </div>
             <form className="form-stack" onSubmit={onMerchantLogin}>
               <Field
                 label="Email"
                 type="email"
+                name="email"
+                autoComplete="email"
                 value={merchantEmail}
                 onChange={(event) => setMerchantEmail(event.target.value)}
                 placeholder="you@business.bw"
@@ -71,6 +65,8 @@ export default function AuthScreen({
               <Field
                 label="Password"
                 type="password"
+                name="password"
+                autoComplete="current-password"
                 value={merchantPassword}
                 onChange={(event) => setMerchantPassword(event.target.value)}
                 placeholder="Your password"
@@ -78,18 +74,16 @@ export default function AuthScreen({
               />
               <Button icon={Building2} loading={loading === "merchant-login"}>Sign in</Button>
             </form>
-            {merchantError ? <div className="error-banner">{merchantError}</div> : null}
+            {merchantError ? <div className="error-banner" role="alert">{merchantError}</div> : null}
           </>
         ) : (
           <>
-            <div>
-              <p className="eyebrow">Secure access</p>
-              <h2>Sign in to reporting</h2>
-            </div>
             <form className="form-stack" onSubmit={onAdminLogin}>
               <Field
                 label="Email"
                 type="email"
+                name="email"
+                autoComplete="email"
                 value={adminEmail}
                 onChange={(event) => setAdminEmail(event.target.value)}
                 placeholder="you@smartplanblueprint.net"
@@ -98,6 +92,8 @@ export default function AuthScreen({
               <Field
                 label="Password"
                 type="password"
+                name="password"
+                autoComplete="current-password"
                 value={adminPassword}
                 onChange={(event) => setAdminPassword(event.target.value)}
                 placeholder="Your password"
@@ -105,9 +101,14 @@ export default function AuthScreen({
               />
               <Button icon={LockKeyhole} loading={loading === "login"}>Open dashboard</Button>
             </form>
-            {loginError ? <div className="error-banner">{loginError}</div> : null}
+            {loginError ? <div className="error-banner" role="alert">{loginError}</div> : null}
           </>
         )}
+
+        <p className="auth-secure-note">
+          <ShieldCheck size={14} />
+          Authorized users only. Connection is encrypted and sign-ins are logged.
+        </p>
       </section>
     </main>
   );

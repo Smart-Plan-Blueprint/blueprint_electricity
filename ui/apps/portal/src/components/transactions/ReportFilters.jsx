@@ -30,7 +30,6 @@ export default function ReportFilters({ filters, setFilters, updateForm, loading
             <option value="">All results</option>
             <option value="SUCCESS">Successful</option>
             <option value="FAILED">Failed</option>
-            <option value="PENDING">Pending</option>
           </select>
         </label>
 

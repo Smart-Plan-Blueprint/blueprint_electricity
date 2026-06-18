@@ -52,8 +52,8 @@ export function Section({ title, icon: Icon, children }) {
 
 export function StatusBadge({ status }) {
   const normalized = String(status || "UNKNOWN").toUpperCase();
-  const good = normalized.includes("SUCCESS") || normalized.includes("READY");
-  const pending = normalized.includes("PENDING") || normalized.includes("NEEDED");
+  const good = ["SUCCESS", "READY", "ACTIVE", "APPROVED", "LIVE"].some((word) => normalized.includes(word));
+  const pending = ["PENDING", "NEEDED", "DEMO"].some((word) => normalized.includes(word));
 
   return (
     <span className={`status-badge ${good ? "good" : pending ? "pending" : "bad"}`}>

@@ -1,8 +1,8 @@
 import { ArrowDownToLine, RefreshCw, Search } from "lucide-react";
 import { Button } from "@blueprint/ui";
-import AutoRefreshToggle from "../components/dashboard/AutoRefreshToggle";
-import LastUpdated from "../components/dashboard/LastUpdated";
-import { viewHelp, viewTitle } from "../utils/helpers";
+import AutoRefreshToggle from "./AutoRefreshToggle";
+import LastUpdated from "./LastUpdated";
+import { viewTitle } from "../utils/helpers";
 
 export default function PortalHeader({
   activeView,
@@ -22,10 +22,8 @@ export default function PortalHeader({
 
   return (
     <header className="portal-header">
-      <div>
-        <p className="eyebrow">Overview</p>
+      <div className="header-title">
         <h1>{viewTitle(activeView)}</h1>
-        <p className="page-help">{viewHelp(activeView)}</p>
         <LastUpdated updatedAt={updatedAt} loading={loading === "reports"} />
       </div>
       {showReportActions ? (
@@ -35,7 +33,7 @@ export default function PortalHeader({
           <input
             ref={searchInputRef}
             value={search}
-            placeholder="Search transaction, meter, customer, or merchant..."
+            placeholder="Search transactions..."
             onChange={(event) => setSearch(event.target.value)}
           />
         </form>

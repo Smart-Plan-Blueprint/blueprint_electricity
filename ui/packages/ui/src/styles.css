@@ -89,8 +89,9 @@
   margin-top: 5px;
   overflow: hidden;
   color: #071a33;
-  font-size: 1.45rem;
+  font-size: 1.5rem;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
   letter-spacing: 0;
   line-height: 1;
   text-overflow: ellipsis;
@@ -106,7 +107,7 @@
 }
 
 .metric-delta.up {
-  color: #1d5fd1;
+  color: #1f8f6b;
 }
 
 .metric-delta.down {

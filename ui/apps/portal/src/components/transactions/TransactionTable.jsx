@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { StatusBadge } from "@blueprint/ui";
 import TableSkeleton from "../common/TableSkeleton";
-import SortIcon from "../dashboard/SortIcon";
-import { formatMoney } from "../../utils/formatters";
+import SortIcon from "./SortIcon";
+import { formatDateTime, formatMoney } from "../../utils/formatters";
 import { sortRows } from "../../utils/helpers";
 
 function TypeBadge({ type }) {
@@ -82,14 +82,14 @@ export default function TransactionTable({ rows, reports, loading, onRefresh, on
               }}
               tabIndex={0}
             >
-              <td>{item.transaction_id || "N/A"}</td>
-              <td><TypeBadge type={item._type || "electricity"} /></td>
-              <td>{formatMoney(item.amount)}</td>
-              <td>{item._reference || item.meter_number || "—"}</td>
-              <td>{item._detail || "—"}</td>
-              <td>{item.merchant_name || item.merchant?.name || "—"}</td>
-              <td><StatusBadge status={item.status || "UNKNOWN"} /></td>
-              <td>{item.created_at || "N/A"}</td>
+              <td data-label="Transaction ID">{item.transaction_id || "N/A"}</td>
+              <td data-label="Type"><TypeBadge type={item._type || "electricity"} /></td>
+              <td data-label="Amount">{formatMoney(item.amount)}</td>
+              <td data-label="Meter / Phone">{item._reference || item.meter_number || "—"}</td>
+              <td data-label="Product">{item._detail || "—"}</td>
+              <td data-label="Merchant">{item.merchant_name || item.merchant?.name || "—"}</td>
+              <td data-label="Result"><StatusBadge status={item.status || "UNKNOWN"} /></td>
+              <td data-label="Date and time">{formatDateTime(item.created_at)}</td>
             </tr>
           ))}
         </tbody>

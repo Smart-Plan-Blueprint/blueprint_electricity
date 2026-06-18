@@ -1,7 +1,7 @@
 import { FileSearch, LayoutDashboard, LogOut, PlugZap, Wallet } from "lucide-react";
 import { StatusBadge } from "@blueprint/ui";
 import useMerchantPortal from "../../hooks/useMerchantPortal";
-import NavButton from "../../components/dashboard/NavButton";
+import NavButton from "../../components/common/NavButton";
 import DashboardView from "../DashboardView";
 import TransactionsView from "../TransactionsView";
 import MerchantWalletView from "./MerchantWalletView";
@@ -51,10 +51,9 @@ export default function MerchantPortal({ merchant, onLogout }) {
 
       <section className="portal-main">
         <header className="portal-header">
-          <div>
-            <p className="eyebrow">{merchant.name}</p>
+          <div className="header-title">
             <h1>{titles[portal.activeView]}</h1>
-            <p className="page-help">{helps[portal.activeView]}</p>
+            <p className="last-updated">{helps[portal.activeView]}</p>
           </div>
         </header>
 

@@ -1,4 +1,4 @@
-import { formatMoney } from "../../utils/formatters";
+import { formatMoney, shortDate } from "../../utils/formatters";
 
 export default function BarChart({ rows }) {
   const max = Math.max(...rows.map((row) => row.amount), 1);
@@ -11,7 +11,7 @@ export default function BarChart({ rows }) {
     <div className="bar-chart">
       {rows.map((row) => (
         <div className="bar-row" key={row.date}>
-          <span>{row.date}</span>
+          <span>{shortDate(row.date)}</span>
           <div>
             <i style={{ width: `${Math.max((row.amount / max) * 100, 2)}%` }} />
           </div>
