@@ -2,69 +2,69 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  padding: 22px;
-  border: 1px solid #0b1f3a;
-  border-radius: 10px;
-  color: #ffffff;
-  background: #0b1f3a;
+  gap: var(--sp-4);
+  padding: var(--sp-6);
+  border-radius: var(--r-lg);
+  color: var(--side-fg);
+  background: var(--side-bg);
+  box-shadow: var(--shadow-md);
 }
 
 .email-hero .eyebrow {
-  color: #bcd7ff;
+  color: var(--side-muted);
 }
 
 .email-hero h2 {
   margin: 0;
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--side-fg);
+  font-size: var(--fs-xl);
 }
 
 .email-hero p {
   max-width: 620px;
-  margin: 10px 0 0;
-  color: #dbe8ff;
+  margin: var(--sp-2) 0 0;
+  color: var(--side-muted);
   line-height: 1.6;
 }
 
 .email-status-card {
   display: grid;
-  gap: 7px;
+  gap: var(--sp-2);
   min-width: 230px;
-  padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  padding: var(--sp-4);
+  border: 1px solid var(--side-border);
+  border-radius: var(--r-md);
+  background: var(--side-bg-2);
 }
 
 .email-status-card strong {
-  font-size: 1.1rem;
+  font-size: var(--fs-md);
 }
 
 .email-status-card span {
-  color: #c5d6f4;
+  color: var(--side-muted);
 }
 
 .schedule-card,
 .email-actions-panel {
   display: grid;
-  gap: 18px;
+  gap: var(--sp-4);
 }
 
 .switch-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px;
-  border: 1px solid #d5e2f4;
-  border-radius: 8px;
-  background: #f7fbff;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
   cursor: pointer;
 }
 
 .switch-row input {
   width: 22px;
   height: 22px;
-  accent-color: #1d5fd1;
+  accent-color: var(--accent);
 }
 
 .switch-row strong,
@@ -74,34 +74,33 @@
 
 .switch-row em {
   margin-top: 3px;
-  color: #5c708c;
+  color: var(--text-muted);
   font-style: normal;
-  font-size: 0.9rem;
+  font-size: var(--fs-base);
 }
 
-.schedule-list,
-.summary-list {
+.schedule-list {
   display: grid;
-  gap: 10px;
+  gap: var(--sp-3);
 }
 
 .schedule-list div {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e3ecf8;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--border);
 }
 
 .schedule-list dt {
-  color: #5c708c;
-  font-weight: 800;
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 .schedule-list dd {
   margin: 0;
-  color: #071a33;
-  font-weight: 900;
+  color: var(--text);
+  font-weight: 700;
   text-align: right;
 }
 
@@ -109,27 +108,26 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  gap: 10px;
+  gap: var(--sp-3);
 }
 
 .recipient-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
 }
 
 .recipient-chip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--sp-2);
   min-height: 34px;
-  padding: 0 8px 0 12px;
-  border: 1px solid #bfd4f4;
-  border-radius: 999px;
-  color: #0b3a78;
-  background: #edf4ff;
-  font-weight: 800;
+  padding: 0 var(--sp-1) 0 var(--sp-3);
+  border-radius: var(--r-pill);
+  color: var(--accent);
+  background: var(--accent-50);
+  font-weight: 600;
 }
 
 .recipient-chip button {
@@ -138,9 +136,9 @@
   width: 22px;
   height: 22px;
   border: 0;
-  border-radius: 999px;
-  color: #0b3a78;
-  background: #ffffff;
+  border-radius: var(--r-pill);
+  color: var(--accent);
+  background: var(--surface);
   cursor: pointer;
 }
 
@@ -155,8 +153,7 @@
 }
 
 .email-actions-panel span {
-  margin-top: 5px;
-  color: #5c708c;
+  margin-top: var(--sp-1);
+  color: var(--text-muted);
   line-height: 1.5;
 }
-

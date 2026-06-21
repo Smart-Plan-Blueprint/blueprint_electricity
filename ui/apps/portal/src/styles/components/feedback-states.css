@@ -1,107 +1,45 @@
 .empty-state {
-  margin-top: 14px;
-  padding: 14px 16px;
-  border: 1px dashed #d6dfeb;
-  border-radius: 8px;
-  color: #536985;
-  background: #fafbfd;
-  font-size: 0.9rem;
+  margin-top: var(--sp-4);
+  padding: var(--sp-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-md);
+  color: var(--text-muted);
+  background: var(--surface-2);
+  font-size: var(--fs-base);
   line-height: 1.5;
 }
 
 .empty-state.compact {
   margin-top: 0;
-  padding: 12px 14px;
-  font-size: 0.86rem;
+  padding: var(--sp-3);
+  font-size: var(--fs-sm);
 }
 
-.type-badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 22px;
-  padding: 0 8px;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.type-badge.type-electricity {
-  color: #0b3a78;
-  background: #dceaff;
-}
-
-.type-badge.type-airtime {
-  color: #3d1f7a;
-  background: #ede8ff;
-}
-
-.airtime-strip {
+.error-banner {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 16px 22px;
-  border-radius: 12px;
-  background: #ffffff;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--danger-border);
+  border-radius: var(--r-md);
+  color: var(--danger);
+  background: var(--danger-tint);
+}
+
+.error-banner button {
+  border: 0;
+  color: var(--danger);
+  background: transparent;
   cursor: pointer;
-  outline: none;
-  transition: background 140ms ease;
-}
-
-.airtime-strip:hover {
-  background: #f4f8ff;
-}
-
-.airtime-strip-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #1d5fd1;
   font-weight: 700;
-  font-size: 0.88rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
 }
 
-.airtime-strip-stats {
-  display: flex;
-  gap: 28px;
-  flex: 1;
-}
-
-.airtime-strip-stats > div {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.airtime-strip-stats strong {
-  color: #071a33;
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.airtime-strip-stats span {
-  color: #64789a;
-  font-size: 0.74rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.airtime-strip-cta {
-  color: #1d5fd1;
-  font-size: 0.86rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
+/* Sparse-day fallback for the trend chart (<3 points) */
 .sparse-days {
   display: grid;
-  gap: 10px;
+  gap: var(--sp-2);
   align-content: start;
 }
 
@@ -109,48 +47,26 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
-  border-radius: 10px;
-  background: #fafbfd;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
 }
 
 .sparse-day span {
-  color: #536985;
-  font-size: 0.86rem;
+  color: var(--text-muted);
+  font-size: var(--fs-base);
   font-weight: 600;
 }
 
 .sparse-day strong {
-  color: #071a33;
-  font-size: 1.15rem;
-  letter-spacing: -0.01em;
+  color: var(--text);
+  font-size: var(--fs-md);
+  font-variant-numeric: tabular-nums;
 }
 
 .sparse-note {
-  margin: 2px 0 0;
-  color: #7287a3;
-  font-size: 0.82rem;
+  margin: var(--sp-1) 0 0;
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
 }
-
-.error-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 14px;
-  padding: 12px 14px;
-  border: 1px solid #efb1b1;
-  border-radius: 8px;
-  color: #8a2525;
-  background: #fff1f1;
-}
-
-.error-banner button {
-  border: 0;
-  color: #8a2525;
-  background: transparent;
-  cursor: pointer;
-  font-weight: 900;
-}
-

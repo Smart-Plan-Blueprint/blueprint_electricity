@@ -1,6 +1,6 @@
 import {
-  BarChart3,
   Building2,
+  ChartLine,
   FileSearch,
   LayoutDashboard,
   LogOut,
@@ -51,7 +51,7 @@ export default function Sidebar({ activeView, onViewChange, session, onLogout })
 
         <NavButton
           active={activeView === "reports"}
-          icon={BarChart3}
+          icon={ChartLine}
           onClick={() => onViewChange("reports")}
         >
           Reports
@@ -102,7 +102,7 @@ export default function Sidebar({ activeView, onViewChange, session, onLogout })
         </div>
 
         <div>
-          <BarChart3 size={15} />
+          <ChartLine size={15} />
           <span>Daily revenue</span>
         </div>
       </div>

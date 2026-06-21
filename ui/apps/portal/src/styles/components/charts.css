@@ -1,126 +1,121 @@
-.bar-chart {
-  display: grid;
-  gap: 12px;
-}
+/* Recharts container + shared chart chrome */
 
-.bar-row {
-  display: grid;
-  grid-template-columns: 90px 1fr 110px;
-  align-items: center;
-  gap: 10px;
-}
-
-.bar-row span,
-.bar-row strong {
-  font-size: 0.82rem;
-}
-
-.bar-row span {
-  color: #536985;
-}
-
-.bar-row div {
-  height: 14px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: #edf4ff;
-}
-
-.bar-row i {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: #1d5fd1;
-}
-
-.line-chart-wrap {
+.chart-wrap {
   position: relative;
-}
-
-.line-chart {
-  display: block;
   width: 100%;
-  height: auto;
-  overflow: visible;
-  border-radius: 8px;
-  background: transparent;
 }
 
-.line-chart-grid {
-  stroke: rgba(83, 105, 133, 0.24);
-  stroke-dasharray: 4 6;
+.chart-wrap--tall {
+  height: 260px;
 }
 
-.line-chart-label,
-.line-chart-date {
-  fill: #536985;
-  font-size: 0.72rem;
-  font-weight: 800;
+.chart-wrap--short {
+  height: 200px;
 }
 
-.line-chart-area {
-  fill: url(#reportLineFill);
+/* Recharts axis / grid theming */
+.recharts-cartesian-axis-tick-value {
+  fill: var(--chart-axis);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
 }
 
-.line-chart-path {
-  fill: none;
-  stroke: #1d5fd1;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.recharts-cartesian-grid line {
+  stroke: var(--chart-grid);
 }
 
-.line-chart-dot {
-  fill: #ffffff;
-  stroke: #1d5fd1;
-  stroke-width: 2.5;
+.recharts-legend-item-text {
+  color: var(--text-muted) !important;
+  font-size: var(--fs-sm);
 }
 
-.line-chart-dot-halo {
-  fill: rgba(98, 168, 255, 0.14);
-  stroke: none;
+.recharts-default-tooltip {
+  border-radius: var(--r-md) !important;
+  border: 0 !important;
+  box-shadow: var(--shadow-lift) !important;
+}
+
+/* Custom tooltip card */
+.chart-tooltip {
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-lift);
+}
+
+.chart-tooltip-label {
+  display: block;
+  margin-bottom: var(--sp-1);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.chart-tooltip-value {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-tooltip-value i {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--r-pill);
 }
 
 .line-chart-summary {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 0;
+  right: 0;
   display: grid;
-  gap: 3px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: #f7f9fc;
+  gap: 2px;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
 }
 
 .line-chart-summary span {
-  color: #536985;
-  font-size: 0.7rem;
-  font-weight: 900;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
   text-transform: uppercase;
 }
 
 .line-chart-summary strong {
-  color: #071a33;
-  font-size: 0.92rem;
+  color: var(--text);
+  font-size: var(--fs-base);
+  font-variant-numeric: tabular-nums;
 }
 
-.service-compare-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
+/* Service legend (electricity vs airtime) */
 .service-chart-legend {
   display: flex;
-  gap: 20px;
-  font-size: 0.8rem;
-  color: #5a6a7a;
-  margin-bottom: 8px;
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-2);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
 }
-.service-chart-legend span { display: flex; align-items: center; gap: 6px; }
-.service-chart-legend i { display: inline-block; width: 20px; height: 3px; border-radius: 2px; }
-.legend-electricity i { background: #2b6ce0; }
-.legend-airtime i { background: #8b5cf6; }
 
-.service-breakdown { margin-top: 0; }
+.service-chart-legend span {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
 
+.service-chart-legend i {
+  display: inline-block;
+  width: 20px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.legend-electricity i {
+  background: var(--elec);
+}
+
+.legend-airtime i {
+  background: var(--air);
+}

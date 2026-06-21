@@ -34,9 +34,11 @@ For real production reporting:
 VITE_API_PROXY_TARGET=http://66.29.134.153/motakase/api
 VITE_API_TOKEN=replace-with-reporting-api-token
 VITE_DEMO_MODE=false
+VITE_API_BASE_URL=
+VITE_REPORTING_API_TARGET=http://64.23.161.104:8083
 ```
 
-Set `VITE_API_TOKEN` to a reporting token that can access `/transaction-logs`. The local `.env` file is ignored so the token does not get committed.
+Set `VITE_API_TOKEN` to a reporting token that can access the protected local reporting routes. Keep `VITE_API_BASE_URL` empty so production uses the portal's same-origin `/api` routing: Apache sends transaction traffic to Motakase and report-settings traffic to Laravel. `VITE_REPORTING_API_TARGET` mirrors that split during Vite development. The local `.env` file is ignored so the token does not get committed.
 
 To run the portal with generated demo data instead of the live API, set:
 

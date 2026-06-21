@@ -13,6 +13,7 @@ import Sidebar from "./layout/Sidebar";
 import PortalHeader from "./layout/PortalHeader";
 import TransactionDrawer from "./components/transactions/TransactionDrawer";
 import ToastStack from "./components/common/ToastStack";
+import { transactionPageSize } from "./config/reporting";
 
 const merchantSessionKey = "blueprint-merchant-session";
 
@@ -160,7 +161,7 @@ function App() {
             onSubmit={portal.handleFilterSubmit}
             onClear={portal.clearFilters}
             onPreset={portal.applyPreset}
-            rows={portal.combinedRows}
+            rows={portal.combinedRows.slice(0, transactionPageSize)}
             reports={portal.reports}
             meta={portal.meta}
             onSelectRow={portal.setSelected}

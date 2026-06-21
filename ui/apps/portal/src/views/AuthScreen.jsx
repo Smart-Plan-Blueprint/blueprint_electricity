@@ -3,7 +3,7 @@ import {
   LockKeyhole,
   PlugZap,
   ShieldCheck,
-  BarChart3,
+  ChartLine,
   ReceiptText,
   Zap,
 } from "lucide-react";
@@ -91,7 +91,7 @@ export default function AuthScreen({
           <div className="sp-auth__mini-report" aria-label="Reporting features">
             <div className="sp-auth__mini-row">
               <span>
-                <BarChart3 size={16} />
+                <ChartLine size={16} />
                 Sales reports
               </span>
               <strong>Daily</strong>

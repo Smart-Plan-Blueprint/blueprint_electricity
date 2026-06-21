@@ -1,4 +1,4 @@
-import { Activity, BarChart3, CheckCircle2, FileSpreadsheet, Gauge, ReceiptText, TrendingUp, XCircle } from "lucide-react";
+import { Activity, ChartLine, CheckCircle2, FileSpreadsheet, Gauge, ReceiptText, TrendingUp, XCircle } from "lucide-react";
 import { MetricCard, Section } from "@blueprint/ui";
 import HeroTrend from "../components/dashboard/HeroTrend";
 import RangePicker from "../components/dashboard/RangePicker";
@@ -51,7 +51,7 @@ export default function DashboardView({ stats, rows, reports, loading, range, on
       <InsightsSection insights={stats.insights} />
 
       <div className="dashboard-grid dashboard-grid--main">
-        <Section title="Money by day" icon={BarChart3}>
+        <Section title="Money by day" icon={ChartLine}>
           <LineChart rows={stats.dailyTotals} />
         </Section>
         <Section title="Transaction health" icon={Gauge}>

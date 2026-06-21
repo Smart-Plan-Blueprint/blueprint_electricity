@@ -1,6 +1,6 @@
 .form-stack {
   display: grid;
-  gap: 14px;
+  gap: var(--sp-4);
 }
 
 .report-filters,
@@ -8,39 +8,82 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: end;
-  gap: 12px;
-  margin-top: 14px;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
 }
 
 .preset-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
 }
 
 .preset-row button,
 .ghost-button {
-  min-height: 38px;
-  padding: 0 12px;
-  border: 1px solid #dce3ee;
-  border-radius: 8px;
-  color: #0a2547;
-  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  min-height: 40px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  background: var(--surface);
   cursor: pointer;
   font-weight: 600;
-  transition: border-color 160ms ease;
+  transition: border-color var(--ease), color var(--ease);
 }
 
 .preset-row button:hover,
 .ghost-button:hover {
-  border-color: #1d5fd1;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.ghost-button {
+  color: var(--accent);
+}
+
+.ghost-button.danger {
+  color: var(--danger);
+}
+
+.ghost-button.danger:hover {
+  border-color: var(--danger);
 }
 
 .filter-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--sp-2);
   flex-wrap: wrap;
 }
 
+/* Range picker (dashboard) */
+.range-picker {
+  display: inline-flex;
+  gap: var(--sp-1);
+  margin-top: var(--sp-4);
+  padding: var(--sp-1);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+}
+
+.range-picker button {
+  min-height: 32px;
+  padding: 0 var(--sp-4);
+  border: 0;
+  border-radius: var(--r-xs);
+  color: var(--text-muted);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+
+.range-picker button.active {
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}

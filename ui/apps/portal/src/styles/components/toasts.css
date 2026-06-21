@@ -1,10 +1,10 @@
 .toast-stack {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
+  right: var(--sp-5);
+  bottom: var(--sp-5);
   z-index: 60;
   display: grid;
-  gap: 10px;
+  gap: var(--sp-2);
   width: min(360px, calc(100% - 40px));
 }
 
@@ -12,16 +12,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 8px;
-  color: #ffffff;
-  background: #0b1f3a;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  color: var(--text-inverse);
+  background: var(--side-bg);
+  box-shadow: var(--shadow-lift);
   animation: toast-in 0.2s ease;
 }
 
+.toast.success {
+  background: var(--success);
+}
+
 .toast.error {
-  background: #b3403f;
+  background: var(--danger);
 }
 
 .toast button {
@@ -38,4 +43,3 @@
   from { transform: translateY(10px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-

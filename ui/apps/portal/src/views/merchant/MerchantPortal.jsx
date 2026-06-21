@@ -24,24 +24,38 @@ export default function MerchantPortal({ merchant, onLogout }) {
 
   return (
     <main className="portal-shell">
-      <aside className="sidebar">
-        <div className="brand-lockup">
-          <div className="brand-mark"><PlugZap size={22} /></div>
-          <div>
-            <strong>Smart Plan Blueprint</strong>
-            <span>Merchant Portal</span>
+      <aside className="sp-sidebar">
+        <div className="sp-sidebar__top">
+          <div className="sp-sidebar__brand">
+            <div className="sp-sidebar__mark"><PlugZap size={21} /></div>
+            <div>
+              <strong>Smart Plan Blueprint</strong>
+              <span>Merchant Portal</span>
+            </div>
+          </div>
+
+          <div className="sp-sidebar__status-card">
+            <div>
+              <span>Account status</span>
+              <strong>{merchant.name}</strong>
+            </div>
+            <StatusBadge status={merchant.status} />
           </div>
         </div>
 
-        <nav className="nav-list" aria-label="Main navigation">
+        <nav className="sp-sidebar__nav" aria-label="Main navigation">
           <NavButton active={portal.activeView === "dashboard"} icon={LayoutDashboard} onClick={() => portal.setActiveView("dashboard")}>Dashboard</NavButton>
           <NavButton active={portal.activeView === "transactions"} icon={FileSearch} onClick={() => portal.setActiveView("transactions")}>Transactions</NavButton>
           <NavButton active={portal.activeView === "wallet"} icon={Wallet} onClick={() => portal.setActiveView("wallet")}>Wallet</NavButton>
         </nav>
 
-        <div className="session-card">
-          <StatusBadge status={merchant.status} />
-          <span>{merchant.name}</span>
+        <div className="sp-sidebar__session sp-sidebar__session--bottom">
+          <div className="sp-sidebar__session-user">
+            <span>Signed in as</span>
+            <strong>{merchant.name}</strong>
+            {merchant.email ? <small>{merchant.email}</small> : null}
+          </div>
+
           <button type="button" onClick={onLogout}>
             <LogOut size={15} />
             Sign out

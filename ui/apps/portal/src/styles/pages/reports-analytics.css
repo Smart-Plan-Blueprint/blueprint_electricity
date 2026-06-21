@@ -1,29 +1,29 @@
-/* ── Collapsible analytics (reports) ───────────────────────────── */
+/* Collapsible analytics (reports) */
 .analytics-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--sp-2);
   justify-self: start;
-  min-height: 38px;
-  padding: 0 16px;
+  min-height: 40px;
+  padding: 0 var(--sp-4);
   border: 0;
-  border-radius: 8px;
-  color: #174f9c;
-  background: #ffffff;
+  border-radius: var(--r-sm);
+  color: var(--accent);
+  background: var(--surface);
   cursor: pointer;
-  font-weight: 650;
-  font-size: 0.86rem;
+  font-weight: 600;
+  font-size: var(--fs-base);
+  box-shadow: var(--shadow-sm);
 }
 
 .analytics-toggle:hover {
-  background: #edf4ff;
+  background: var(--accent-50);
 }
 
 .analytics-chevron {
-  transition: transform 160ms ease;
+  transition: transform var(--ease);
 }
 
 .analytics-toggle--open .analytics-chevron {
   transform: rotate(180deg);
 }
-

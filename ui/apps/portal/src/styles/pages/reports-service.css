@@ -1,62 +1,81 @@
-/* ── Service Tabs ──────────────────────────────────────────────── */
+/* Service tabs */
 .service-tabs {
   display: flex;
-  gap: 6px;
-  background: #fff;
-  border-radius: 10px;
-  padding: 6px;
+  gap: var(--sp-1);
+  background: var(--surface);
+  border-radius: var(--r-md);
+  padding: var(--sp-1);
   align-self: flex-start;
+  box-shadow: var(--shadow-sm);
 }
+
 .service-tab {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: #6b7a8d;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-muted);
   background: transparent;
   border: none;
-  border-radius: 7px;
-  padding: 6px 14px;
+  border-radius: var(--r-sm);
+  padding: var(--sp-2) var(--sp-3);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background var(--ease), color var(--ease);
 }
-.service-tab:hover { background: #f0f4f8; color: #071a33; }
-.service-tab--active { background: #071a33; color: #fff; }
 
-/* ── Service Race Card ─────────────────────────────────────────── */
-.service-race-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px 24px;
+.service-tab:hover {
+  background: var(--surface-2);
+  color: var(--text);
 }
+
+.service-tab--active {
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+
+/* Service race card */
+.service-race-card {
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: var(--sp-5);
+  box-shadow: var(--shadow-md);
+}
+
 .race-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
 }
+
 .race-title {
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: var(--fs-xs);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #8a97a8;
+  color: var(--text-muted);
 }
+
 .race-winner-badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
+  gap: var(--sp-1);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  padding: 3px var(--sp-2);
+  border-radius: var(--r-pill);
 }
-.race-winner-electricity { background: #e8f0fd; color: #1a4fc4; }
-.race-winner-airtime { background: #f0ebfe; color: #6d28d9; }
-.race-winner-tie { background: #f0f4f8; color: #5a6a7a; }
 
-.race-rows { display: flex; flex-direction: column; gap: 14px; }
+.race-winner-electricity { background: var(--elec-tint); color: var(--elec); }
+.race-winner-airtime { background: var(--air-tint); color: var(--air); }
+.race-winner-tie { background: var(--surface-3); color: var(--text-muted); }
+
+.race-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
 
 .race-service { opacity: 0.6; transition: opacity 0.2s; }
 .race-service--leader { opacity: 1; }
@@ -64,39 +83,42 @@
 .race-service-meta {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
-  font-size: 0.84rem;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-1);
+  font-size: var(--fs-base);
 }
+
 .race-service-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 26px;
   height: 26px;
-  border-radius: 6px;
+  border-radius: var(--r-xs);
   flex-shrink: 0;
 }
-.race-icon-elec { background: #e8f0fd; color: #2b6ce0; }
-.race-icon-air { background: #f0ebfe; color: #8b5cf6; }
 
-.race-service-name { font-weight: 600; color: #071a33; min-width: 80px; }
-.race-service-count { color: #071a33; font-weight: 700; font-size: 0.95rem; min-width: 70px; }
-.race-service-rate { color: #5a6a7a; font-size: 0.8rem; min-width: 90px; }
-.race-service-revenue { color: #14613f; font-size: 0.8rem; font-weight: 600; margin-left: auto; }
+.race-icon-elec { background: var(--elec-tint); color: var(--elec); }
+.race-icon-air { background: var(--air-tint); color: var(--air); }
+
+.race-service-name { font-weight: 600; color: var(--text); min-width: 80px; }
+.race-service-count { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; min-width: 70px; }
+.race-service-rate { color: var(--text-muted); font-size: var(--fs-sm); min-width: 90px; }
+.race-service-revenue { color: var(--success); font-size: var(--fs-sm); font-weight: 600; margin-left: auto; font-variant-numeric: tabular-nums; }
 
 .race-bar-track {
   height: 8px;
-  background: #f0f4f8;
-  border-radius: 4px;
+  background: var(--surface-3);
+  border-radius: var(--r-pill);
   overflow: hidden;
 }
+
 .race-bar {
   height: 100%;
-  border-radius: 4px;
+  border-radius: var(--r-pill);
   transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   min-width: 4px;
 }
-.race-bar-elec { background: #2b6ce0; }
-.race-bar-air { background: #8b5cf6; }
 
+.race-bar-elec { background: var(--elec); }
+.race-bar-air { background: var(--air); }

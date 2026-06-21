@@ -42,7 +42,7 @@ export function createDemoReport(filters = {}) {
 
 export function buildReport(transactions, filters = {}) {
   const page = Math.max(Number.parseInt(filters.page || "1", 10), 1);
-  const perPage = Math.min(Math.max(Number.parseInt(filters.per_page || "50", 10), 1), 100);
+  const perPage = Math.min(Math.max(Number.parseInt(filters.per_page || "10", 10), 1), 100);
   const filtered = filterTransactions(transactions, filters);
   const start = (page - 1) * perPage;
   const data = filtered.slice(start, start + perPage);

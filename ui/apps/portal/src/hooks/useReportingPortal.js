@@ -9,7 +9,8 @@ import {
   defaultReportSettings,
   demoMode,
   filtersKey,
-  initialFilters
+  initialFilters,
+  transactionPageSize
 } from "../config/reporting";
 import { rangeBounds, presetFilters } from "../utils/helpers";
 import { normalizeStats } from "../utils/stats";
@@ -37,7 +38,10 @@ export default function useReportingPortal() {
   const [recipientDraft, setRecipientDraft] = useState("");
   const [airtimeReports, setAirtimeReports] = useState(null);
   const [airtimeLoading, setAirtimeLoading] = useState(false);
-  const [airtimeFilters, setAirtimeFilters] = useState({ per_page: "50", page: "1" });
+  const [airtimeFilters, setAirtimeFilters] = useState({
+    per_page: String(transactionPageSize),
+    page: "1"
+  });
 
   const airtimeClient = useMemo(() => createAirtimeClient(), []);
 
@@ -59,10 +63,15 @@ export default function useReportingPortal() {
   useEffect(() => {
     if (isAuthenticated) {
       loadReports();
-      loadReportSettings();
       loadAirtime();
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated && activeView === "email") {
+      loadReportSettings();
+    }
+  }, [isAuthenticated, activeView]);
 
   useEffect(() => {
     if (!isAuthenticated || !autoRefresh) {

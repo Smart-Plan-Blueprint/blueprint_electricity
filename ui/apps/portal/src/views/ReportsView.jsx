@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { BarChart3, CalendarDays, CheckCircle2, ChevronDown, FileSearch, Gauge, GitCompare, Phone, PlugZap, ReceiptText, TrendingUp, Zap } from "lucide-react";
+import { CalendarDays, ChartLine, CheckCircle2, ChevronDown, FileSearch, Gauge, GitCompare, Phone, PlugZap, ReceiptText, TrendingUp, Zap } from "lucide-react";
 import { MetricCard, Section } from "@blueprint/ui";
 import ReportFilters from "../components/transactions/ReportFilters";
 import TransactionTable from "../components/transactions/TransactionTable";
 import Pagination from "../components/transactions/Pagination";
 import LineChart from "../components/common/LineChart";
 import StatusMix from "../components/common/StatusMix";
-import BarChart from "../components/reports/BarChart";
 import SummaryList from "../components/reports/SummaryList";
 import PlainInsights from "../components/reports/PlainInsights";
 import ServiceCompareChart from "../components/reports/ServiceCompareChart";
@@ -69,6 +68,7 @@ export default function ReportsView({ filters, setFilters, updateForm, loading, 
       <div className="service-tabs">
         {SERVICE_TABS.map(({ key, label, icon: Icon }) => (
           <button
+            type="button"
             key={key}
             className={`service-tab${service === key ? " service-tab--active" : ""}`}
             onClick={() => setService(key)}
@@ -97,7 +97,7 @@ export default function ReportsView({ filters, setFilters, updateForm, loading, 
           className={`analytics-toggle${showAnalytics ? " analytics-toggle--open" : ""}`}
           onClick={() => setShowAnalytics((value) => !value)}
         >
-          <BarChart3 size={15} />
+          <ChartLine size={15} />
           {showAnalytics ? "Hide analytics" : "Show analytics"}
           <ChevronDown size={15} className="analytics-chevron" />
         </button>
@@ -114,14 +114,9 @@ export default function ReportsView({ filters, setFilters, updateForm, loading, 
             </Section>
           </div>
 
-          <div className="dashboard-grid">
-            <Section title="Daily comparison" icon={BarChart3}>
-              <BarChart rows={stats.dailyTotals} />
-            </Section>
-            <Section title="Quick summary" icon={FileSearch}>
-              <SummaryList stats={viewStats} />
-            </Section>
-          </div>
+          <Section title="Quick summary" icon={FileSearch}>
+            <SummaryList stats={viewStats} />
+          </Section>
 
           {service === "all" && (
             <Section title="Electricity vs airtime — transactions by day" icon={GitCompare}>

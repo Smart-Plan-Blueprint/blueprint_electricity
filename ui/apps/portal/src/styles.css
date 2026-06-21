@@ -1,26 +1,27 @@
-/* Ordered stylesheet manifest. Later imports intentionally override earlier page/component rules. */
+/* Token-driven stylesheet manifest: tokens → base → layout → components → pages → responsive. */
+@import "./styles/tokens.css";
 @import "./styles/foundations.css";
+
 @import "./styles/layout/portal-shell.css";
 @import "./styles/layout/page-grids.css";
-@import "./styles/pages/email-reports.css";
-@import "./styles/pages/dashboard.css";
-@import "./styles/components/filters.css";
-@import "./styles/components/feedback-states.css";
-@import "./styles/components/tables.css";
-@import "./styles/components/charts.css";
-@import "./styles/pages/reports-service.css";
-@import "./styles/components/status-summary.css";
-@import "./styles/layout/header-tools.css";
-@import "./styles/components/toasts.css";
-@import "./styles/pages/dashboard-lists.css";
-@import "./styles/components/actions-drawers.css";
-@import "./styles/responsive/base.css";
-@import "./styles/pages/merchants.css";
-@import "./styles/overrides/flat-ui-pass.css";
-@import "./styles/components/activity-list.css";
-@import "./styles/pages/reports-analytics.css";
-@import "./styles/overrides/redesign-pass.css";
-@import "./styles/overrides/editorial-pass.css";
 @import "./styles/layout/sidebar.css";
-@import "./styles/overrides/breathing-room.css";
+@import "./styles/layout/header-tools.css";
+
+@import "./styles/components/charts.css";
+@import "./styles/components/tables.css";
+@import "./styles/components/filters.css";
+@import "./styles/components/status-summary.css";
+@import "./styles/components/feedback-states.css";
+@import "./styles/components/activity-list.css";
+@import "./styles/components/actions-drawers.css";
+@import "./styles/components/toasts.css";
+
+@import "./styles/pages/dashboard.css";
+@import "./styles/pages/dashboard-lists.css";
+@import "./styles/pages/reports-service.css";
+@import "./styles/pages/reports-analytics.css";
+@import "./styles/pages/email-reports.css";
+@import "./styles/pages/merchants.css";
 @import "./styles/pages/auth.css";
+
+@import "./styles/responsive/base.css";

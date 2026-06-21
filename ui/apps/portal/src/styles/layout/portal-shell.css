@@ -1,15 +1,14 @@
 .portal-shell {
   display: grid;
-  grid-template-columns: 276px minmax(0, 1fr);
+  grid-template-columns: 264px minmax(0, 1fr);
   min-height: 100vh;
   position: relative;
+  background: var(--canvas);
 }
-
-/* Sidebar styles live in layout/sidebar.css */
 
 .portal-main {
   min-width: 0;
-  padding: 26px;
+  padding: var(--sp-6);
   position: relative;
   z-index: 1;
 }
@@ -21,43 +20,50 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  background: #ffffff;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.header-title {
+  min-width: 0;
 }
 
 .header-actions,
 .section-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--sp-2);
+  align-items: center;
   justify-content: flex-end;
 }
 
+.header-actions {
+  flex: 1 1 auto;
+}
+
 .eyebrow {
-  margin: 0 0 6px;
-  color: #1d5fd1;
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 0;
+  margin: 0 0 var(--sp-1);
+  color: var(--accent);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 h1 {
   margin: 0;
-  color: #071a33;
-  font-size: clamp(1.5rem, 3vw, 1.9rem);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  font-size: var(--fs-lg);
+  line-height: 1.2;
 }
 
 .page-help {
   max-width: 520px;
-  margin: 8px 0 0;
-  color: #536985;
-  font-size: 0.92rem;
+  margin: var(--sp-2) 0 0;
+  color: var(--text-muted);
+  font-size: var(--fs-base);
   line-height: 1.5;
 }
-

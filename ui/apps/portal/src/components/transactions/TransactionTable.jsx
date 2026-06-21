@@ -73,6 +73,8 @@ export default function TransactionTable({ rows, reports, loading, onRefresh, on
             <tr
               key={`${item._type || "row"}-${item.transaction_id || index}-${item.created_at || index}`}
               className="row-clickable"
+              role="button"
+              aria-label={`View transaction ${item.transaction_id || "details"}`}
               onClick={() => onSelectRow?.(item)}
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " ") {

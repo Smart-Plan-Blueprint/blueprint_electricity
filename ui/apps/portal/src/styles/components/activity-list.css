@@ -1,4 +1,4 @@
-/* ── Recent activity list (dashboard) ──────────────────────────── */
+/* Recent activity list (dashboard) */
 .activity-list {
   list-style: none;
   margin: 0;
@@ -10,11 +10,11 @@
 .activity-list button {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--sp-3);
   width: 100%;
-  padding: 10px 12px;
+  padding: var(--sp-3);
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--r-sm);
   background: transparent;
   cursor: pointer;
   text-align: left;
@@ -22,7 +22,7 @@
 }
 
 .activity-list button:hover {
-  background: #f4f7fb;
+  background: var(--surface-2);
 }
 
 .activity-dot {
@@ -30,12 +30,12 @@
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
-  background: #b6c2d1;
+  background: var(--text-soft);
 }
 
-.activity-dot.success { background: #1f8f6b; }
-.activity-dot.failed { background: #c84f4f; }
-.activity-dot.pending { background: #c58a20; }
+.activity-dot.success { background: var(--success); }
+.activity-dot.failed { background: var(--danger); }
+.activity-dot.pending { background: var(--warn); }
 
 .activity-main {
   display: grid;
@@ -44,14 +44,15 @@
 }
 
 .activity-main strong {
-  color: #071a33;
-  font-size: 0.95rem;
+  color: var(--text);
+  font-size: var(--fs-base);
+  font-variant-numeric: tabular-nums;
 }
 
 .activity-main em {
-  color: #607089;
+  color: var(--text-muted);
   font-style: normal;
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -60,13 +61,23 @@
 .activity-side {
   margin-left: auto;
   display: grid;
-  gap: 3px;
+  gap: 2px;
   justify-items: end;
   flex-shrink: 0;
 }
 
 .activity-side time {
-  color: #8a97a8;
-  font-size: 0.74rem;
+  color: var(--text-soft);
+  font-size: var(--fs-xs);
 }
 
+.activity-status {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: capitalize;
+  color: var(--text-muted);
+}
+
+.activity-status.success { color: var(--success); }
+.activity-status.failed { color: var(--danger); }
+.activity-status.pending { color: var(--warn); }

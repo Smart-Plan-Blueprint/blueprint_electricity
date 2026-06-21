@@ -4,9 +4,7 @@
   }
 
   .metrics-grid,
-  .dashboard-grid,
   .plain-insights,
-  .insight-cards,
   .email-settings-grid,
   .report-chart-grid,
   .report-filters,
@@ -18,47 +16,33 @@
     grid-template-columns: 1fr;
   }
 
-  .auth-layout {
-    grid-template-columns: 1fr;
+  .summary-stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 760px) {
   .portal-main {
-    padding: 16px;
+    padding: var(--sp-4);
   }
 
-  .portal-header,
-  .auth-layout {
+  .portal-header {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .auth-layout,
   .metrics-grid,
   .dashboard-grid,
   .dashboard-summary,
   .summary-stat-grid,
   .statement-summary,
   .plain-insights,
-  .insight-cards,
   .email-settings-grid,
   .email-actions-panel,
   .report-chart-grid,
   .filter-grid,
-  .compact-grid,
-  .report-filters,
-  .auth-metrics {
+  .report-filters {
     grid-template-columns: 1fr;
-  }
-
-  .auth-layout {
-    width: min(100% - 24px, 1120px);
-    padding: 24px 0;
-  }
-
-  .auth-panel {
-    min-height: auto;
   }
 
   .header-actions,
@@ -71,7 +55,9 @@
     flex-direction: column;
   }
 
-  .recipient-form {
+  .recipient-form,
+  .topup-row,
+  .form-grid {
     grid-template-columns: 1fr;
   }
 
@@ -80,10 +66,46 @@
     align-items: stretch;
   }
 
-  .topup-row,
-  .form-grid {
-    grid-template-columns: 1fr;
+  /* Transaction tables collapse to card rows */
+  .table-wrap table,
+  .table-wrap tbody,
+  .table-wrap tr,
+  .table-wrap td {
+    display: block;
+    width: 100%;
   }
 
-}
+  .table-wrap table {
+    min-width: 0;
+  }
 
+  .table-wrap thead {
+    display: none;
+  }
+
+  .table-wrap tbody tr {
+    margin-bottom: var(--sp-2);
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--r-md);
+    background: var(--surface-2);
+  }
+
+  .table-wrap td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding: var(--sp-1) 0;
+    border: 0;
+    text-align: right;
+  }
+
+  .table-wrap td::before {
+    content: attr(data-label);
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    text-align: left;
+    flex-shrink: 0;
+  }
+}

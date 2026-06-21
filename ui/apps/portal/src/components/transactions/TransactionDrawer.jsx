@@ -25,14 +25,20 @@ export default function TransactionDrawer({ row, onClose }) {
 
   return (
     <div className="drawer-overlay" onClick={onClose}>
-      <aside className="drawer" onClick={(event) => event.stopPropagation()}>
+      <aside
+        className="drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="transaction-drawer-title"
+        onClick={(event) => event.stopPropagation()}
+      >
         <header className="drawer-header">
           <div>
             <p className="eyebrow">Transaction</p>
-            <h2>{row.transaction_id || "N/A"}</h2>
+            <h2 id="transaction-drawer-title">{row.transaction_id || "N/A"}</h2>
           </div>
           <button type="button" className="drawer-close" onClick={onClose} aria-label="Close">
-            <X size={18} />
+            <X size={18} aria-hidden="true" />
           </button>
         </header>
         <div className="drawer-status">

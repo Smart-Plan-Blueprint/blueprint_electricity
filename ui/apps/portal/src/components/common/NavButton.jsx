@@ -1,7 +1,7 @@
 export default function NavButton({ active, icon: Icon, children, ...props }) {
   return (
     <button className={active ? "active" : ""} type="button" {...props}>
-      <Icon size={18} />
+      <Icon size={18} aria-hidden="true" />
       {children}
     </button>
   );
