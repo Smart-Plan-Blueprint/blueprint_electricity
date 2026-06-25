@@ -11,9 +11,9 @@ import { formatCompactMoney, formatMoney, shortDate } from "../../utils/formatte
 import { peakDay } from "../../utils/helpers";
 
 // Mirrors design tokens (SVG presentation attributes don't resolve CSS var()).
-const ACCENT = "#174f9c";
-const SURFACE = "#ffffff";
-const GRID = "rgba(15, 33, 56, 0.08)";
+const ACCENT = "#3f7bd9";
+const SURFACE = "#0a1421";
+const GRID = "rgba(157, 181, 207, 0.18)";
 const CHART_MARGIN = { top: 8, right: 12, bottom: 0, left: 4 };
 const ACTIVE_DOT = { r: 4, fill: ACCENT, stroke: SURFACE, strokeWidth: 2 };
 const TOOLTIP_CURSOR = { stroke: GRID };

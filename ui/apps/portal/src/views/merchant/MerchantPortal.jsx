@@ -25,38 +25,41 @@ export default function MerchantPortal({ merchant, onLogout }) {
   return (
     <main className="portal-shell">
       <aside className="sp-sidebar">
-        <div className="sp-sidebar__top">
-          <div className="sp-sidebar__brand">
-            <div className="sp-sidebar__mark"><PlugZap size={21} /></div>
-            <div>
-              <strong>Smart Plan Blueprint</strong>
-              <span>Merchant Portal</span>
-            </div>
+        <div className="sp-sidebar__brand">
+          <div className="sp-sidebar__mark"><PlugZap size={20} /></div>
+          <div className="sp-sidebar__brand-text">
+            <p className="sp-sidebar__eyebrow">Smart Plan Blueprint</p>
+            <h1>Merchant Portal</h1>
           </div>
+        </div>
 
-          <div className="sp-sidebar__status-card">
-            <div>
-              <span>Account status</span>
-              <strong>{merchant.name}</strong>
-            </div>
+        <div className="sp-sidebar__active-card">
+          <span className="sp-sidebar__active-bar" />
+          <p className="sp-sidebar__eyebrow">Account</p>
+          <strong>{merchant.name}</strong>
+          <div className="sp-sidebar__active-status">
+            <span>Status</span>
             <StatusBadge status={merchant.status} />
           </div>
         </div>
 
         <nav className="sp-sidebar__nav" aria-label="Main navigation">
+          <p className="sp-sidebar__nav-label">Navigation</p>
           <NavButton active={portal.activeView === "dashboard"} icon={LayoutDashboard} onClick={() => portal.setActiveView("dashboard")}>Dashboard</NavButton>
           <NavButton active={portal.activeView === "transactions"} icon={FileSearch} onClick={() => portal.setActiveView("transactions")}>Transactions</NavButton>
           <NavButton active={portal.activeView === "wallet"} icon={Wallet} onClick={() => portal.setActiveView("wallet")}>Wallet</NavButton>
         </nav>
 
-        <div className="sp-sidebar__session sp-sidebar__session--bottom">
-          <div className="sp-sidebar__session-user">
-            <span>Signed in as</span>
-            <strong>{merchant.name}</strong>
-            {merchant.email ? <small>{merchant.email}</small> : null}
+        <div className="sp-sidebar__footer">
+          <div className="sp-sidebar__user">
+            <div className="sp-sidebar__avatar">{merchant.name.charAt(0).toUpperCase()}</div>
+            <div className="sp-sidebar__user-text">
+              <strong>{merchant.name}</strong>
+              <small>{merchant.email || "Merchant account"}</small>
+            </div>
           </div>
 
-          <button type="button" onClick={onLogout}>
+          <button type="button" className="sp-sidebar__signout" onClick={onLogout}>
             <LogOut size={15} />
             Sign out
           </button>
@@ -65,10 +68,17 @@ export default function MerchantPortal({ merchant, onLogout }) {
 
       <section className="portal-main">
         <header className="portal-header">
-          <div className="header-title">
-            <h1>{titles[portal.activeView]}</h1>
-            <p className="last-updated">{helps[portal.activeView]}</p>
+          <div className="portal-header__title-row">
+            <div className="header-title">
+              <h1>{titles[portal.activeView]}</h1>
+              <span className="portal-header__pill portal-header__pill--ghost">Merchant Workspace</span>
+            </div>
+            <span className="portal-header__pill portal-header__pill--brand">
+              <Wallet size={14} />
+              {merchant.name}
+            </span>
           </div>
+          <p className="page-help">{helps[portal.activeView]}</p>
         </header>
 
         {portal.activeView === "dashboard" && (

@@ -9,6 +9,67 @@
   gap: var(--sp-4);
 }
 
+/* Bank-console KPI tiles — large, color-coded gradient cards */
+.metrics-grid .metric-card {
+  position: relative;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  min-height: 128px;
+  padding: var(--sp-5);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.metrics-grid .metric-icon {
+  display: none;
+}
+
+.metrics-grid .metric-card > div {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.metrics-grid .metric-card span {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+}
+
+.metrics-grid .metric-card strong {
+  font-size: clamp(1.5rem, 2.2vw, 1.95rem);
+  line-height: 1.05;
+  white-space: normal;
+  overflow: visible;
+}
+
+.metrics-grid .metric-card .metric-delta {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.metrics-grid .metric-card:nth-child(1) {
+  background: linear-gradient(135deg, rgba(63, 123, 217, 0.2), rgba(63, 123, 217, 0.04) 70%), var(--surface);
+  border-color: rgba(63, 123, 217, 0.34);
+}
+
+.metrics-grid .metric-card:nth-child(2) {
+  background: linear-gradient(135deg, rgba(139, 107, 222, 0.22), rgba(139, 107, 222, 0.05) 70%), var(--surface);
+  border-color: rgba(139, 107, 222, 0.34);
+}
+
+.metrics-grid .metric-card:nth-child(3) {
+  background: linear-gradient(135deg, rgba(46, 156, 106, 0.22), rgba(29, 143, 138, 0.05) 70%), var(--surface);
+  border-color: rgba(46, 156, 106, 0.32);
+}
+
+.metrics-grid .metric-card:nth-child(4) {
+  background: linear-gradient(135deg, rgba(195, 79, 79, 0.22), rgba(195, 79, 79, 0.05) 70%), var(--surface);
+  border-color: rgba(195, 79, 79, 0.34);
+}
+
 .dashboard-grid,
 .insight-grid {
   display: grid;

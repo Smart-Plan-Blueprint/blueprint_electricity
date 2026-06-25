@@ -11,9 +11,9 @@ import {
 import { shortDate } from "../../utils/formatters";
 
 // Mirrors design tokens (SVG presentation attributes don't resolve CSS var()).
-const ELEC = "#174f9c";
-const AIR = "#0f9b8e";
-const GRID = "rgba(15, 33, 56, 0.08)";
+const ELEC = "#3f7bd9";
+const AIR = "#1d8f8a";
+const GRID = "rgba(157, 181, 207, 0.18)";
 const CHART_MARGIN = { top: 8, right: 12, bottom: 0, left: 4 };
 const TOOLTIP_CURSOR = { stroke: GRID };
 

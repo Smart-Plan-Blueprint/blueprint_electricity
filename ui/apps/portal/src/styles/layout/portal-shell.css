@@ -1,6 +1,6 @@
 .portal-shell {
   display: grid;
-  grid-template-columns: 264px minmax(0, 1fr);
+  grid-template-columns: 288px minmax(0, 1fr);
   min-height: 100vh;
   position: relative;
   background: var(--canvas);
@@ -18,18 +18,103 @@
   top: 0;
   z-index: 20;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   gap: var(--sp-4);
   margin-bottom: var(--sp-5);
-  padding: var(--sp-3) var(--sp-4);
+  padding: var(--sp-4);
   border-radius: var(--r-lg);
+  border: 1px solid var(--border);
   background: var(--surface);
   box-shadow: var(--shadow-md);
+  backdrop-filter: blur(16px);
+}
+
+/* Utility row — search + actions + meta */
+.portal-header__utility {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.portal-header__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  margin-left: auto;
+}
+
+.portal-header__meta {
+  text-align: right;
+  line-height: 1.25;
+}
+
+.portal-header__meta strong {
+  display: block;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.portal-header__meta span {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* Title row — page title + workspace / brand pills */
+.portal-header__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.portal-header__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.portal-header__pill--ghost {
+  color: var(--text-muted);
+  background: var(--accent-50);
+}
+
+.portal-header__pill--brand {
+  color: var(--text);
+  background: linear-gradient(135deg, var(--accent-50), transparent 70%), var(--surface-2);
+}
+
+.portal-header__pill--brand svg {
+  color: var(--accent);
+}
+
+.portal-header h1 {
+  font-size: var(--fs-xl);
+  line-height: 1.1;
 }
 
 .header-title {
   min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.header-title .last-updated {
+  margin: 0;
 }
 
 .header-actions,

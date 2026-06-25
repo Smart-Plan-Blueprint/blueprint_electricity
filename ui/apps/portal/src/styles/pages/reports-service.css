@@ -1,37 +1,86 @@
-/* Service tabs */
+/* Reports toolbar — context + export actions */
+.report-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+.report-toolbar__lead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text-muted);
+}
+
+.report-toolbar__context strong {
+  color: var(--text);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.report-toolbar__context span {
+  margin-left: var(--sp-2);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.report-toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+/* Service tabs — bank-console underline style */
 .service-tabs {
   display: flex;
-  gap: var(--sp-1);
-  background: var(--surface);
-  border-radius: var(--r-md);
-  padding: var(--sp-1);
-  align-self: flex-start;
-  box-shadow: var(--shadow-sm);
+  gap: var(--sp-5);
+  background: transparent;
+  border-radius: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+  align-self: stretch;
+  box-shadow: none;
 }
 
 .service-tab {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--sp-1);
+  gap: var(--sp-2);
   font-size: var(--fs-sm);
   font-weight: 600;
   color: var(--text-muted);
   background: transparent;
   border: none;
-  border-radius: var(--r-sm);
-  padding: var(--sp-2) var(--sp-3);
+  border-radius: 0;
+  padding: var(--sp-3) var(--sp-1);
   cursor: pointer;
-  transition: background var(--ease), color var(--ease);
+  transition: color var(--ease);
 }
 
 .service-tab:hover {
-  background: var(--surface-2);
+  background: transparent;
   color: var(--text);
 }
 
 .service-tab--active {
+  background: transparent;
+  color: var(--accent);
+}
+
+.service-tab--active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: var(--r-pill);
   background: var(--accent);
-  color: var(--text-inverse);
 }
 
 /* Service race card */

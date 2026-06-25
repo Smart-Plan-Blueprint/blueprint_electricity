@@ -1,52 +1,94 @@
-import { FileSearch, Search } from "lucide-react";
-import { Button, Field, Section } from "@blueprint/ui";
+import { useState } from "react";
+import { Search } from "lucide-react";
+import { Button } from "@blueprint/ui";
 
-const PRESETS = [
-  ["today", "Today"],
-  ["yesterday", "Yesterday"],
-  ["7d", "Last 7 days"],
-  ["success", "Successful only"],
-  ["failed", "Failed only"]
+const SCOPES = [
+  ["all", "All fields"],
+  ["txn", "Transaction ID"],
+  ["meter", "Meter / phone"]
 ];
 
-export default function ReportFilters({ filters, setFilters, updateForm, loading, onSubmit, onClear, onPreset }) {
+const scopeField = (scope) =>
+  scope === "txn" ? "transaction_id" : scope === "meter" ? "meter_number" : "search";
+
+export default function ReportFilters({
+  filters,
+  setFilters,
+  updateForm,
+  loading,
+  onSubmit,
+  onClear,
+  resultCount,
+  totalCount
+}) {
+  const [scope, setScope] = useState("all");
+  const field = scopeField(scope);
+
+  function changeScope(next) {
+    setFilters((current) => ({ ...current, search: "", transaction_id: "", meter_number: "" }));
+    setScope(next);
+  }
+
   return (
-    <Section title="Find transactions" icon={FileSearch}>
-      <div className="preset-row">
-        {PRESETS.map(([key, label]) => (
-          <button key={key} type="button" onClick={() => onPreset(key)}>{label}</button>
-        ))}
-      </div>
+    <div className="filter-bar">
+      <form className="filter-bar__row" onSubmit={onSubmit}>
+        <select
+          className="filter-bar__select"
+          value={scope}
+          onChange={(event) => changeScope(event.target.value)}
+          aria-label="Search scope"
+        >
+          {SCOPES.map(([value, label]) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
 
-      <form className="filter-grid" onSubmit={onSubmit}>
-        <Field label="Start date" type="date" value={filters.from} onChange={(e) => updateForm(setFilters, "from", e.target.value)} />
-        <Field label="End date" type="date" value={filters.to} onChange={(e) => updateForm(setFilters, "to", e.target.value)} />
-        <Field label="Transaction ID" value={filters.transaction_id} placeholder="e.g. TXN-00123" onChange={(e) => updateForm(setFilters, "transaction_id", e.target.value)} />
-        <Field label="Meter number" value={filters.meter_number} placeholder="e.g. 14020123456" onChange={(e) => updateForm(setFilters, "meter_number", e.target.value)} />
-
-        <label className="field">
-          <span>Result</span>
-          <select value={filters.status} onChange={(e) => updateForm(setFilters, "status", e.target.value)}>
-            <option value="">All results</option>
-            <option value="SUCCESS">Successful</option>
-            <option value="FAILED">Failed</option>
-          </select>
-        </label>
-
-        <label className="field">
-          <span>Type</span>
-          <select value={filters._type || ""} onChange={(e) => updateForm(setFilters, "_type", e.target.value)}>
-            <option value="">All types</option>
-            <option value="electricity">Electricity</option>
-            <option value="airtime">Airtime</option>
-          </select>
-        </label>
-
-        <div className="filter-actions">
-          <Button icon={Search} loading={loading === "reports"}>Apply filters</Button>
-          <button type="button" className="ghost-button" onClick={onClear}>Clear</button>
+        <div className="filter-bar__search">
+          <Search size={16} />
+          <input
+            value={filters[field] || ""}
+            placeholder={
+              scope === "txn"
+                ? "Search transaction ID..."
+                : scope === "meter"
+                ? "Search meter / phone..."
+                : "Search all fields..."
+            }
+            onChange={(event) => updateForm(setFilters, field, event.target.value)}
+          />
         </div>
+
+        <select
+          className="filter-bar__select"
+          value={filters.status}
+          onChange={(event) => updateForm(setFilters, "status", event.target.value)}
+          aria-label="Status"
+        >
+          <option value="">All statuses</option>
+          <option value="SUCCESS">Successful</option>
+          <option value="FAILED">Failed</option>
+        </select>
+
+        <select
+          className="filter-bar__select"
+          value={filters._type || ""}
+          onChange={(event) => updateForm(setFilters, "_type", event.target.value)}
+          aria-label="Service"
+        >
+          <option value="">All services</option>
+          <option value="electricity">Electricity</option>
+          <option value="airtime">Airtime</option>
+        </select>
+
+        <Button icon={Search} loading={loading === "reports"}>Apply</Button>
       </form>
-    </Section>
+
+      <div className="filter-bar__meta">
+        <span>
+          {resultCount} / {totalCount} transactions
+        </span>
+        <button type="button" className="filter-bar__clear" onClick={onClear}>Clear</button>
+      </div>
+    </div>
   );
 }

@@ -142,6 +142,8 @@ function App() {
             onSubmit={portal.handleFilterSubmit}
             onClear={portal.clearFilters}
             onPreset={portal.applyPreset}
+            onRefresh={() => portal.loadReports()}
+            onExport={portal.exportReport}
             stats={portal.stats}
             rows={portal.rows}
             reports={portal.reports}

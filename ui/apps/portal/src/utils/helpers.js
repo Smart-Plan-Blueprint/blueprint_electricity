@@ -57,6 +57,10 @@ export function presetFilters(preset) {
     return { ...rangeBounds("7d"), range: "7d" };
   }
 
+  if (preset === "30d") {
+    return { ...rangeBounds("30d"), range: "30d" };
+  }
+
   if (preset === "success") {
     return { status: "SUCCESS", range: "all" };
   }

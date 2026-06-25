@@ -60,6 +60,106 @@
   flex-wrap: wrap;
 }
 
+/* Horizontal control bar (bank-console reports filter) */
+.filter-bar {
+  display: grid;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.filter-bar .preset-row {
+  margin: 0;
+}
+
+.filter-bar__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0;
+}
+
+.filter-bar__search {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: 1 1 260px;
+  min-height: 44px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  color: var(--text-muted);
+  background: var(--surface-2);
+}
+
+.filter-bar__search input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  outline: none;
+}
+
+.filter-bar__search input::placeholder {
+  color: var(--text-soft);
+}
+
+.filter-bar__select,
+.filter-bar__date {
+  min-height: 44px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  background: var(--surface-2);
+  outline: none;
+  font: inherit;
+  color-scheme: dark;
+}
+
+.filter-bar__select {
+  flex: 0 0 auto;
+  min-width: 152px;
+  cursor: pointer;
+}
+
+.filter-bar__date {
+  flex: 0 0 auto;
+}
+
+.filter-bar__select:focus,
+.filter-bar__date:focus,
+.filter-bar__search:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-50);
+}
+
+.filter-bar__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.filter-bar__clear {
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.filter-bar__clear:hover {
+  color: var(--accent);
+}
+
 /* Range picker (dashboard) */
 .range-picker {
   display: inline-flex;

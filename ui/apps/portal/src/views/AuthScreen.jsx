@@ -205,7 +205,7 @@ export default function AuthScreen({
           <footer className="sp-auth__secure-note">
             <ShieldCheck size={14} />
             <span>
-              Authorized users only. Connection is encrypted and sign-ins are
+              Authorized users only. Access is restricted and sign-ins are
               logged.
             </span>
           </footer>
