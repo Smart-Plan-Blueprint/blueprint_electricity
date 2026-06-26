@@ -34,11 +34,39 @@
   color: var(--accent);
 }
 
+.section-heading {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
 .section-title h2 {
   margin: 0;
   color: var(--text);
   font-size: var(--fs-md);
   font-weight: 700;
+}
+
+.section-subtitle {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+}
+
+.section-action {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: 0 0 auto;
+}
+
+.metric-sub {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-style: normal;
+  font-weight: 500;
 }
 
 /* Metric / KPI card — canonical soft-raised surface */

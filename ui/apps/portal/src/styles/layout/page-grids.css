@@ -12,24 +12,26 @@
 /* Bank-console KPI tiles — large, color-coded gradient cards */
 .metrics-grid .metric-card {
   position: relative;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-end;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
   gap: var(--sp-3);
-  min-height: 128px;
-  padding: var(--sp-5);
+  min-height: 86px;
+  padding: var(--sp-3) var(--sp-4);
   border: 1px solid var(--border-strong);
   border-radius: var(--r-lg);
   overflow: hidden;
 }
 
 .metrics-grid .metric-icon {
-  display: none;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 0;
 }
 
 .metrics-grid .metric-card > div {
   display: grid;
-  gap: var(--sp-2);
+  gap: var(--sp-1);
 }
 
 .metrics-grid .metric-card span {
@@ -39,15 +41,36 @@
 }
 
 .metrics-grid .metric-card strong {
-  font-size: clamp(1.5rem, 2.2vw, 1.95rem);
+  font-size: clamp(1.35rem, 1.9vw, 1.75rem);
   line-height: 1.05;
   white-space: normal;
   overflow: visible;
 }
 
-.metrics-grid .metric-card .metric-delta {
-  color: var(--text-muted);
-  font-weight: 500;
+.metrics-grid .metric-delta,
+.metrics-grid .metric-sub {
+  margin-top: 0;
+  line-height: 1.25;
+}
+
+/* Overview: recent activity (main) + stacked side cards */
+.dashboard-grid--overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: var(--sp-5);
+  align-items: start;
+}
+
+.dashboard-side {
+  display: grid;
+  gap: var(--sp-5);
+  align-content: start;
+}
+
+@media (max-width: 1080px) {
+  .dashboard-grid--overview {
+    grid-template-columns: 1fr;
+  }
 }
 
 .metrics-grid .metric-card:nth-child(1) {

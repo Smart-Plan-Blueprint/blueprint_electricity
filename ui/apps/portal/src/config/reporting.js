@@ -3,8 +3,10 @@ export const demoMode = import.meta.env.VITE_DEMO_MODE === "true";
 export const defaultApiToken = demoMode ? "smart-plan-blueprint-demo" : import.meta.env.VITE_API_TOKEN || "";
 export const sessionKey = "blueprint-electricity-session";
 export const transactionPageSize = 10;
+export const airtimeReportPageSize = 100;
 
 export const initialFilters = {
+  _type: "",
   status: "",
   transaction_id: "",
   meter_number: "",

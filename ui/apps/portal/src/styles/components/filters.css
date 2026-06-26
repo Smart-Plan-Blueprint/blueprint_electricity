@@ -3,6 +3,7 @@
   gap: var(--sp-4);
 }
 
+/* Standard filter grid */
 .report-filters,
 .filter-grid {
   display: grid;
@@ -12,6 +13,7 @@
   margin-top: var(--sp-4);
 }
 
+/* Presets */
 .preset-row {
   display: flex;
   flex-wrap: wrap;
@@ -23,6 +25,7 @@
 .ghost-button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--sp-1);
   min-height: 40px;
   padding: 0 var(--sp-3);
@@ -31,14 +34,26 @@
   color: var(--text);
   background: var(--surface);
   cursor: pointer;
-  font-weight: 600;
-  transition: border-color var(--ease), color var(--ease);
+  font-weight: 700;
+  transition:
+    border-color var(--ease),
+    color var(--ease),
+    background var(--ease),
+    box-shadow var(--ease);
 }
 
 .preset-row button:hover,
 .ghost-button:hover {
   border-color: var(--accent);
   color: var(--accent);
+  background: var(--surface-2);
+}
+
+.preset-row button:focus-visible,
+.ghost-button:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-50);
 }
 
 .ghost-button {
@@ -51,8 +66,10 @@
 
 .ghost-button.danger:hover {
   border-color: var(--danger);
+  color: var(--danger);
 }
 
+/* Actions */
 .filter-actions {
   display: flex;
   align-items: center;
@@ -60,14 +77,16 @@
   flex-wrap: wrap;
 }
 
-/* Horizontal control bar (bank-console reports filter) */
+/* Horizontal control bar */
 .filter-bar {
   display: grid;
   gap: var(--sp-3);
   padding: var(--sp-4);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(85, 125, 165, 0.22);
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background:
+    radial-gradient(circle at top left, rgba(47, 132, 231, 0.1), transparent 30%),
+    var(--surface);
   box-shadow: var(--shadow-md);
 }
 
@@ -83,6 +102,7 @@
   margin: 0;
 }
 
+/* Search input */
 .filter-bar__search {
   display: inline-flex;
   align-items: center;
@@ -93,7 +113,13 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--r-sm);
   color: var(--text-muted);
-  background: var(--surface-2);
+  background:
+    linear-gradient(180deg, rgba(13, 31, 52, 0.95), rgba(8, 20, 34, 0.95));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition:
+    border-color var(--ease),
+    box-shadow var(--ease),
+    background var(--ease);
 }
 
 .filter-bar__search input {
@@ -102,42 +128,152 @@
   background: transparent;
   color: var(--text);
   outline: none;
+  font: inherit;
 }
 
 .filter-bar__search input::placeholder {
   color: var(--text-soft);
 }
 
+.filter-bar__search:focus-within {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 3px var(--accent-50),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Shared control styling */
 .filter-bar__select,
-.filter-bar__date {
+.filter-bar__date,
+.report-toolbar select,
+.report-toolbar__lead select {
   min-height: 44px;
-  padding: 0 var(--sp-3);
   border: 1px solid var(--border-strong);
   border-radius: var(--r-sm);
   color: var(--text);
-  background: var(--surface-2);
+  background-color: var(--surface-2);
   outline: none;
   font: inherit;
+  font-weight: 700;
   color-scheme: dark;
+  transition:
+    border-color var(--ease),
+    box-shadow var(--ease),
+    background var(--ease),
+    color var(--ease);
 }
 
-.filter-bar__select {
+/* Selects */
+.filter-bar__select,
+.report-toolbar select,
+.report-toolbar__lead select {
   flex: 0 0 auto;
   min-width: 152px;
   cursor: pointer;
+  padding: 0 42px 0 var(--sp-3);
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  color: #eaf4ff;
+  background-color: #071827;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #9fcaff 50%),
+    linear-gradient(135deg, #9fcaff 50%, transparent 50%),
+    linear-gradient(180deg, #0b2238 0%, #061320 100%);
+  background-position:
+    calc(100% - 18px) 18px,
+    calc(100% - 12px) 18px,
+    0 0;
+  background-size:
+    6px 6px,
+    6px 6px,
+    100% 100%;
+  background-repeat: no-repeat;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 0 1px rgba(31, 126, 234, 0.08);
 }
 
+/* Dates */
 .filter-bar__date {
   flex: 0 0 auto;
+  padding: 0 var(--sp-3);
+  color: #eaf4ff;
+  background:
+    linear-gradient(180deg, #0b2238 0%, #061320 100%);
 }
 
+.filter-bar__date::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(78%) sepia(23%) saturate(728%) hue-rotate(176deg);
+  opacity: 0.85;
+}
+
+.filter-bar__date::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Hover */
+.filter-bar__select:hover,
+.filter-bar__date:hover,
+.report-toolbar select:hover,
+.report-toolbar__lead select:hover {
+  border-color: rgba(64, 142, 231, 0.85);
+  background-color: #0a1f34;
+}
+
+/* Focus */
 .filter-bar__select:focus,
 .filter-bar__date:focus,
-.filter-bar__search:focus-within {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-50);
+.report-toolbar select:focus,
+.report-toolbar__lead select:focus {
+  border-color: #2387ff;
+  box-shadow:
+    0 0 0 3px rgba(35, 135, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
+/* Native select dropdown options */
+.filter-bar__select option,
+.report-toolbar select option,
+.report-toolbar__lead select option {
+  color: #eaf4ff;
+  background-color: #071827;
+  font-weight: 700;
+}
+
+.filter-bar__select option:hover,
+.report-toolbar select option:hover,
+.report-toolbar__lead select option:hover {
+  color: #ffffff;
+  background-color: #0d477a;
+}
+
+.filter-bar__select option:checked,
+.report-toolbar select option:checked,
+.report-toolbar__lead select option:checked {
+  color: #ffffff;
+  background-color: #145da0;
+}
+
+.filter-bar__select option:disabled,
+.report-toolbar select option:disabled,
+.report-toolbar__lead select option:disabled {
+  color: #5f7388;
+  background-color: #071827;
+}
+
+/* Remove old IE/Edge native arrow */
+.filter-bar__select::-ms-expand,
+.report-toolbar select::-ms-expand,
+.report-toolbar__lead select::-ms-expand {
+  display: none;
+}
+
+/* Meta row */
 .filter-bar__meta {
   display: flex;
   align-items: center;
@@ -153,21 +289,30 @@
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+  transition: color var(--ease);
 }
 
 .filter-bar__clear:hover {
   color: var(--accent);
 }
 
-/* Range picker (dashboard) */
+.filter-bar__clear:focus-visible {
+  outline: none;
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* Range picker */
 .range-picker {
   display: inline-flex;
   gap: var(--sp-1);
   margin-top: var(--sp-4);
   padding: var(--sp-1);
+  border: 1px solid var(--border);
   border-radius: var(--r-sm);
-  background: var(--surface-2);
+  background:
+    linear-gradient(180deg, rgba(13, 31, 52, 0.95), rgba(8, 20, 34, 0.95));
 }
 
 .range-picker button {
@@ -178,12 +323,98 @@
   color: var(--text-muted);
   background: transparent;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--fs-sm);
+  transition:
+    color var(--ease),
+    background var(--ease),
+    box-shadow var(--ease);
+}
+
+.range-picker button:hover {
+  color: var(--text);
+  background: rgba(47, 132, 231, 0.12);
 }
 
 .range-picker button.active {
-  color: var(--text);
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, #0d477a 0%, #082f58 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    var(--shadow-sm);
+}
+
+.range-picker button:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--accent-50),
+    var(--shadow-sm);
+}
+
+/* Report toolbar select alignment */
+.report-toolbar__lead {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.report-toolbar__lead .filter-bar__select {
+  min-width: 154px;
+}
+
+/* Mobile */
+@media (max-width: 920px) {
+
+  .report-filters,
+  .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filter-bar__row {
+    align-items: stretch;
+  }
+
+  .filter-bar__search {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .report-filters,
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-bar {
+    padding: var(--sp-3);
+  }
+
+  .filter-bar__row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .filter-bar__select,
+  .filter-bar__date,
+  .report-toolbar select,
+  .report-toolbar__lead select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filter-bar__meta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .range-picker {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .range-picker button {
+    flex: 1 0 auto;
+  }
 }

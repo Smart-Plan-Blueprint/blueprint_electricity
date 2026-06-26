@@ -27,27 +27,32 @@ export function InlineNotice({ children }) {
   return <p className="inline-notice">{children}</p>;
 }
 
-export function MetricCard({ icon: Icon, label, value, tone = "default", delta = null, deltaTone = "neutral" }) {
+export function MetricCard({ icon: Icon, label, value, tone = "default", sub = null, delta = null, deltaTone = "neutral" }) {
   return (
     <article className={`metric-card tone-${tone}`}>
       <div className="metric-icon">{Icon ? <Icon size={20} /> : null}</div>
       <div>
         <span>{label}</span>
         <strong>{value}</strong>
+        {sub ? <small className="metric-sub">{sub}</small> : null}
         {delta ? <em className={`metric-delta ${deltaTone}`}>{delta}</em> : null}
       </div>
     </article>
   );
 }
 
-export function Section({ title, icon: Icon, children }) {
+export function Section({ title, subtitle, icon: Icon, action, children }) {
   return (
     <section className="bp-section">
       <header>
         <div className="section-title">
           {Icon ? <Icon size={19} /> : null}
-          <h2>{title}</h2>
+          <div className="section-heading">
+            <h2>{title}</h2>
+            {subtitle ? <p className="section-subtitle">{subtitle}</p> : null}
+          </div>
         </div>
+        {action ? <div className="section-action">{action}</div> : null}
       </header>
       {children}
     </section>

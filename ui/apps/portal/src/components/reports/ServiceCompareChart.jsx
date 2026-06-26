@@ -17,16 +17,27 @@ const GRID = "rgba(157, 181, 207, 0.18)";
 const CHART_MARGIN = { top: 8, right: 12, bottom: 0, left: 4 };
 const TOOLTIP_CURSOR = { stroke: GRID };
 
-function buildAirtimeDays(airtimeRows) {
-  const map = {};
-  (airtimeRows || []).forEach((row) => {
+function buildRowDays(rows) {
+  const map = new Map();
+
+  (rows || []).forEach((row) => {
     const date = (row.created_at || "").slice(0, 10);
     if (!date) return;
-    map[date] = (map[date] || 0) + 1;
+    map.set(date, (map.get(date) || 0) + 1);
   });
-  return Object.entries(map)
+
+  return Array.from(map.entries())
     .map(([date, count]) => ({ date, count }))
-    .sort((a, b) => (a.date < b.date ? -1 : 1));
+    .sort((left, right) => left.date.localeCompare(right.date));
+}
+
+function normalizeDays(days) {
+  return (days || [])
+    .map((day) => ({
+      date: day.date,
+      count: Number(day.count ?? day.transactions ?? day.total_count ?? 0)
+    }))
+    .filter((day) => day.date);
 }
 
 function CompareTooltip({ active, payload, label }) {
@@ -47,15 +58,21 @@ function CompareTooltip({ active, payload, label }) {
   );
 }
 
-export default function ServiceCompareChart({ electricityDays = [], airtimeRows = [] }) {
-  const airtimeDays = buildAirtimeDays(airtimeRows);
-  const allDates = [...new Set([...electricityDays.map((d) => d.date), ...airtimeDays.map((d) => d.date)])].sort();
+export default function ServiceCompareChart({
+  electricityDays = [],
+  electricityRows = [],
+  airtimeRows = []
+}) {
+  const rowElectricityDays = buildRowDays(electricityRows);
+  const elecDays = rowElectricityDays.length ? rowElectricityDays : normalizeDays(electricityDays);
+  const airtimeDays = buildRowDays(airtimeRows);
+  const allDates = [...new Set([...elecDays.map((d) => d.date), ...airtimeDays.map((d) => d.date)])].sort();
 
   if (allDates.length < 2) {
     return <div className="empty-state">Not enough data to compare service trends.</div>;
   }
 
-  const elecMap = Object.fromEntries(electricityDays.map((d) => [d.date, d.count ?? 0]));
+  const elecMap = Object.fromEntries(elecDays.map((d) => [d.date, d.count ?? 0]));
   const airMap = Object.fromEntries(airtimeDays.map((d) => [d.date, d.count]));
 
   const data = allDates.map((date) => ({

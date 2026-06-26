@@ -94,6 +94,8 @@ function App() {
       <Sidebar
         activeView={portal.activeView}
         onViewChange={portal.setActiveView}
+        serviceFilter={portal.serviceFilter}
+        onServiceFilterChange={portal.setServiceFilter}
         session={portal.session}
         onLogout={portal.handleLogout}
       />
@@ -109,7 +111,7 @@ function App() {
           runSearch={portal.runSearch}
           autoRefresh={portal.autoRefresh}
           onToggleAutoRefresh={() => portal.setAutoRefresh((value) => !value)}
-          onRefresh={() => portal.loadReports()}
+          onRefresh={() => portal.refreshReports()}
           onExport={portal.exportReport}
           rows={portal.rows}
         />
@@ -123,7 +125,7 @@ function App() {
             loading={portal.loading}
             range={portal.range}
             onSelectRange={portal.selectRange}
-            onRefresh={() => portal.loadReports()}
+            onRefresh={() => portal.refreshReports()}
             onStatusFilter={portal.filterByStatus}
             onSelectRow={portal.setSelected}
             onPage={portal.goToPage}
@@ -142,15 +144,16 @@ function App() {
             onSubmit={portal.handleFilterSubmit}
             onClear={portal.clearFilters}
             onPreset={portal.applyPreset}
-            onRefresh={() => portal.loadReports()}
+            onRefresh={() => portal.refreshReports()}
             onExport={portal.exportReport}
-            stats={portal.stats}
+            stats={portal.electricityStats}
             rows={portal.rows}
             reports={portal.reports}
             meta={portal.meta}
             onSelectRow={portal.setSelected}
             onPage={portal.goToPage}
             airtimeReports={portal.airtimeReports}
+            serviceFilter={portal.serviceFilter}
           />
         )}
 
@@ -163,7 +166,7 @@ function App() {
             onSubmit={portal.handleFilterSubmit}
             onClear={portal.clearFilters}
             onPreset={portal.applyPreset}
-            rows={portal.combinedRows.slice(0, transactionPageSize)}
+            rows={portal.rows.slice(0, transactionPageSize)}
             reports={portal.reports}
             meta={portal.meta}
             onSelectRow={portal.setSelected}

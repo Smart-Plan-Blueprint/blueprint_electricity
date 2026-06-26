@@ -7,6 +7,7 @@ import {
   Mail,
   Phone,
   PlugZap,
+  SlidersHorizontal,
 } from "lucide-react";
 import { StatusBadge } from "@blueprint/ui";
 import { demoMode } from "../config/reporting";
@@ -21,7 +22,24 @@ const NAV_ITEMS = [
   { id: "email", label: "Email Reports", icon: Mail },
 ];
 
-export default function Sidebar({ activeView, onViewChange, session, onLogout }) {
+const SERVICE_FILTERS = [
+  { value: "", label: "All services" },
+  { value: "electricity", label: "Electricity" },
+  { value: "airtime", label: "Airtime" },
+];
+
+function serviceLabel(value) {
+  return SERVICE_FILTERS.find((item) => item.value === value)?.label || SERVICE_FILTERS[0].label;
+}
+
+export default function Sidebar({
+  activeView,
+  onViewChange,
+  serviceFilter = "",
+  onServiceFilterChange,
+  session,
+  onLogout
+}) {
   const dataStatus = demoMode ? "DEMO DATA" : "LIVE DATA";
   const userName = session.name || session.source || "Reporting user";
   const activeItem = NAV_ITEMS.find((item) => item.id === activeView) || NAV_ITEMS[0];
@@ -46,6 +64,26 @@ export default function Sidebar({ activeView, onViewChange, session, onLogout })
           <span>{demoMode ? "Demo data" : "Live data"}</span>
           <StatusBadge status={dataStatus} />
         </div>
+      </div>
+
+      <div className="sp-sidebar__service-filter">
+        <label htmlFor="global-service-filter">
+          <SlidersHorizontal size={14} aria-hidden="true" />
+          Service filter
+        </label>
+        <select
+          id="global-service-filter"
+          value={serviceFilter}
+          onChange={(event) => onServiceFilterChange?.(event.target.value)}
+          aria-label="Global service filter"
+        >
+          {SERVICE_FILTERS.map((item) => (
+            <option key={item.value || "all"} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+        <small>{serviceLabel(serviceFilter)} applied across reports.</small>
       </div>
 
       <nav className="sp-sidebar__nav" aria-label="Main navigation">

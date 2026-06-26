@@ -1,0 +1,61 @@
+- main [ref=e3]:
+  - region "Reporting access" [ref=e4]:
+    - complementary [ref=e5]:
+      - generic [ref=e6]:
+        - img [ref=e8]
+        - generic [ref=e14]:
+          - strong [ref=e15]: Smart Plan Blueprint
+          - generic [ref=e16]: Airtime & electricity sales reporting
+      - generic [ref=e17]:
+        - paragraph [ref=e18]: Sales overview
+        - heading "Track daily sales without digging through raw transactions." [level=2] [ref=e19]
+        - text: A focused reporting portal for airtime sales, electricity sales, merchant activity, and transaction performance.
+      - generic "Reporting features" [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]:
+            - img [ref=e23]
+            - text: Sales reports
+          - strong [ref=e26]: Daily
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - img [ref=e29]
+            - text: Electricity
+          - strong [ref=e31]: Meter activity
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - img [ref=e34]
+            - text: Transactions
+          - strong [ref=e36]: Status tracking
+    - generic [ref=e37]:
+      - generic "Choose login type" [ref=e38]:
+        - button "Reporting access" [pressed] [ref=e39] [cursor=pointer]
+        - button "Merchant login" [ref=e40] [cursor=pointer]
+      - generic [ref=e41]:
+        - paragraph [ref=e42]: Reporting platform
+        - heading "Reporting access" [level=1] [ref=e43]
+        - text: Monitor airtime and electricity sales, revenue movement, transaction status, and meter activity.
+      - generic "Sales reporting snapshot" [ref=e44]:
+        - generic [ref=e45]:
+          - generic [ref=e46]: Airtime sales
+          - strong [ref=e47]: Daily totals
+        - generic [ref=e48]:
+          - generic [ref=e49]: Electricity
+          - strong [ref=e50]: Meter activity
+        - generic [ref=e51]:
+          - generic [ref=e52]: Transactions
+          - strong [ref=e53]: Live status
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - generic [ref=e56]: Email
+          - textbox "Email" [ref=e57]:
+            - /placeholder: you@smartplanblueprint.net
+        - generic [ref=e58]:
+          - generic [ref=e59]: Password
+          - textbox "Password" [ref=e60]:
+            - /placeholder: Your password
+        - button "Open dashboard" [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+          - generic [ref=e66]: Open dashboard
+      - generic [ref=e67]:
+        - img [ref=e68]
+        - generic [ref=e71]: Authorized users only. Access is restricted and sign-ins are logged.

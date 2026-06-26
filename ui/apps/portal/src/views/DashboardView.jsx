@@ -1,17 +1,17 @@
-import { Activity, ChartLine, FileSpreadsheet, Gauge, ReceiptText, TrendingUp, XCircle } from "lucide-react";
-import { MetricCard, Section } from "@blueprint/ui";
+import { Activity, ChartLine, Gauge, ReceiptText, TrendingUp, XCircle } from "lucide-react";
+import { Button, MetricCard, Section } from "@blueprint/ui";
 import RangePicker from "../components/dashboard/RangePicker";
 import LineChart from "../components/common/LineChart";
 import StatusMix from "../components/common/StatusMix";
 import TopMeters from "../components/dashboard/TopMeters";
-import InsightsSection from "../components/dashboard/InsightsSection";
-import ReportTabsPreview from "../components/dashboard/ReportTabsPreview";
 import RecentActivity from "../components/dashboard/RecentActivity";
 import { formatMoney } from "../utils/formatters";
 import { rangeLabel } from "../utils/helpers";
+import { deltaProps } from "../utils/stats";
 
-export default function DashboardView({ stats, rows, reports, loading, range, onSelectRange, onRefresh, onStatusFilter, onSelectRow, onOpenReports }) {
+export default function DashboardView({ stats, rows, loading, range, onSelectRange, onStatusFilter, onSelectRow, onOpenReports }) {
   const isLoading = loading === "reports" && !rows.length;
+  const dash = "—";
 
   return (
     <div className="view-stack">
@@ -23,57 +23,68 @@ export default function DashboardView({ stats, rows, reports, loading, range, on
         <RangePicker range={range} onSelectRange={onSelectRange} />
       </div>
 
+      {/* KPI strip */}
       <section className="metrics-grid" aria-label="Dashboard totals">
         <MetricCard
           icon={ReceiptText}
-          label="Transactions"
-          value={isLoading ? "—" : String(stats.totalCount)}
-          delta={`${stats.uniqueMeters} unique meter${stats.uniqueMeters === 1 ? "" : "s"}`}
+          label="Revenue"
+          value={isLoading ? dash : formatMoney(stats.totalAmount)}
+          sub={`${stats.successCount} successful sales`}
+          {...deltaProps(stats.trends?.total_amount, "pct")}
         />
         <MetricCard
-          icon={TrendingUp}
-          label="Revenue"
-          value={isLoading ? "—" : formatMoney(stats.totalAmount)}
-          delta={`avg ${formatMoney(stats.averageAmount)} per sale`}
+          icon={Activity}
+          label="Transactions"
+          value={isLoading ? dash : String(stats.totalCount)}
+          sub={`avg ${formatMoney(stats.averageAmount)} per sale`}
+          {...deltaProps(stats.trends?.total_count, "pct")}
         />
         <MetricCard
           icon={Gauge}
           label="Success rate"
-          value={isLoading ? "—" : `${stats.successRate}%`}
-          delta={`${stats.successCount}/${stats.totalCount} complete`}
+          value={isLoading ? dash : `${stats.successRate}%`}
+          sub={`${stats.successCount} complete`}
         />
         <MetricCard
           icon={XCircle}
           label="Failed"
-          value={isLoading ? "—" : String(stats.failedCount)}
+          value={isLoading ? dash : String(stats.failedCount)}
           tone="red"
-          delta="need review"
+          sub={`${formatMoney(stats.failedAmount)} at risk`}
+          {...deltaProps(stats.trends?.failed_count, "pct", true)}
         />
       </section>
 
-      <InsightsSection insights={stats.insights} />
-
-      <div className="dashboard-grid dashboard-grid--main">
-        <Section title="Money by day" icon={ChartLine}>
-          <LineChart rows={stats.dailyTotals} />
-        </Section>
-        <Section title="Transaction health" icon={Gauge}>
-          <StatusMix stats={stats} onStatusFilter={onStatusFilter} />
-        </Section>
-      </div>
-
-      <div className="dashboard-grid">
-        <Section title="Latest transactions" icon={Activity}>
-          <RecentActivity rows={rows.slice(0, 6)} onSelectRow={onSelectRow} />
-        </Section>
-        <Section title="Most active meters" icon={TrendingUp}>
-          <TopMeters meters={stats.topMeters} />
-        </Section>
-      </div>
-
-      <Section title="Report preview" icon={FileSpreadsheet}>
-        <ReportTabsPreview rows={rows} compact onOpenReports={onOpenReports} />
+      {/* Trend card */}
+      <Section
+        title="Money movement"
+        subtitle="Successful sales value by day"
+        icon={ChartLine}
+        action={<Button variant="ghost" onClick={onOpenReports}>Detailed reports →</Button>}
+      >
+        <LineChart rows={stats.dailyTotals} />
       </Section>
+
+      {/* Recent activity + side cards */}
+      <div className="dashboard-grid--overview">
+        <Section
+          title="Recent activity"
+          subtitle={`${rows.length} latest transactions`}
+          icon={Activity}
+          action={<Button variant="ghost" onClick={onOpenReports}>View all</Button>}
+        >
+          <RecentActivity rows={rows.slice(0, 8)} onSelectRow={onSelectRow} />
+        </Section>
+
+        <div className="dashboard-side">
+          <Section title="Top meters" subtitle="By volume in this period" icon={TrendingUp}>
+            <TopMeters meters={stats.topMeters} />
+          </Section>
+          <Section title="Transaction health" icon={Gauge}>
+            <StatusMix stats={stats} onStatusFilter={onStatusFilter} />
+          </Section>
+        </div>
+      </div>
     </div>
   );
 }

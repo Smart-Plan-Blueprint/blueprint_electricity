@@ -18,8 +18,8 @@ export default function ReportFilters({
   loading,
   onSubmit,
   onClear,
-  resultCount,
-  totalCount
+  resultCount = 0,
+  totalCount = 0
 }) {
   const [scope, setScope] = useState("all");
   const field = scopeField(scope);

@@ -10,15 +10,16 @@
   gap: var(--sp-2);
   min-height: 40px;
   padding: 0 var(--sp-3);
-  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
   color: var(--text-muted);
   background: var(--surface-2);
-  flex: 1 1 220px;
-  max-width: 320px;
-  transition: box-shadow var(--ease);
+  flex: 0 1 280px;
+  transition: border-color var(--ease), box-shadow var(--ease);
 }
 
 .header-search:focus-within {
+  border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-50);
 }
 

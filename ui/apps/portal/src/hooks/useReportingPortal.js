@@ -3,18 +3,18 @@ import { createElectricityClient, createAirtimeClient } from "@blueprint/api-cli
 import { createDemoReport } from "../demoData";
 import { createTransactionReportWorkbook, reportWorkbookFileName } from "../xlsxReport";
 import {
+  airtimeReportPageSize,
   autoRefreshMs,
   defaultApiToken,
   defaultBaseUrl,
   defaultReportSettings,
   demoMode,
   filtersKey,
-  initialFilters,
-  transactionPageSize
+  initialFilters
 } from "../config/reporting";
 import { rangeBounds, presetFilters } from "../utils/helpers";
 import { normalizeStats } from "../utils/stats";
-import { mergeAndSort } from "../utils/normalize";
+import { filterRows, mergeAndSort, splitRowsByService } from "../utils/normalize";
 import { authenticateAdmin } from "../data/adminUsers";
 import useStoredSession from "./useStoredSession";
 
@@ -39,7 +39,7 @@ export default function useReportingPortal() {
   const [airtimeReports, setAirtimeReports] = useState(null);
   const [airtimeLoading, setAirtimeLoading] = useState(false);
   const [airtimeFilters, setAirtimeFilters] = useState({
-    per_page: String(transactionPageSize),
+    per_page: String(airtimeReportPageSize),
     page: "1"
   });
 
@@ -51,19 +51,25 @@ export default function useReportingPortal() {
 
   const client = useMemo(() => createElectricityClient({ baseUrl: defaultBaseUrl, apiToken }), [apiToken]);
   const isAuthenticated = Boolean(session?.apiToken);
-  const rows = reports?.data || [];
-  const stats = useMemo(() => normalizeStats(reports, rows), [reports, rows]);
-  const meta = reports?.meta || null;
+  const electricityRows = reports?.data || [];
+  const serviceFilter = filters._type || "";
+  const electricityStats = useMemo(() => normalizeStats(reports, electricityRows), [reports, electricityRows]);
   const combinedRows = useMemo(() => {
-    const merged = mergeAndSort(reports?.data, airtimeReports?.data);
-    if (filters._type) return merged.filter((r) => r._type === filters._type);
-    return merged;
-  }, [reports, airtimeReports, filters._type]);
+    return filterRows(mergeAndSort(electricityRows, airtimeReports?.data), filters);
+  }, [electricityRows, airtimeReports, filters]);
+  const rows = combinedRows;
+  const stats = useMemo(
+    () => buildScopedStats(electricityStats, airtimeReports, serviceFilter, combinedRows),
+    [electricityStats, airtimeReports, serviceFilter, combinedRows]
+  );
+  const meta = useMemo(
+    () => reportMeta(serviceFilter, reports?.meta, airtimeReports?.meta),
+    [serviceFilter, reports?.meta, airtimeReports?.meta]
+  );
 
   useEffect(() => {
     if (isAuthenticated) {
-      loadReports();
-      loadAirtime();
+      refreshReports();
     }
   }, [isAuthenticated]);
 
@@ -78,7 +84,7 @@ export default function useReportingPortal() {
       return undefined;
     }
 
-    const timer = setInterval(() => loadReports(), autoRefreshMs);
+    const timer = setInterval(() => refreshReports(), autoRefreshMs);
     return () => clearInterval(timer);
   }, [isAuthenticated, autoRefresh, filters]);
 
@@ -101,7 +107,7 @@ export default function useReportingPortal() {
       }
       if (event.key === "r") {
         event.preventDefault();
-        loadReports();
+        refreshReports();
       }
       if (event.key === "/") {
         event.preventDefault();
@@ -211,7 +217,8 @@ export default function useReportingPortal() {
     setLoading("reports");
 
     try {
-      const result = demoMode ? createDemoReport(nextFilters) : await client.transactionLogs(nextFilters);
+      const apiFilters = reportApiFilters(nextFilters);
+      const result = demoMode ? createDemoReport(apiFilters) : await client.transactionLogs(apiFilters);
       setReports(result);
       setUpdatedAt(new Date());
     } catch (error) {
@@ -223,6 +230,13 @@ export default function useReportingPortal() {
     } finally {
       setLoading("");
     }
+  }
+
+  function refreshReports(nextFilters = filters) {
+    const nextAirtimeFilters = airtimeApiFilters(nextFilters);
+    setAirtimeFilters(nextAirtimeFilters);
+    loadReports(nextFilters);
+    loadAirtime(nextAirtimeFilters);
   }
 
   async function loadAirtime(nextFilters = airtimeFilters) {
@@ -241,6 +255,10 @@ export default function useReportingPortal() {
     const next = { ...airtimeFilters, page: String(page) };
     setAirtimeFilters(next);
     loadAirtime(next);
+  }
+
+  function setServiceFilter(value) {
+    applyFilters({ _type: value });
   }
 
   async function loadReportSettings() {
@@ -311,7 +329,7 @@ export default function useReportingPortal() {
   function applyFilters(nextFilters) {
     const merged = { ...filters, ...nextFilters, page: "1" };
     setFilters(merged);
-    loadReports(merged);
+    refreshReports(merged);
   }
 
   function clearFilters() {
@@ -319,7 +337,7 @@ export default function useReportingPortal() {
     setSearch("");
     setRange("all");
     setFilters(next);
-    loadReports(next);
+    refreshReports(next);
   }
 
   function applyPreset(preset) {
@@ -329,7 +347,7 @@ export default function useReportingPortal() {
     delete next.range;
     const merged = { ...initialFilters, ...next, page: "1" };
     setFilters(merged);
-    loadReports(merged);
+    refreshReports(merged);
   }
 
   function handleFilterSubmit(event) {
@@ -340,7 +358,7 @@ export default function useReportingPortal() {
   function goToPage(page) {
     const merged = { ...filters, page: String(page) };
     setFilters(merged);
-    loadReports(merged);
+    refreshReports(merged);
   }
 
   function selectRange(nextRange) {
@@ -363,9 +381,10 @@ export default function useReportingPortal() {
     setLoading("export");
 
     try {
+      const { electricityRows: exportElectricityRows, airtimeRows: exportAirtimeRows } = splitRowsByService(rows);
       const blob = createTransactionReportWorkbook({
-        electricityRows: rows,
-        airtimeRows: airtimeReports?.data || []
+        electricityRows: exportElectricityRows,
+        airtimeRows: exportAirtimeRows
       }, filters);
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -397,6 +416,7 @@ export default function useReportingPortal() {
     reports,
     loading,
     range,
+    serviceFilter,
     autoRefresh,
     setAutoRefresh,
     updatedAt,
@@ -413,6 +433,7 @@ export default function useReportingPortal() {
     isAuthenticated,
     rows,
     stats,
+    electricityStats,
     meta,
     updateForm,
     pushToast,
@@ -421,6 +442,7 @@ export default function useReportingPortal() {
     handleCredentialLogin,
     handleLogout,
     loadReports,
+    refreshReports,
     addRecipient,
     removeRecipient,
     saveReportSettings,
@@ -439,10 +461,105 @@ export default function useReportingPortal() {
     setAirtimeFilters,
     loadAirtime,
     goToAirtimePage,
+    setServiceFilter,
     combinedRows
   };
 }
 
 function loadStoredFilters() {
   return { ...initialFilters };
+}
+
+function reportApiFilters(filters = {}) {
+  const { _type, ...query } = filters;
+  return query;
+}
+
+function airtimeApiFilters(filters = {}) {
+  const query = reportApiFilters(filters);
+
+  query.page = "1";
+  query.per_page = String(airtimeReportPageSize);
+
+  if (query.meter_number) {
+    query.phonenumber = query.meter_number;
+    query.phone_number = query.meter_number;
+  }
+
+  return query;
+}
+
+function buildScopedStats(electricityStats, airtimeReports, serviceFilter, rows) {
+  const rowStats = normalizeStats(null, rows);
+
+  if (serviceFilter === "electricity") {
+    return { ...rowStats, ...electricityStats };
+  }
+
+  const { airtimeRows } = splitRowsByService(rows);
+  const airtimeRowStats = normalizeStats(null, airtimeRows);
+  const airtimeStats = statsFromAirtimeReport(airtimeReports, airtimeRowStats);
+
+  if (serviceFilter === "airtime") {
+    return {
+      ...airtimeRowStats,
+      ...airtimeStats,
+      dailyTotals: airtimeRowStats.dailyTotals
+    };
+  }
+
+  const totalCount = Number(electricityStats.totalCount ?? 0) + airtimeStats.totalCount;
+  const successCount = Number(electricityStats.successCount ?? 0) + airtimeStats.successCount;
+  const failedCount = Number(electricityStats.failedCount ?? 0) + airtimeStats.failedCount;
+  const totalAmount = Number(electricityStats.totalAmount ?? 0) + airtimeStats.totalAmount;
+  const failedAmount = Number(electricityStats.failedAmount ?? 0) + airtimeStats.failedAmount;
+
+  return {
+    ...rowStats,
+    ...electricityStats,
+    totalCount,
+    successCount,
+    failedCount,
+    totalAmount,
+    failedAmount,
+    averageAmount: successCount ? totalAmount / successCount : 0,
+    successRate: totalCount ? Math.round((successCount / totalCount) * 100) : 0,
+    dailyTotals: rowStats.dailyTotals?.length ? rowStats.dailyTotals : electricityStats.dailyTotals || [],
+    topMeters: electricityStats.topMeters || []
+  };
+}
+
+function statsFromAirtimeReport(airtimeReports, fallbackStats) {
+  const summary = airtimeReports?.summary || {};
+  const totalCount = Number(summary.total ?? summary.total_count ?? fallbackStats.totalCount ?? 0);
+  const successCount = Number(summary.successful ?? summary.success_count ?? fallbackStats.successCount ?? 0);
+  const failedCount = Number(summary.failed ?? summary.failed_count ?? Math.max(totalCount - successCount, 0));
+  const totalAmount = Number(summary.total_amount ?? fallbackStats.totalAmount ?? 0);
+  const failedAmount = Number(summary.failed_amount ?? fallbackStats.failedAmount ?? 0);
+
+  return {
+    ...fallbackStats,
+    totalCount,
+    successCount,
+    failedCount,
+    totalAmount,
+    failedAmount,
+    averageAmount: successCount ? totalAmount / successCount : 0,
+    successRate: totalCount ? Math.round((successCount / totalCount) * 100) : 0,
+    receiptCount: 0,
+    uniqueMeters: 0,
+    topMeters: []
+  };
+}
+
+function reportMeta(serviceFilter, electricityMeta, airtimeMeta) {
+  if (serviceFilter === "electricity") {
+    return electricityMeta || null;
+  }
+
+  if (serviceFilter === "airtime") {
+    return airtimeMeta || null;
+  }
+
+  return null;
 }

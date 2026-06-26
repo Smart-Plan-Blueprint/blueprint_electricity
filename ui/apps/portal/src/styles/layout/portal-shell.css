@@ -19,21 +19,20 @@
   z-index: 20;
   display: flex;
   flex-direction: column;
-  gap: var(--sp-4);
-  margin-bottom: var(--sp-5);
-  padding: var(--sp-4);
-  border-radius: var(--r-lg);
-  border: 1px solid var(--border);
-  background: var(--surface);
-  box-shadow: var(--shadow-md);
-  backdrop-filter: blur(16px);
+  gap: var(--sp-3);
+  margin: calc(-1 * var(--sp-6)) calc(-1 * var(--sp-6)) var(--sp-5);
+  padding: var(--sp-4) var(--sp-6);
+  background: var(--canvas-solid);
+  border-bottom: 1px solid var(--border);
 }
 
-/* Utility row — search + actions + meta */
+/* Utility row — search + actions + meta, aligned to the right */
 .portal-header__utility {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: var(--sp-3);
+  min-height: 40px;
 }
 
 .portal-header__tools {
@@ -42,7 +41,11 @@
   align-items: center;
   justify-content: flex-end;
   gap: var(--sp-2);
-  margin-left: auto;
+}
+
+.portal-header__tools > .portal-header__meta:not(:first-child) {
+  padding-left: var(--sp-3);
+  border-left: 1px solid var(--border);
 }
 
 .portal-header__meta {
@@ -93,7 +96,7 @@
 
 .portal-header__pill--brand {
   color: var(--text);
-  background: linear-gradient(135deg, var(--accent-50), transparent 70%), var(--surface-2);
+  background: var(--surface-2);
 }
 
 .portal-header__pill--brand svg {
